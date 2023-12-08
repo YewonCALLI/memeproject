@@ -1,25 +1,24 @@
-*
-{
+* {
     margin: 0;
     padding: 0;
+    transition: all 0.3s;
 }
 
 html,
-body
-{
+body {
     overflow: hidden;
+    background-color: #FFF;
+    color: #000;
 }
 
-.webgl
-{
+.webgl {
     position: fixed;
     top: 0;
     left: 0;
     outline: none;
 }
 
-.loading-bar
-{
+.loading-bar {
     position: absolute;
     top: 50%;
     width: 100%;
@@ -30,8 +29,7 @@ body
     transition: transform 0.5s;
 }
 
-.loading-bar.ended
-{
+.loading-bar.ended {
     transform: scaleX(0);
     transform-origin: 100% 0;
     transition: transform 1.5s ease-in-out;
