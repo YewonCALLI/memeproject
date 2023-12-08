@@ -2,13 +2,29 @@
     margin: 0;
     padding: 0;
     transition: all 0.3s;
+
 }
+
+a {
+    text-decoration: none;
+    color: #000
+}
+
+/* 드래그 시 블러처리 */
+
+::selection {
+    background: #000;
+    color: #fff;
+}
+
 
 html,
 body {
     overflow: hidden;
-    background-color: #FFF;
+    background-color: #fff;
     color: #000;
+    font-family: 'SUITE',
+        sans-serif;
 }
 
 .webgl {
@@ -20,10 +36,10 @@ body {
 
 .loading-bar {
     position: absolute;
-    top: 50%;
+    top: 70%;
     width: 100%;
-    height: 2px;
-    background: #ffffff;
+    height: 4px;
+    background: #000;
     transform: scaleX(0.3);
     transform-origin: top left;
     transition: transform 0.5s;
@@ -33,4 +49,51 @@ body {
     transform: scaleX(0);
     transform-origin: 100% 0;
     transition: transform 1.5s ease-in-out;
+}
+
+.loading-title {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    pointer-events: none;
+}
+
+.loading-title span {
+    font-size: 36px;
+    font-weight: 200;
+    margin-bottom: 10px;
+}
+
+.loading-title p {
+    font-size: 14px;
+}
+
+.loading-title.fade-out {
+    opacity: 0;
+    transition: opacity 1s;
+}
+
+.logo-btn {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 100;
+    border: none;
+    background: none;
+}
+
+.logo-btn:hover {
+    opacity: 0.5;
 }

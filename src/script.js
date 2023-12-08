@@ -7,6 +7,7 @@ import { gsap } from "gsap";
  * Loaders
  */
 const loadingBarElement = document.querySelector(".loading-bar");
+const loadingTitleElement = document.querySelector(".loading-title");
 const loadingManager = new THREE.LoadingManager(
   // Loaded
   () => {
@@ -22,6 +23,8 @@ const loadingManager = new THREE.LoadingManager(
       // Update loadingBarElement
       loadingBarElement.classList.add("ended");
       loadingBarElement.style.transform = "";
+      //loadingTitle fade out
+      loadingTitleElement.classList.add("fade-out");
     }, 500);
   },
 
@@ -67,7 +70,7 @@ const overlayMaterial = new THREE.ShaderMaterial({
 
         void main()
         {
-            gl_FragColor = vec4(0.0, 0.0, 0.0, uAlpha);
+            gl_FragColor = vec4(1.0, 1.0, 1.0, uAlpha);
         }
     `,
 });
