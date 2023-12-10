@@ -142,3 +142,27 @@ body {
     font-size: 14px;
     transition: all 0.3s;
 }
+
+.back-btn {
+    display: none;
+    opacity: 0;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: fit-content;
+    height: fit-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 100;
+    border: none;
+    background: none;
+    color: #fff;
+    font-size: large;
+    font-family: 'Oliver', sans-serif;
+}
+
+.back-btn:hover {
+    opacity: 0.5;
+}

@@ -67,6 +67,45 @@ window.addEventListener("mousemove", (event) => {
   mouse.y = -(event.clientY / sizes.height) * 2 + 1;
 });
 
+const backBtn = document.querySelector(".back-btn");
+backBtn.addEventListener("click", () => {
+  gsap.to(camera.position, {
+    duration: 1,
+    ease: "power2.out",
+    x: 70,
+    y: 10,
+    z: -70,
+  });
+  gsap.to(backBtn, {
+    duration: 1,
+    ease: "power2.out",
+    opacity: 0,
+    display: "none",
+  });
+});
+
+window.addEventListener("click", () => {
+  if (currentIntersect) {
+    switch (currentIntersect.object) {
+      case box1:
+        gsap.to(camera.position, {
+          duration: 1,
+          ease: "power2.out",
+          x: 0.03516649356963226,
+          y: 0.027630716096911576,
+          z: 0.00020807680718219095,
+        });
+        gsap.to(backBtn, {
+          duration: 1,
+          ease: "power2.out",
+          opacity: 1,
+          display: "block",
+        });
+        break;
+    }
+  }
+});
+
 /**
  * Update all materials
  */
@@ -85,6 +124,7 @@ const updateAllMaterials = () => {
     }
   });
 };
+
 const updateHouseMaterials = () => {
   scene.traverse((child) => {
     child.material = new THREE.MeshStandardMaterial({
@@ -106,6 +146,17 @@ gltfLoader.load("/models/meme/meme_house.gltf", (house) => {
   scene.add(house.scene);
   updateHouseMaterials();
 });
+
+const box1 = new THREE.Mesh(
+  new THREE.BoxGeometry(1, 1, 1),
+  new THREE.MeshStandardMaterial({
+    color: "#ff0000",
+  })
+);
+box1.position.set(-3, -2.5, 0);
+box1.castShadow = true;
+box1.receiveShadow = true;
+scene.add(box1);
 
 /**
  * Helpers
@@ -177,7 +228,7 @@ const orbitControls = new OrbitControls(camera, canvas);
 // orbitControls.autoRotateSpeed = 1;
 orbitControls.enableDamping = true;
 orbitControls.maxPolarAngle = Math.PI * 0.49;
-orbitControls.minDistance = 1;
+orbitControls.minDistance = 0.01;
 orbitControls.maxDistance = 150;
 
 /**
@@ -204,6 +255,39 @@ let currentIntersect = null;
 
 const tick = () => {
   const elapsedTime = clock.getElapsedTime();
+
+  raycaster.setFromCamera(mouse, camera);
+
+  const objectsToTest = [box1];
+  const intersects = raycaster.intersectObjects(objectsToTest);
+
+  // 교차하는 Object가 있는데, currentIntersect에 저장된 것이 없으면, mouse가 들어온 것! currentIntersect를 저장해준다.
+  if (intersects.length) {
+    if (!currentIntersect) {
+      console.log("mouse enter");
+    }
+
+    currentIntersect = intersects[0];
+  }
+  // 교차하는 것이 없는데 currentIntersect에 저장된 것이 있으면, mouse가 떠난 것! currentIntersect를 다시 null로 바꾸어준다.
+  else {
+    if (currentIntersect) {
+      console.log("mouse leave");
+    }
+
+    currentIntersect = null;
+  }
+
+  //마우스가 롤오버 되었을 때
+  for (const intersect of intersects) {
+    intersect.object.material.emissive.set("#919191");
+  }
+  //마우스가 롤오버 안 되었을 때
+  for (const object of objectsToTest) {
+    if (!intersects.find((intersect) => intersect.object === object)) {
+      object.material.emissive.set("#000000");
+    }
+  }
 
   // Update controls
   orbitControls.update();
