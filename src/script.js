@@ -171,7 +171,7 @@ gltfLoader.load("/models/meme/meme_stair.glb", (stair) => {
   stair.scene.rotation.y = Math.PI * 0.5;
   scene.add(stair.scene);
 });
-gltfLoader.load("/models/meme/meme_soup1.glb", (soup1) => {
+gltfLoader.load("/models/meme/meme_soup1.gltf", (soup1) => {
   soup1.scene.scale.set(1, 1, 1);
   soup1.scene.position.set(0, -3, 0);
   soup1.scene.rotation.y = Math.PI * 0.5;
