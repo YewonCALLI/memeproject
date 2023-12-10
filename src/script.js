@@ -146,6 +146,33 @@ gltfLoader.load("/models/meme/meme_house.gltf", (house) => {
   scene.add(house.scene);
   updateHouseMaterials();
 });
+gltfLoader.load("/models/meme/meme_hose.gltf", (hose) => {
+  hose.scene.scale.set(1, 1, 1);
+  hose.scene.position.set(0, -3, 0);
+  hose.scene.rotation.y = Math.PI * 0.5;
+  scene.add(hose.scene);
+  updateHouseMaterials();
+});
+gltfLoader.load("/models/meme/meme_door.glb", (door) => {
+  door.scene.scale.set(1, 1, 1);
+  door.scene.position.set(0, -3, 0);
+  door.scene.rotation.y = Math.PI * 0.5;
+  scene.add(door.scene);
+});
+gltfLoader.load("/models/meme/meme_door2.glb", (door2) => {
+  door2.scene.scale.set(1, 1, 1);
+  door2.scene.position.set(0, -3, 0);
+  door2.scene.rotation.y = Math.PI * 0.5;
+  scene.add(door2.scene);
+});
+gltfLoader.load("/models/meme/meme_stair.glb", (stair) => {
+  stair.scene.scale.set(1, 1, 1);
+  stair.scene.position.set(0, -3, 0);
+  stair.scene.rotation.y = Math.PI * 0.5;
+  scene.add(stair.scene);
+});
+
+
 
 const box1 = new THREE.Mesh(
   new THREE.BoxGeometry(1, 1, 1),
