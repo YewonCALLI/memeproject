@@ -6,6 +6,7 @@ import { gsap } from "gsap";
 /**
  * Loaders
  */
+const loadingOverlayElement = document.querySelector(".loading-overlay");
 const loadingBarElement = document.querySelector(".loading-bar");
 const loadingTitleElement = document.querySelector(".loading-title");
 const loadingManager = new THREE.LoadingManager(
@@ -13,19 +14,26 @@ const loadingManager = new THREE.LoadingManager(
   () => {
     // Wait a little
     window.setTimeout(() => {
-      // Animate overlay
-      gsap.to(overlayMaterial.uniforms.uAlpha, {
-        duration: 3,
-        value: 0,
-        delay: 1,
+      gsap.to(loadingOverlayElement, {
+        opacity: 0,
+        duration: 1,
+        onComplete: () => {
+          loadingOverlayElement.style.display = "none";
+        },
       });
-
-      // Update loadingBarElement
       loadingBarElement.classList.add("ended");
       loadingBarElement.style.transform = "";
-      //loadingTitle fade out
       loadingTitleElement.classList.add("fade-out");
     }, 500);
+
+    gsap.to(camera.position, {
+      duration: 1,
+      delay: 1,
+      ease: "power2.out",
+      x: 20,
+      y: 10,
+      z: -20,
+    });
   },
 
   // Progress
@@ -50,34 +58,6 @@ const canvas = document.querySelector("canvas.webgl");
 const scene = new THREE.Scene();
 
 /**
- * Loading Overlay Animation
- */
-const overlayGeometry = new THREE.PlaneGeometry(2, 2, 1, 1);
-const overlayMaterial = new THREE.ShaderMaterial({
-  // wireframe: true,
-  transparent: true,
-  uniforms: {
-    uAlpha: { value: 1 },
-  },
-  vertexShader: `
-        void main()
-        {
-            gl_Position = vec4(position, 1.0);
-        }
-    `,
-  fragmentShader: `
-        uniform float uAlpha;
-
-        void main()
-        {
-            gl_FragColor = vec4(1.0, 1.0, 1.0, uAlpha);
-        }
-    `,
-});
-const overlay = new THREE.Mesh(overlayGeometry, overlayMaterial);
-scene.add(overlay);
-
-/**
  * Mouse
  */
 const mouse = new THREE.Vector2();
@@ -85,24 +65,6 @@ const mouse = new THREE.Vector2();
 window.addEventListener("mousemove", (event) => {
   mouse.x = (event.clientX / sizes.width) * 2 - 1;
   mouse.y = -(event.clientY / sizes.height) * 2 + 1;
-});
-
-window.addEventListener("click", () => {
-  if (currentIntersect) {
-    switch (currentIntersect.object) {
-      case box1:
-        console.log("click on object 1");
-        break;
-
-      case box2:
-        console.log("click on object 2");
-        break;
-
-      case box3:
-        console.log("click on object 3");
-        break;
-    }
-  }
 });
 
 /**
@@ -115,6 +77,7 @@ const updateAllMaterials = () => {
       child.material instanceof THREE.MeshStandardMaterial
     ) {
       // child.material.envMap = environmentMap
+      child.material.side = THREE.DoubleSide;
       child.material.envMapIntensity = debugObject.envMapIntensity;
       child.material.needsUpdate = true;
       child.castShadow = true;
@@ -122,48 +85,42 @@ const updateAllMaterials = () => {
     }
   });
 };
+const updateHouseMaterials = () => {
+  scene.traverse((child) => {
+    child.material = new THREE.MeshStandardMaterial({
+      color: 0xffffff,
+      transparent: true,
+      opacity: 0.5,
+    });
+    child.material.side = THREE.DoubleSide;
+  });
+};
 
 /**
  * Models
  */
-gltfLoader.load("/models/FlightHelmet/glTF/FlightHelmet.gltf", (gltf) => {
-  gltf.scene.scale.set(10, 10, 10);
-  gltf.scene.position.set(0, -4, 0);
-  gltf.scene.rotation.y = Math.PI * 0.5;
-  // scene.add(gltf.scene);
-
-  updateAllMaterials();
+gltfLoader.load("/models/meme/meme_house.gltf", (house) => {
+  house.scene.scale.set(1, 1, 1);
+  house.scene.position.set(0, 0, 0);
+  house.scene.rotation.y = Math.PI * 0.5;
+  scene.add(house.scene);
+  updateHouseMaterials();
 });
-
-const Box = (position, size, color) => {
-  const box = new THREE.Mesh(
-    new THREE.BoxGeometry(size, size, size),
-    new THREE.MeshStandardMaterial({ color: color })
-  );
-  box.position.set(position.x, position.y, position.z);
-  return box;
-};
-
-const box1 = Box({ x: 0, y: 0.5, z: 0 }, 1, "#ff0000");
-const box2 = Box({ x: 5, y: 0.5, z: 0 }, 1, "#00ff00");
-const box3 = Box({ x: -4, y: 0.5, z: 0 }, 1, "#0000ff");
-
-scene.add(box1, box2, box3);
 
 /**
  * Helpers
  */
-const size = 100;
+const size = 50;
 const divisions = 50;
 
 const gridHelper = new THREE.GridHelper(size, divisions);
 gridHelper.position.set(0, 0, 0);
-scene.add(gridHelper);
+// scene.add(gridHelper);
 
 /**
  * Lights
  */
-const ambientLight = new THREE.AmbientLight("#ffffff", 0.5);
+const ambientLight = new THREE.AmbientLight("#ffffff", 1);
 
 const directionalLight = new THREE.DirectionalLight("#ffffff", 3);
 directionalLight.castShadow = true;
@@ -201,12 +158,12 @@ window.addEventListener("resize", () => {
  */
 // Base camera
 const camera = new THREE.PerspectiveCamera(
-  75,
+  50,
   sizes.width / sizes.height,
-  0.1,
+  0.01,
   100
 );
-camera.position.set(10, 1, -10);
+camera.position.set(100, 10, -100);
 scene.add(camera);
 
 /**
@@ -216,8 +173,12 @@ const raycaster = new THREE.Raycaster();
 
 // Orbit Controls
 const orbitControls = new OrbitControls(camera, canvas);
+orbitControls.autoRotate = true;
+orbitControls.autoRotateSpeed = 1;
 orbitControls.enableDamping = true;
-orbitControls.maxPolarAngle = Math.PI * 0.49;
+// orbitControls.maxPolarAngle = Math.PI * 0.49;
+orbitControls.minDistance = 1;
+orbitControls.maxDistance = 50;
 
 /**
  * Renderer
@@ -225,6 +186,7 @@ orbitControls.maxPolarAngle = Math.PI * 0.49;
 const renderer = new THREE.WebGLRenderer({
   canvas: canvas,
   antialias: true,
+  alpha: true, //transparent background
 });
 renderer.toneMapping = THREE.ReinhardToneMapping;
 renderer.toneMappingExposure = 3;
@@ -246,41 +208,19 @@ const tick = () => {
   // Update controls
   orbitControls.update();
 
+  //fixed text by html element show current camera position
+  console.log(
+    "camera position: ",
+    camera.position.x,
+    camera.position.y,
+    camera.position.z
+  );
+
   // Render
   renderer.render(scene, camera);
 
   // Cast a ray from the mouse and handle events
   raycaster.setFromCamera(mouse, camera);
-
-  const objectsToTest = [box1, box2, box3];
-  const intersects = raycaster.intersectObjects(objectsToTest);
-
-  if (intersects.length) {
-    if (!currentIntersect) {
-      console.log("mouse enter");
-    }
-
-    currentIntersect = intersects[0];
-  } else {
-    if (currentIntersect) {
-      console.log("mouse leave");
-    }
-
-    currentIntersect = null;
-  }
-
-  //마우스가 롤오버 되었을 때
-  for (const intersect of intersects) {
-    intersect.object.material.emissive.set("#919191");
-    // Animate objects
-    intersect.object.rotation.y = Math.sin(elapsedTime * 0.8) * 3;
-  }
-  //마우스가 롤오버 안 되었을 때
-  for (const object of objectsToTest) {
-    if (!intersects.find((intersect) => intersect.object === object)) {
-      object.material.emissive.set("#000000");
-    }
-  }
 
   // Test intersect with a model
 

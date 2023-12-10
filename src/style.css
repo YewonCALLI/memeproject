@@ -25,7 +25,7 @@ a {
 html,
 body {
     overflow: hidden;
-    background-color: #fff;
+    background: #ADADAD;
     color: #000;
     font-family: 'SUITE',
         sans-serif;
@@ -38,8 +38,24 @@ body {
     outline: none;
 }
 
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    z-index: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    pointer-events: none;
+}
+
 .loading-bar {
     position: absolute;
+    z-index: 10;
     top: 70%;
     width: 100%;
     height: 4px;
@@ -57,6 +73,7 @@ body {
 
 .loading-title {
     position: absolute;
+    z-index: 10;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
