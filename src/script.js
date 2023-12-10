@@ -176,7 +176,7 @@ const orbitControls = new OrbitControls(camera, canvas);
 // orbitControls.autoRotate = true;
 // orbitControls.autoRotateSpeed = 1;
 orbitControls.enableDamping = true;
-// orbitControls.maxPolarAngle = Math.PI * 0.49;
+orbitControls.maxPolarAngle = Math.PI * 0.49;
 orbitControls.minDistance = 1;
 orbitControls.maxDistance = 150;
 
