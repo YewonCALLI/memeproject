@@ -153,13 +153,13 @@ gltfLoader.load("/models/meme/meme_hose.gltf", (hose) => {
   scene.add(hose.scene);
   updateHouseMaterials();
 });
-gltfLoader.load("/models/meme/meme_door.glb", (door) => {
+gltfLoader.load("/models/meme/meme_door.gltf", (door) => {
   door.scene.scale.set(1, 1, 1);
   door.scene.position.set(0, -3, 0);
   door.scene.rotation.y = Math.PI * 0.5;
   scene.add(door.scene);
 });
-gltfLoader.load("/models/meme/meme_door2.glb", (door2) => {
+gltfLoader.load("/models/meme/meme_door2.gltf", (door2) => {
   door2.scene.scale.set(1, 1, 1);
   door2.scene.position.set(0, -3, 0);
   door2.scene.rotation.y = Math.PI * 0.5;
@@ -171,6 +171,13 @@ gltfLoader.load("/models/meme/meme_stair.glb", (stair) => {
   stair.scene.rotation.y = Math.PI * 0.5;
   scene.add(stair.scene);
 });
+gltfLoader.load("/models/meme/meme_soup1.glb", (soup1) => {
+  soup1.scene.scale.set(1, 1, 1);
+  soup1.scene.position.set(0, -3, 0);
+  soup1.scene.rotation.y = Math.PI * 0.5;
+  scene.add(soup1.scene);
+});
+
 
 
 
