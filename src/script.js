@@ -30,9 +30,9 @@ const loadingManager = new THREE.LoadingManager(
       duration: 1,
       delay: 1,
       ease: "power2.out",
-      x: 20,
+      x: 70,
       y: 10,
-      z: -20,
+      z: -70,
     });
   },
 
@@ -101,7 +101,7 @@ const updateHouseMaterials = () => {
  */
 gltfLoader.load("/models/meme/meme_house.gltf", (house) => {
   house.scene.scale.set(1, 1, 1);
-  house.scene.position.set(0, 0, 0);
+  house.scene.position.set(0, -3, 0);
   house.scene.rotation.y = Math.PI * 0.5;
   scene.add(house.scene);
   updateHouseMaterials();
@@ -158,12 +158,12 @@ window.addEventListener("resize", () => {
  */
 // Base camera
 const camera = new THREE.PerspectiveCamera(
-  50,
+  15,
   sizes.width / sizes.height,
-  0.01,
-  100
+  1,
+  10000
 );
-camera.position.set(100, 10, -100);
+camera.position.set(200, 300, -200);
 scene.add(camera);
 
 /**
@@ -173,12 +173,12 @@ const raycaster = new THREE.Raycaster();
 
 // Orbit Controls
 const orbitControls = new OrbitControls(camera, canvas);
-orbitControls.autoRotate = true;
-orbitControls.autoRotateSpeed = 1;
+// orbitControls.autoRotate = true;
+// orbitControls.autoRotateSpeed = 1;
 orbitControls.enableDamping = true;
 // orbitControls.maxPolarAngle = Math.PI * 0.49;
 orbitControls.minDistance = 1;
-orbitControls.maxDistance = 50;
+orbitControls.maxDistance = 150;
 
 /**
  * Renderer
