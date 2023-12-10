@@ -78,6 +78,34 @@ const overlay = new THREE.Mesh(overlayGeometry, overlayMaterial);
 scene.add(overlay);
 
 /**
+ * Mouse
+ */
+const mouse = new THREE.Vector2();
+
+window.addEventListener("mousemove", (event) => {
+  mouse.x = (event.clientX / sizes.width) * 2 - 1;
+  mouse.y = -(event.clientY / sizes.height) * 2 + 1;
+});
+
+window.addEventListener("click", () => {
+  if (currentIntersect) {
+    switch (currentIntersect.object) {
+      case box1:
+        console.log("click on object 1");
+        break;
+
+      case box2:
+        console.log("click on object 2");
+        break;
+
+      case box3:
+        console.log("click on object 3");
+        break;
+    }
+  }
+});
+
+/**
  * Update all materials
  */
 const updateAllMaterials = () => {
@@ -102,21 +130,49 @@ gltfLoader.load("/models/FlightHelmet/glTF/FlightHelmet.gltf", (gltf) => {
   gltf.scene.scale.set(10, 10, 10);
   gltf.scene.position.set(0, -4, 0);
   gltf.scene.rotation.y = Math.PI * 0.5;
-  scene.add(gltf.scene);
+  // scene.add(gltf.scene);
 
   updateAllMaterials();
 });
 
+const Box = (position, size, color) => {
+  const box = new THREE.Mesh(
+    new THREE.BoxGeometry(size, size, size),
+    new THREE.MeshStandardMaterial({ color: color })
+  );
+  box.position.set(position.x, position.y, position.z);
+  return box;
+};
+
+const box1 = Box({ x: 0, y: 0.5, z: 0 }, 1, "#ff0000");
+const box2 = Box({ x: 5, y: 0.5, z: 0 }, 1, "#00ff00");
+const box3 = Box({ x: -4, y: 0.5, z: 0 }, 1, "#0000ff");
+
+scene.add(box1, box2, box3);
+
+/**
+ * Helpers
+ */
+const size = 100;
+const divisions = 50;
+
+const gridHelper = new THREE.GridHelper(size, divisions);
+gridHelper.position.set(0, 0, 0);
+scene.add(gridHelper);
+
 /**
  * Lights
  */
+const ambientLight = new THREE.AmbientLight("#ffffff", 0.5);
+
 const directionalLight = new THREE.DirectionalLight("#ffffff", 3);
 directionalLight.castShadow = true;
 directionalLight.shadow.camera.far = 15;
 directionalLight.shadow.mapSize.set(1024, 1024);
 directionalLight.shadow.normalBias = 0.05;
 directionalLight.position.set(0.25, 3, -2.25);
-scene.add(directionalLight);
+
+scene.add(ambientLight, directionalLight);
 
 /**
  * Sizes
@@ -150,12 +206,18 @@ const camera = new THREE.PerspectiveCamera(
   0.1,
   100
 );
-camera.position.set(4, 1, -4);
+camera.position.set(10, 1, -10);
 scene.add(camera);
 
-// Controls
-const controls = new OrbitControls(camera, canvas);
-controls.enableDamping = true;
+/**
+ * Raycaster
+ */
+const raycaster = new THREE.Raycaster();
+
+// Orbit Controls
+const orbitControls = new OrbitControls(camera, canvas);
+orbitControls.enableDamping = true;
+orbitControls.maxPolarAngle = Math.PI * 0.49;
 
 /**
  * Renderer
@@ -174,12 +236,53 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 /**
  * Animate
  */
+const clock = new THREE.Clock();
+
+let currentIntersect = null;
+
 const tick = () => {
+  const elapsedTime = clock.getElapsedTime();
+
   // Update controls
-  controls.update();
+  orbitControls.update();
 
   // Render
   renderer.render(scene, camera);
+
+  // Cast a ray from the mouse and handle events
+  raycaster.setFromCamera(mouse, camera);
+
+  const objectsToTest = [box1, box2, box3];
+  const intersects = raycaster.intersectObjects(objectsToTest);
+
+  if (intersects.length) {
+    if (!currentIntersect) {
+      console.log("mouse enter");
+    }
+
+    currentIntersect = intersects[0];
+  } else {
+    if (currentIntersect) {
+      console.log("mouse leave");
+    }
+
+    currentIntersect = null;
+  }
+
+  //마우스가 롤오버 되었을 때
+  for (const intersect of intersects) {
+    intersect.object.material.emissive.set("#919191");
+    // Animate objects
+    intersect.object.rotation.y = Math.sin(elapsedTime * 0.8) * 3;
+  }
+  //마우스가 롤오버 안 되었을 때
+  for (const object of objectsToTest) {
+    if (!intersects.find((intersect) => intersect.object === object)) {
+      object.material.emissive.set("#000000");
+    }
+  }
+
+  // Test intersect with a model
 
   // Call tick again on the next frame
   window.requestAnimationFrame(tick);
