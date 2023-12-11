@@ -165,12 +165,6 @@ gltfLoader.load("/models/meme/meme_door2.gltf", (door2) => {
   door2.scene.rotation.y = Math.PI * 0.5;
   scene.add(door2.scene);
 });
-gltfLoader.load("/models/meme/meme_stair.glb", (stair) => {
-  stair.scene.scale.set(1, 1, 1);
-  stair.scene.position.set(0, -3, 0);
-  stair.scene.rotation.y = Math.PI * 0.5;
-  scene.add(stair.scene);
-});
 gltfLoader.load("/models/meme/meme_soup1.gltf", (soup1) => {
   soup1.scene.scale.set(1, 1, 1);
   soup1.scene.position.set(0, -3, 0);
@@ -236,7 +230,19 @@ gltfLoader.load("/models/meme/meme_secondfloor.gltf", (secondfloor) => {
   scene.add(secondfloor.scene);
   updateAllMaterials();
 });
-
+gltfLoader.load("/models/meme/meme_desk.glb", (desk) => {
+  desk.scene.scale.set(1, 1, 1);
+  desk.scene.position.set(0, -3, 0);
+  desk.scene.rotation.y = Math.PI * 0.5;
+  scene.add(desk.scene);
+  updateAllMaterials();
+});
+gltfLoader.load("/models/meme/meme_stair.glb", (stair) => {
+  stair.scene.scale.set(1, 1, 1);
+  stair.scene.position.set(0, -3, 0);
+  stair.scene.rotation.y = Math.PI * 0.5;
+  scene.add(stair.scene);
+});
 
 gltfLoader.load("/models/meme/scene.gltf", (cat) => {
   cat.scene.scale.set(1, 1, 1);
