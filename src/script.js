@@ -180,10 +180,10 @@ loadModel("/models/meme/meme_sink.glb");
 loadModel("/models/meme/meme_bone.glb");
 loadModel("/models/meme/meme_fire.glb");
 loadModel("/models/meme/meme_frame.glb");
-loadModel("/models/meme/meme_david.glb");
+loadModel("https://hi-oslab.s3.ap-northeast-2.amazonaws.com/meme_david.glb");
 loadModel("/models/meme/meme_sofa.glb");
 loadModel("/models/meme/meme_secondfloor.glb");
-loadModel("/models/meme/meme_desk.glb");
+loadModel("https://hi-oslab.s3.ap-northeast-2.amazonaws.com/meme_desk.glb");
 loadModel("/models/meme/meme_stair.glb");
 
 /**
