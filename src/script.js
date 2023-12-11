@@ -254,17 +254,17 @@ gltfLoader.load("/models/meme/meme_stair.glb", (stair) => {
   scene.add(stair.scene);
 });
 
-gltfLoader.load("/models/meme/scene.gltf", (cat) => {
-  cat.scene.scale.set(1, 1, 1);
-  cat.scene.position.set(0, -3, 0);
-  cat.scene.rotation.y = Math.PI * 0.5;
-  scene.add(cat.scene);
+// gltfLoader.load("/models/meme/scene.gltf", (cat) => {
+//   cat.scene.scale.set(1, 1, 1);
+//   cat.scene.position.set(0, -3, 0);
+//   cat.scene.rotation.y = Math.PI * 0.5;
+//   scene.add(cat.scene);
 
-  mixer = new THREE.AnimationMixer(cat.scene);
-  const action = mixer.clipAction(cat.animations[0]);
-  action.setLoop(THREE.LoopOnce);
-  action.play();
-});
+//   mixer = new THREE.AnimationMixer(cat.scene);
+//   const action = mixer.clipAction(cat.animations[0]);
+//   action.setLoop(THREE.LoopOnce);
+//   action.play();
+// });
 
 scene.add(plane);
 
