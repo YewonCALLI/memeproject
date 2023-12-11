@@ -6,12 +6,22 @@ import { gsap } from "gsap";
 
 var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent); // 안드로이드 아이폰을 검사해 체크
 /**
+ *
+ * Style Script
+ */
+const menuBtn = document.querySelector(".menu-tab");
+menuBtn.addEventListener("click", () => {
+  menuBtn.classList.add("onfocus");
+});
+
+/**
  * Loaders
  */
 const loadingOverlayElement = document.querySelector(".loading-overlay");
 const loadingBarElement = document.querySelector(".loading-bar");
 const loadingTitleElement = document.querySelector(".loading-title");
 const loadingProgress = document.querySelector(".loading-progress");
+const menuContainer = document.querySelector(".menu");
 const loadingManager = new THREE.LoadingManager(
   // Loaded
   () => {
@@ -37,6 +47,10 @@ const loadingManager = new THREE.LoadingManager(
       y: 10,
       z: -70,
     });
+
+    window.setTimeout(() => {
+      menuContainer.classList.add("on");
+    }, 1500);
   },
 
   // Progress
@@ -202,7 +216,7 @@ loadModel("/models/meme/meme_david_bottom.glb");
 loadModel("/models/meme/meme_sofa.glb");
 loadModel("/models/meme/meme_secondfloor.glb");
 
-loadModel("models/meme/meme_desk.gltf");
+// loadModel("models/meme/meme_desk.gltf");
 
 loadModel("/models/meme/meme_stair.glb");
 let mixer = null;

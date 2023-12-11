@@ -1,168 +1,252 @@
 @font-face {
-    font-family: "Oliver";
-    font-weight: normal;
-    src: url("fonts/Oliver-Regular.ttf") format("truetype");
+  font-family: "Oliver";
+  font-weight: normal;
+  src: url("fonts/Oliver-Regular.ttf") format("truetype");
 }
 
 * {
-    margin: 0;
-    padding: 0;
-    transition: all 0.3s;
-
+  margin: 0;
+  padding: 0;
+  transition: all 0.3s;
 }
 
 a {
-    text-decoration: none;
-    color: #000
+  text-decoration: none;
+  color: #000;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  outline: none;
+  background: none;
+  font-size: 16px;
+  font-weight: 200;
+  color: #fff;
+  transition: all 0.3s;
 }
 
 ::selection {
-    background: #000;
-    color: #fff;
+  background: #000;
+  color: #fff;
 }
-
 
 html,
 body {
-    overflow: hidden;
-    background: #777;
-    color: #000;
-    font-family: 'SUITE',
-        sans-serif;
+  overflow: hidden;
+  background: #777;
+  color: #000;
+  font-family: "SUITE", sans-serif;
 }
 
 .webgl {
-    position: fixed;
-    top: 0;
-    left: 0;
-    outline: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  outline: none;
 }
 
 .loading-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: #fff;
-    z-index: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    pointer-events: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  z-index: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  pointer-events: none;
 }
 
 .loading-bar {
-    position: absolute;
-    z-index: 10;
-    top: 60%;
-    width: 100%;
-    height: 4px;
-    background: #000;
-    transform: scaleX(0.3);
-    transform-origin: top left;
-    transition: transform 0.5s;
+  position: absolute;
+  z-index: 10;
+  top: 60%;
+  width: 100%;
+  height: 4px;
+  background: #000;
+  transform: scaleX(0.3);
+  transform-origin: top left;
+  transition: transform 0.5s;
 }
 
 .loading-bar.ended {
-    transform: scaleX(0);
-    transform-origin: 100% 0;
-    transition: transform 1.5s ease-in-out;
+  transform: scaleX(0);
+  transform-origin: 100% 0;
+  transition: transform 1.5s ease-in-out;
 }
 
 .loading-title {
-    position: absolute;
-    z-index: 10;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 5px;
-    pointer-events: none;
+  position: absolute;
+  z-index: 10;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  pointer-events: none;
 }
 
 .loading-title h1 {
-    font-size: 36px;
-    font-weight: 200;
-    margin-bottom: 10px;
-    font-family: 'Oliver', sans-serif;
+  font-size: 36px;
+  font-weight: 200;
+  margin-bottom: 10px;
+  font-family: "Oliver", sans-serif;
 }
 
 .loading-title p {
-    font-size: 14px;
+  font-size: 14px;
 }
 
 .loading-title.fade-out {
-    opacity: 0;
-    transition: opacity 1s;
+  opacity: 0;
+  transition: opacity 1s;
 }
 
 .logo-btn {
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    z-index: 100;
-    border: none;
-    background: none;
+  position: absolute;
+  bottom: 24px;
+  right: 24px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  z-index: 100;
+  border: none;
+  background: none;
 }
 
 .logo-svg {
-    width: 100%;
-    height: 100%;
-    fill: #fff;
+  width: 100%;
+  height: 100%;
+  fill: #fff;
 }
 
 .logo-btn:hover {
-    opacity: 0.7;
+  transition: all 0.5s ease-in-out;
+  opacity: 0.7;
 }
 
 .explain {
-    opacity: 0;
-    position: fixed;
-    bottom: 20px;
-    left: 20px;
-    padding: 8px 10px;
-    backdrop-filter: blur(10px);
-    background-color: rgba(255, 255, 255, 0.3);
-    border-radius: 8px;
-    width: calc(100% - 120px);
-    color: #fff;
-    font-weight: 200;
-    font-size: 14px;
-    transition: all 0.3s;
+  opacity: 0;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 8px 10px;
+  backdrop-filter: blur(10px);
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  width: fit-content;
+  color: #fff;
+  font-weight: 200;
+  font-size: 14px;
+  transition: all 0.3s;
 }
 
 .back-btn {
-    display: none;
-    opacity: 0;
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    width: fit-content;
-    height: fit-content;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    z-index: 100;
-    border: none;
-    background: none;
-    color: #fff;
-    font-size: large;
-    font-family: 'Oliver', sans-serif;
+  display: none;
+  opacity: 0;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  z-index: 100;
+  border: none;
+  background: none;
+  color: #fff;
+  font-size: large;
+  font-family: "Oliver", sans-serif;
 }
 
 .back-btn:hover {
-    opacity: 0.5;
+  opacity: 0.5;
+  transition: all 0.5s ease-in-out;
+}
+
+.menu {
+  z-index: 100;
+  opacity: 0;
+  position: fixed;
+  bottom: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 8px 10px;
+  backdrop-filter: blur(10px);
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 8px;
+  width: fit-content;
+  color: #fff;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  font-family: "Oliver", sans-serif;
+}
+
+.menu.on {
+  bottom: 40px;
+  opacity: 1;
+  transition: all 1s ease-in;
+}
+
+.menu-tab {
+  border-right: 2px solid #fff;
+  padding-right: 10px;
+  font-family: "Oliver", sans-serif;
+  text-decoration: none;
+}
+
+.menu-tab:hover {
+  opacity: 0.5;
+  transition: all 0.5s ease-in-out;
+}
+
+.menu-tab:last-child {
+  border-right: none;
+  padding-right: 0;
+}
+
+.submenu2 {
+  display: none;
+  opacity: 0;
+  position: fixed;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: fit-content;
+  color: #fff;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.submenu2.on {
+  display: flex;
+  bottom: 100px;
+  opacity: 1;
+  transition: all 0.5s;
+}
+
+.submenu2-tab {
+  background-color: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px);
+  font-family: "Oliver", sans-serif;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-weight: 300;
+  font-family: "Suite", sans-serif;
 }
