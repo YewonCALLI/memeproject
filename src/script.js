@@ -177,7 +177,39 @@ gltfLoader.load("/models/meme/meme_soup1.gltf", (soup1) => {
   soup1.scene.rotation.y = Math.PI * 0.5;
   scene.add(soup1.scene);
 });
-
+gltfLoader.load("/models/meme/meme_soup2.gltf", (soup2) => {
+  soup2.scene.scale.set(1, 1, 1);
+  soup2.scene.position.set(0, -3, 0);
+  soup2.scene.rotation.y = Math.PI * 0.5;
+  scene.add(soup2.scene);
+});
+gltfLoader.load("/models/meme/meme_strawberry.gltf", (berry) => {
+  berry.scene.scale.set(1, 1, 1);
+  berry.scene.position.set(0, -3, 0);
+  berry.scene.rotation.y = Math.PI * 0.5;
+  scene.add(berry.scene);
+  updateAllMaterials();
+});
+gltfLoader.load("/models/meme/meme_sink.gltf", (sink) => {
+  sink.scene.scale.set(1, 1, 1);
+  sink.scene.position.set(0, -3, 0);
+  sink.scene.rotation.y = Math.PI * 0.5;
+  scene.add(sink.scene);
+  updateAllMaterials();
+});
+gltfLoader.load("/models/meme/meme_bone.gltf", (bone) => {
+  bone.scene.scale.set(1, 1, 1);
+  bone.scene.position.set(0, -3, 0);
+  bone.scene.rotation.y = Math.PI * 0.5;
+  scene.add(bone.scene);
+  updateAllMaterials();
+});
+gltfLoader.load("/models/meme/meme_fire.gltf", (fire) => {
+  fire.scene.scale.set(1, 1, 1);
+  fire.scene.position.set(0, -3, 0);
+  fire.scene.rotation.y = Math.PI * 0.5;
+  scene.add(fire.scene);
+});
 
 
 
