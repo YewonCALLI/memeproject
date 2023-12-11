@@ -185,6 +185,7 @@ loadModel("/models/meme/meme_sofa.glb");
 loadModel("/models/meme/meme_secondfloor.glb");
 loadModel("models/meme/meme_desk.glb");
 loadModel("/models/meme/meme_stair.glb");
+loadModel("/models/meme/cat.glb");
 
 /**
  * Helpers
