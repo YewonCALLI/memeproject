@@ -118,6 +118,16 @@ const updateHouseMaterials = (model) => {
     child.material.side = THREE.DoubleSide;
   });
 };
+const catTexture = new THREE.TextureLoader().load("/meme/cat-texture.png");
+catTexture.flipY = false;
+
+const updateCatMaterials = (model) => {
+  model.traverse((child) => {
+    child.material = new THREE.MeshStandardMaterial({
+      map: catTexture,
+    });
+  });
+};
 
 /**
  * Grafti Planes
@@ -153,20 +163,14 @@ scene.add(grafti02);
  * GLTF Models
  */
 function loadModel(modelUrl, updateMaterialsCallback) {
-  gltfLoader.load(
-    modelUrl,
-    (model) => {
-      model.scene.scale.set(1, 1, 1);
-      model.scene.position.set(0, -3, 0);
-      model.scene.rotation.y = Math.PI * 0.5;
-      scene.add(model.scene);
+  gltfLoader.load(modelUrl, (model) => {
+    model.scene.scale.set(1, 1, 1);
+    model.scene.position.set(0, -3, 0);
+    model.scene.rotation.y = Math.PI * 0.5;
+    scene.add(model.scene);
 
-      updateMaterialsCallback && updateMaterialsCallback(model.scene);
-    },
-    (error) => {
-      console.log(error);
-    }
-  );
+    updateMaterialsCallback && updateMaterialsCallback(model.scene);
+  });
 }
 
 loadModel("/models/meme/meme_house.glb", updateHouseMaterials);
@@ -180,12 +184,22 @@ loadModel("/models/meme/meme_sink.glb");
 loadModel("/models/meme/meme_bone.glb");
 loadModel("/models/meme/meme_fire.glb");
 loadModel("/models/meme/meme_frame.glb");
-loadModel("/models/meme/meme_david.glb");
+// loadModel("/models/meme/meme_david.glb");
 loadModel("/models/meme/meme_sofa.glb");
 loadModel("/models/meme/meme_secondfloor.glb");
-loadModel("models/meme/meme_desk.glb");
+// loadModel("models/meme/meme_desk.glb");
 loadModel("/models/meme/meme_stair.glb");
-loadModel("/models/meme/cat.glb");
+let mixer = null;
+gltfLoader.load("/models/meme/meme_cat-no_tex.glb", (cat) => {
+  mixer = new THREE.AnimationMixer(cat.scene);
+  const action = mixer.clipAction(cat.animations[0]);
+  action.play();
+  cat.scene.scale.set(1, 1, 1);
+  cat.scene.position.set(0, -3, 0);
+  cat.scene.rotation.y = Math.PI * 0.5;
+  scene.add(cat.scene);
+  updateCatMaterials(cat.scene);
+});
 
 /**
  * Helpers
@@ -274,9 +288,16 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
  * Animate
  */
 const clock = new THREE.Clock();
+let oldElapsedTime = 0;
 
 const tick = () => {
   const elapsedTime = clock.getElapsedTime();
+  const deltaTime = elapsedTime - oldElapsedTime;
+  oldElapsedTime = elapsedTime;
+
+  if (mixer) {
+    mixer.update(deltaTime * 1.5);
+  }
 
   // Update controls
   orbitControls.update();
