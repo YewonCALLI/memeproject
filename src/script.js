@@ -87,28 +87,6 @@ backBtn.addEventListener("click", () => {
   });
 });
 
-window.addEventListener("click", () => {
-  if (currentIntersect) {
-    switch (currentIntersect.object) {
-      case box1:
-        gsap.to(camera.position, {
-          duration: 1,
-          ease: "power2.out",
-          x: 0.03516649356963226,
-          y: 0.027630716096911576,
-          z: 0.00020807680718219095,
-        });
-        gsap.to(backBtn, {
-          duration: 1,
-          ease: "power2.out",
-          opacity: 1,
-          display: "block",
-        });
-        break;
-    }
-  }
-});
-
 /**
  * Update all materials
  */
@@ -139,134 +117,66 @@ const updateHouseMaterials = (model) => {
   });
 };
 
-const texture = new THREE.TextureLoader().load("/meme/Frame 8.png");
-const material2 = new THREE.MeshBasicMaterial({
-  map: texture,
-  transparent: true,
-});
+/**
+ * Grafti Planes
+ *  */
+function createGraftiPlane(width, height, imgSrc) {
+  const plane = new THREE.Mesh(
+    new THREE.PlaneGeometry(width, height),
+    new THREE.MeshBasicMaterial({
+      map: new THREE.TextureLoader().load(imgSrc),
+      transparent: true,
+      alphaTest: 0.5,
+      DoubleSide: true,
+    })
+  );
+  plane.rotateY(Math.PI / 2);
+  return plane;
+}
 
-const texture2 = new THREE.TextureLoader().load("/meme/Frame 9.png");
-const material3 = new THREE.MeshBasicMaterial({
-  map: texture2,
-  transparent: true,
-});
+//"meme project"
+const grafti01 = createGraftiPlane(4, 2.5, "/meme/Frame 8.png");
+grafti01.position.x = -0.25;
+scene.add(grafti01);
 
-
-const plane = new THREE.Mesh(new THREE.PlaneGeometry(4, 2.5), material2);
-plane.material.side = THREE.DoubleSide;
-plane.rotateY(Math.PI / 2);
-plane.position.x = 0;
-
-const plane2 = new THREE.Mesh(new THREE.PlaneGeometry(3.5, 2), material3);
-plane2.material.side = THREE.DoubleSide;
-plane2.rotateY(Math.PI / 2);
-plane2.position.z = -5;
-plane2.position.y = -1.0;
-plane2.rotateZ(-Math.PI / 6);
+//"everythin is meme"
+const grafti02 = createGraftiPlane(3.5, 2, "/meme/Frame 9.png");
+grafti02.position.x = -0.25;
+grafti02.position.z = -5;
+grafti02.position.y = -1.0;
+grafti02.rotateZ(-Math.PI / 6);
+scene.add(grafti02);
 
 /**
- * Models
+ * GLTF Models
  */
-gltfLoader.load("/models/meme/meme_house.gltf", (house) => {
-  house.scene.scale.set(1, 1, 1);
-  house.scene.position.set(0, -3, 0);
-  house.scene.rotation.y = Math.PI * 0.5;
-  scene.add(house.scene);
-  updateHouseMaterials(house.scene);
-});
-gltfLoader.load("/models/meme/meme_hose.gltf", (hose) => {
-  hose.scene.scale.set(1, 1, 1);
-  hose.scene.position.set(0, -3, 0);
-  hose.scene.rotation.y = Math.PI * 0.5;
-  scene.add(hose.scene);
-  updateHouseMaterials(hose.scene);
+function loadModel(modelUrl, updateMaterialsCallback) {
+  gltfLoader.load(modelUrl, (model) => {
+    model.scene.scale.set(1, 1, 1);
+    model.scene.position.set(0, -3, 0);
+    model.scene.rotation.y = Math.PI * 0.5;
+    scene.add(model.scene);
 
-});
-gltfLoader.load("/models/meme/meme_door.gltf", (door) => {
-  door.scene.scale.set(1, 1, 1);
-  door.scene.position.set(0, -3, 0);
-  door.scene.rotation.y = Math.PI * 0.5;
-  scene.add(door.scene);
-});
-gltfLoader.load("/models/meme/meme_door2.gltf", (door2) => {
-  door2.scene.scale.set(1, 1, 1);
-  door2.scene.position.set(0, -3, 0);
-  door2.scene.rotation.y = Math.PI * 0.5;
-  scene.add(door2.scene);
-});
-gltfLoader.load("/models/meme/meme_soup1.gltf", (soup1) => {
-  soup1.scene.scale.set(1, 1, 1);
-  soup1.scene.position.set(0, -3, 0);
-  soup1.scene.rotation.y = Math.PI * 0.5;
-  scene.add(soup1.scene);
-});
-gltfLoader.load("/models/meme/meme_soup2.gltf", (soup2) => {
-  soup2.scene.scale.set(1, 1, 1);
-  soup2.scene.position.set(0, -3, 0);
-  soup2.scene.rotation.y = Math.PI * 0.5;
-  scene.add(soup2.scene);
-});
-gltfLoader.load("/models/meme/meme_strawberry.gltf", (berry) => {
-  berry.scene.scale.set(1, 1, 1);
-  berry.scene.position.set(0, -3, 0);
-  berry.scene.rotation.y = Math.PI * 0.5;
-  scene.add(berry.scene);
-  updateAllMaterials();
-});
-gltfLoader.load("/models/meme/meme_sink.gltf", (sink) => {
-  sink.scene.scale.set(1, 1, 1);
-  sink.scene.position.set(0, -3, 0);
-  sink.scene.rotation.y = Math.PI * 0.5;
-  scene.add(sink.scene);
-});
-gltfLoader.load("/models/meme/meme_bone.gltf", (bone) => {
-  bone.scene.scale.set(1, 1, 1);
-  bone.scene.position.set(0, -3, 0);
-  bone.scene.rotation.y = Math.PI * 0.5;
-  scene.add(bone.scene);
-});
-gltfLoader.load("/models/meme/meme_fire.gltf", (fire) => {
-  fire.scene.scale.set(1, 1, 1);
-  fire.scene.position.set(0, -3, 0);
-  fire.scene.rotation.y = Math.PI * 0.5;
-  scene.add(fire.scene);
-});
-gltfLoader.load("/models/meme/meme_frame.glb", (frame) => {
-  frame.scene.scale.set(1, 1, 1);
-  frame.scene.position.set(0, -3, 0);
-  frame.scene.rotation.y = Math.PI * 0.5;
-  scene.add(frame.scene);
-});
-gltfLoader.load("/models/meme/meme_david.glb", (david) => {
-  david.scene.scale.set(1, 1, 1);
-  david.scene.position.set(0, -3, 0);
-  david.scene.rotation.y = Math.PI * 0.5;
-  scene.add(david.scene);
-});
-gltfLoader.load("/models/meme/meme_sofa.gltf", (sofa) => {
-  sofa.scene.scale.set(1, 1, 1);
-  sofa.scene.position.set(0, -3, 0);
-  sofa.scene.rotation.y = Math.PI * 0.5;
-  scene.add(sofa.scene);
-});
-gltfLoader.load("/models/meme/meme_secondfloor.gltf", (secondfloor) => {
-  secondfloor.scene.scale.set(1, 1, 1);
-  secondfloor.scene.position.set(0, -3, 0);
-  secondfloor.scene.rotation.y = Math.PI * 0.5;
-  scene.add(secondfloor.scene);
-});
-gltfLoader.load("/models/meme/meme_desk.glb", (desk) => {
-  desk.scene.scale.set(1, 1, 1);
-  desk.scene.position.set(0, -3, 0);
-  desk.scene.rotation.y = Math.PI * 0.5;
-  scene.add(desk.scene);
-});
-gltfLoader.load("/models/meme/meme_stair.glb", (stair) => {
-  stair.scene.scale.set(1, 1, 1);
-  stair.scene.position.set(0, -3, 0);
-  stair.scene.rotation.y = Math.PI * 0.5;
-  scene.add(stair.scene);
-});
+    updateMaterialsCallback && updateMaterialsCallback(model.scene);
+  });
+}
+
+loadModel("/models/meme/meme_house.gltf", updateHouseMaterials);
+loadModel("/models/meme/meme_hose.gltf", updateHouseMaterials);
+loadModel("/models/meme/meme_door.gltf");
+loadModel("/models/meme/meme_door2.gltf");
+loadModel("/models/meme/meme_soup1.gltf");
+loadModel("/models/meme/meme_soup2.gltf");
+loadModel("/models/meme/meme_strawberry.gltf", updateAllMaterials);
+loadModel("/models/meme/meme_sink.gltf");
+loadModel("/models/meme/meme_bone.gltf");
+loadModel("/models/meme/meme_fire.gltf");
+loadModel("/models/meme/meme_frame.glb");
+loadModel("/models/meme/meme_david.glb");
+loadModel("/models/meme/meme_sofa.gltf");
+loadModel("/models/meme/meme_secondfloor.gltf");
+loadModel("/models/meme/meme_desk.glb");
+loadModel("/models/meme/meme_stair.glb");
 
 // gltfLoader.load("/models/meme/scene.gltf", (cat) => {
 //   cat.scene.scale.set(1, 1, 1);
@@ -279,21 +189,6 @@ gltfLoader.load("/models/meme/meme_stair.glb", (stair) => {
 //   action.setLoop(THREE.LoopOnce);
 //   action.play();
 // });
-
-scene.add(plane);
-scene.add(plane2);
-
-
-const box1 = new THREE.Mesh(
-  new THREE.BoxGeometry(1, 1, 1),
-  new THREE.MeshStandardMaterial({
-    color: "#ff0000",
-  })
-);
-box1.position.set(-3, -2.5, 0);
-box1.castShadow = true;
-box1.receiveShadow = true;
-scene.add(box1);
 
 /**
  * Helpers
@@ -354,11 +249,6 @@ const camera = new THREE.PerspectiveCamera(
 camera.position.set(200, 300, -200);
 scene.add(camera);
 
-/**
- * Raycaster
- */
-const raycaster = new THREE.Raycaster();
-
 // Orbit Controls
 const orbitControls = new OrbitControls(camera, canvas);
 // orbitControls.autoRotate = true;
@@ -388,76 +278,17 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
  */
 const clock = new THREE.Clock();
 
-let currentIntersect = null;
-
-function animate(){
-  requestAnimationFrame(animate);
-  const elapsedTime = clock.getElapsedTime();
-  if (mixer) {
-    mixer.update(elapsedTime);
-  }
-}
-animate();
-
 const tick = () => {
   const elapsedTime = clock.getElapsedTime();
-
-  raycaster.setFromCamera(mouse, camera);
-
-  const objectsToTest = [box1];
-  const intersects = raycaster.intersectObjects(objectsToTest);
-
-
-  // 교차하는 Object가 있는데, currentIntersect에 저장된 것이 없으면, mouse가 들어온 것! currentIntersect를 저장해준다.
-  if (intersects.length) {
-    if (!currentIntersect) {
-      console.log("mouse enter");
-    }
-
-    currentIntersect = intersects[0];
-  }
-  // 교차하는 것이 없는데 currentIntersect에 저장된 것이 있으면, mouse가 떠난 것! currentIntersect를 다시 null로 바꾸어준다.
-  else {
-    if (currentIntersect) {
-      console.log("mouse leave");
-    }
-
-    currentIntersect = null;
-  }
-
-  //마우스가 롤오버 되었을 때
-  for (const intersect of intersects) {
-    intersect.object.material.emissive.set("#919191");
-  }
-  //마우스가 롤오버 안 되었을 때
-  for (const object of objectsToTest) {
-    if (!intersects.find((intersect) => intersect.object === object)) {
-      object.material.emissive.set("#000000");
-    }
-  }
 
   // Update controls
   orbitControls.update();
 
-  //fixed text by html element show current camera position
-  // console.log(
-  //   "camera position: ",
-  //   camera.position.x,
-  //   camera.position.y,
-  //   camera.position.z
-  // );
-
   // Render
   renderer.render(scene, camera);
 
-  // Cast a ray from the mouse and handle events
-  raycaster.setFromCamera(mouse, camera);
-
-  // Test intersect with a model
-
   // Call tick again on the next frame
   window.requestAnimationFrame(tick);
-  
 };
 
 tick();
