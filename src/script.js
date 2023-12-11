@@ -44,6 +44,8 @@ const loadingManager = new THREE.LoadingManager(
   }
 );
 const gltfLoader = new GLTFLoader(loadingManager);
+const TextureLoader = new THREE.TextureLoader(loadingManager);
+
 let mixer;
 
 /**
@@ -126,8 +128,8 @@ const updateAllMaterials = () => {
   });
 };
 
-const updateHouseMaterials = () => {
-  scene.traverse((child) => {
+const updateHouseMaterials = (model) => {
+  model.traverse((child) => {
     child.material = new THREE.MeshStandardMaterial({
       color: 0xffffff,
       transparent: true,
@@ -137,6 +139,17 @@ const updateHouseMaterials = () => {
   });
 };
 
+const texture = new THREE.TextureLoader().load("/meme/Frame 8.png");
+const material2 = new THREE.MeshBasicMaterial({
+  map: texture,
+  transparent: true,
+});
+
+const plane = new THREE.Mesh(new THREE.PlaneGeometry(4, 2.5), material2);
+plane.material.side = THREE.DoubleSide;
+plane.rotateY(Math.PI / 2);
+plane.position.x = 0;
+
 /**
  * Models
  */
@@ -145,13 +158,15 @@ gltfLoader.load("/models/meme/meme_house.gltf", (house) => {
   house.scene.position.set(0, -3, 0);
   house.scene.rotation.y = Math.PI * 0.5;
   scene.add(house.scene);
-  updateHouseMaterials();
+  updateHouseMaterials(house.scene);
 });
 gltfLoader.load("/models/meme/meme_hose.gltf", (hose) => {
   hose.scene.scale.set(1, 1, 1);
   hose.scene.position.set(0, -3, 0);
   hose.scene.rotation.y = Math.PI * 0.5;
   scene.add(hose.scene);
+  updateHouseMaterials(hose.scene);
+
 });
 gltfLoader.load("/models/meme/meme_door.gltf", (door) => {
   door.scene.scale.set(1, 1, 1);
@@ -189,14 +204,12 @@ gltfLoader.load("/models/meme/meme_sink.gltf", (sink) => {
   sink.scene.position.set(0, -3, 0);
   sink.scene.rotation.y = Math.PI * 0.5;
   scene.add(sink.scene);
-  updateAllMaterials();
 });
 gltfLoader.load("/models/meme/meme_bone.gltf", (bone) => {
   bone.scene.scale.set(1, 1, 1);
   bone.scene.position.set(0, -3, 0);
   bone.scene.rotation.y = Math.PI * 0.5;
   scene.add(bone.scene);
-  updateAllMaterials();
 });
 gltfLoader.load("/models/meme/meme_fire.gltf", (fire) => {
   fire.scene.scale.set(1, 1, 1);
@@ -221,29 +234,24 @@ gltfLoader.load("/models/meme/meme_sofa.gltf", (sofa) => {
   sofa.scene.position.set(0, -3, 0);
   sofa.scene.rotation.y = Math.PI * 0.5;
   scene.add(sofa.scene);
-  updateAllMaterials();
 });
 gltfLoader.load("/models/meme/meme_secondfloor.gltf", (secondfloor) => {
   secondfloor.scene.scale.set(1, 1, 1);
   secondfloor.scene.position.set(0, -3, 0);
   secondfloor.scene.rotation.y = Math.PI * 0.5;
   scene.add(secondfloor.scene);
-  updateAllMaterials();
 });
 gltfLoader.load("/models/meme/meme_desk.glb", (desk) => {
   desk.scene.scale.set(1, 1, 1);
   desk.scene.position.set(0, -3, 0);
   desk.scene.rotation.y = Math.PI * 0.5;
   scene.add(desk.scene);
-  updateAllMaterials();
 });
 gltfLoader.load("/models/meme/meme_stair.glb", (stair) => {
   stair.scene.scale.set(1, 1, 1);
   stair.scene.position.set(0, -3, 0);
   stair.scene.rotation.y = Math.PI * 0.5;
   scene.add(stair.scene);
-  updateAllMaterials();
-
 });
 
 gltfLoader.load("/models/meme/scene.gltf", (cat) => {
@@ -258,6 +266,7 @@ gltfLoader.load("/models/meme/scene.gltf", (cat) => {
   action.play();
 });
 
+scene.add(plane);
 
 
 const box1 = new THREE.Mesh(
