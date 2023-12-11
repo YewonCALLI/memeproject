@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 import { gsap } from "gsap";
 
 /**
@@ -43,10 +44,11 @@ const loadingManager = new THREE.LoadingManager(
     loadingBarElement.style.transform = `scaleX(${progressRatio})`;
   }
 );
-const gltfLoader = new GLTFLoader(loadingManager);
-const TextureLoader = new THREE.TextureLoader(loadingManager);
 
-let mixer;
+const dracoLoader = new DRACOLoader();
+dracoLoader.setDecoderPath("/draco/");
+const gltfLoader = new GLTFLoader(loadingManager);
+gltfLoader.setDRACOLoader(dracoLoader);
 
 /**
  * Base
@@ -151,44 +153,51 @@ scene.add(grafti02);
  * GLTF Models
  */
 function loadModel(modelUrl, updateMaterialsCallback) {
-  gltfLoader.load(modelUrl, (model) => {
-    model.scene.scale.set(1, 1, 1);
-    model.scene.position.set(0, -3, 0);
-    model.scene.rotation.y = Math.PI * 0.5;
-    scene.add(model.scene);
+  gltfLoader.load(
+    modelUrl,
+    (model) => {
+      model.scene.scale.set(1, 1, 1);
+      model.scene.position.set(0, -3, 0);
+      model.scene.rotation.y = Math.PI * 0.5;
+      scene.add(model.scene);
 
-    updateMaterialsCallback && updateMaterialsCallback(model.scene);
-  });
+      updateMaterialsCallback && updateMaterialsCallback(model.scene);
+    },
+    (error) => {
+      console.log(error);
+    }
+  );
 }
 
-loadModel("/models/meme/meme_house.gltf", updateHouseMaterials);
-loadModel("/models/meme/meme_hose.gltf", updateHouseMaterials);
-loadModel("/models/meme/meme_door.gltf");
-loadModel("/models/meme/meme_door2.gltf");
-loadModel("/models/meme/meme_soup1.gltf");
-loadModel("/models/meme/meme_soup2.gltf");
+loadModel("/models/meme/meme_house.glb", updateHouseMaterials);
+loadModel("/models/meme/meme_hose.glb", updateHouseMaterials);
+loadModel("/models/meme/meme_door.glb");
+loadModel("/models/meme/meme_door2.glb");
+loadModel("/models/meme/meme_soup1.glb");
+loadModel("/models/meme/meme_soup2.glb");
 loadModel("/models/meme/meme_strawberry.gltf", updateAllMaterials);
-loadModel("/models/meme/meme_sink.gltf");
-loadModel("/models/meme/meme_bone.gltf");
-loadModel("/models/meme/meme_fire.gltf");
+loadModel("/models/meme/meme_sink.glb");
+loadModel("/models/meme/meme_bone.glb");
+loadModel("/models/meme/meme_fire.glb");
 loadModel("/models/meme/meme_frame.glb");
 loadModel("/models/meme/meme_david.glb");
-loadModel("/models/meme/meme_sofa.gltf");
-loadModel("/models/meme/meme_secondfloor.gltf");
+loadModel("/models/meme/meme_sofa.glb");
+loadModel("/models/meme/meme_secondfloor.glb");
 loadModel("/models/meme/meme_desk.glb");
 loadModel("/models/meme/meme_stair.glb");
 
-// gltfLoader.load("/models/meme/scene.gltf", (cat) => {
-//   cat.scene.scale.set(1, 1, 1);
-//   cat.scene.position.set(0, -3, 0);
-//   cat.scene.rotation.y = Math.PI * 0.5;
-//   scene.add(cat.scene);
+const mixer = new THREE.AnimationMixer(scene);
+gltfLoader.load("/models/meme/cat.glb", (cat) => {
+  cat.scene.scale.set(1, 1, 1);
+  cat.scene.position.set(0, -3, 0);
+  cat.scene.rotation.y = Math.PI * 0.5;
+  scene.add(cat.scene);
 
-//   mixer = new THREE.AnimationMixer(cat.scene);
-//   const action = mixer.clipAction(cat.animations[0]);
-//   action.setLoop(THREE.LoopOnce);
-//   action.play();
-// });
+  mixer = new THREE.AnimationMixer(cat.scene);
+  const action = mixer.clipAction(cat.animations[0]);
+  action.setLoop(THREE.LoopOnce);
+  action.play();
+});
 
 /**
  * Helpers
@@ -278,6 +287,13 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
  */
 const clock = new THREE.Clock();
 
+function animation(mixer) {
+  if (mixer) {
+    mixer.update(clock.getDelta());
+  }
+  window.requestAnimationFrame(animation);
+}
+animation(mixer);
 const tick = () => {
   const elapsedTime = clock.getElapsedTime();
 
