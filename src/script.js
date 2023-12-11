@@ -4,6 +4,7 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 import { gsap } from "gsap";
 
+var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent); // 안드로이드 아이폰을 검사해 체크
 /**
  * Loaders
  */
@@ -118,13 +119,16 @@ const updateHouseMaterials = (model) => {
     child.material.side = THREE.DoubleSide;
   });
 };
+
 const catTexture = new THREE.TextureLoader().load("/meme/cat-texture.png");
 catTexture.flipY = false;
 
 const updateCatMaterials = (model) => {
   model.traverse((child) => {
-    child.material = new THREE.MeshStandardMaterial({
+    child.material = new THREE.MeshLambertMaterial({
       map: catTexture,
+      transparent: true,
+      alphaTest: 0.5,
     });
   });
 };
@@ -184,19 +188,27 @@ loadModel("/models/meme/meme_sink.glb");
 loadModel("/models/meme/meme_bone.glb");
 loadModel("/models/meme/meme_fire.glb");
 loadModel("/models/meme/meme_frame.glb");
-// loadModel("/models/meme/meme_david.glb");
+//when device is mobile, load low poly models
+if (isMobile) {
+  loadModel("/models/meme/meme_david_top_lo.glb");
+} else {
+  loadModel("/models/meme/meme_david_top.glb");
+}
+loadModel("/models/meme/meme_david_bottom.glb");
 loadModel("/models/meme/meme_sofa.glb");
 loadModel("/models/meme/meme_secondfloor.glb");
 // loadModel("models/meme/meme_desk.glb");
 loadModel("/models/meme/meme_stair.glb");
 let mixer = null;
-gltfLoader.load("/models/meme/meme_cat-no_tex.glb", (cat) => {
+const cat = gltfLoader.load("/models/meme/meme_cat-no_tex.glb", (cat) => {
   mixer = new THREE.AnimationMixer(cat.scene);
   const action = mixer.clipAction(cat.animations[0]);
   action.play();
   cat.scene.scale.set(1, 1, 1);
   cat.scene.position.set(0, -3, 0);
   cat.scene.rotation.y = Math.PI * 0.5;
+  cat.receiveShadow = true;
+  cat.castShadow = true;
   scene.add(cat.scene);
   updateCatMaterials(cat.scene);
 });
@@ -266,7 +278,7 @@ const orbitControls = new OrbitControls(camera, canvas);
 // orbitControls.autoRotateSpeed = 1;
 orbitControls.enableDamping = true;
 orbitControls.maxPolarAngle = Math.PI * 0.49;
-orbitControls.minDistance = 0.01;
+orbitControls.minDistance = 0.001;
 orbitControls.maxDistance = 150;
 
 /**
