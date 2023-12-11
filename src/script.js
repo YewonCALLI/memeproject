@@ -242,6 +242,8 @@ gltfLoader.load("/models/meme/meme_stair.glb", (stair) => {
   stair.scene.position.set(0, -3, 0);
   stair.scene.rotation.y = Math.PI * 0.5;
   scene.add(stair.scene);
+  updateAllMaterials();
+
 });
 
 gltfLoader.load("/models/meme/scene.gltf", (cat) => {
