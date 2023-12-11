@@ -217,18 +217,26 @@ gltfLoader.load("/models/meme/meme_frame.glb", (frame) => {
   frame.scene.rotation.y = Math.PI * 0.5;
   scene.add(frame.scene);
 });
-gltfLoader.load("/models/meme/meme_david.glb", (frame) => {
-  frame.scene.scale.set(1, 1, 1);
-  frame.scene.position.set(0, -3, 0);
-  frame.scene.rotation.y = Math.PI * 0.5;
-  scene.add(frame.scene);
+gltfLoader.load("/models/meme/meme_david.glb", (david) => {
+  david.scene.scale.set(1, 1, 1);
+  david.scene.position.set(0, -3, 0);
+  david.scene.rotation.y = Math.PI * 0.5;
+  scene.add(david.scene);
 });
-gltfLoader.load("/models/meme/meme_secondfloor.gltf", (hermes) => {
-  hermes.scene.scale.set(1, 1, 1);
-  hermes.scene.position.set(0, -3, 0);
-  hermes.scene.rotation.y = Math.PI * 0.5;
-  scene.add(hermes.scene);
+gltfLoader.load("/models/meme/meme_sofa.gltf", (sofa) => {
+  sofa.scene.scale.set(1, 1, 1);
+  sofa.scene.position.set(0, -3, 0);
+  sofa.scene.rotation.y = Math.PI * 0.5;
+  scene.add(sofa.scene);
 });
+gltfLoader.load("/models/meme/meme_secondfloor.gltf", (secondfloor) => {
+  secondfloor.scene.scale.set(1, 1, 1);
+  secondfloor.scene.position.set(0, -3, 0);
+  secondfloor.scene.rotation.y = Math.PI * 0.5;
+  scene.add(secondfloor.scene);
+});
+
+
 gltfLoader.load("/models/meme/scene.gltf", (cat) => {
   cat.scene.scale.set(1, 1, 1);
   cat.scene.position.set(0, -3, 0);
