@@ -186,19 +186,6 @@ loadModel("/models/meme/meme_secondfloor.glb");
 loadModel("/models/meme/meme_desk.glb");
 loadModel("/models/meme/meme_stair.glb");
 
-const mixer = new THREE.AnimationMixer(scene);
-gltfLoader.load("/models/meme/cat.glb", (cat) => {
-  cat.scene.scale.set(1, 1, 1);
-  cat.scene.position.set(0, -3, 0);
-  cat.scene.rotation.y = Math.PI * 0.5;
-  scene.add(cat.scene);
-
-  mixer = new THREE.AnimationMixer(cat.scene);
-  const action = mixer.clipAction(cat.animations[0]);
-  action.setLoop(THREE.LoopOnce);
-  action.play();
-});
-
 /**
  * Helpers
  */
@@ -287,13 +274,6 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
  */
 const clock = new THREE.Clock();
 
-function animation(mixer) {
-  if (mixer) {
-    mixer.update(clock.getDelta());
-  }
-  window.requestAnimationFrame(animation);
-}
-animation(mixer);
 const tick = () => {
   const elapsedTime = clock.getElapsedTime();
 
