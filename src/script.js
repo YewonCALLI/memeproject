@@ -44,6 +44,7 @@ const loadingManager = new THREE.LoadingManager(
   }
 );
 const gltfLoader = new GLTFLoader(loadingManager);
+let mixer;
 
 /**
  * Base
@@ -210,6 +211,35 @@ gltfLoader.load("/models/meme/meme_fire.gltf", (fire) => {
   fire.scene.rotation.y = Math.PI * 0.5;
   scene.add(fire.scene);
 });
+gltfLoader.load("/models/meme/meme_frame.glb", (frame) => {
+  frame.scene.scale.set(1, 1, 1);
+  frame.scene.position.set(0, -3, 0);
+  frame.scene.rotation.y = Math.PI * 0.5;
+  scene.add(frame.scene);
+});
+gltfLoader.load("/models/meme/meme_david.glb", (frame) => {
+  frame.scene.scale.set(1, 1, 1);
+  frame.scene.position.set(0, -3, 0);
+  frame.scene.rotation.y = Math.PI * 0.5;
+  scene.add(frame.scene);
+});
+gltfLoader.load("/models/meme/meme_secondfloor.gltf", (hermes) => {
+  hermes.scene.scale.set(1, 1, 1);
+  hermes.scene.position.set(0, -3, 0);
+  hermes.scene.rotation.y = Math.PI * 0.5;
+  scene.add(hermes.scene);
+});
+gltfLoader.load("/models/meme/scene.gltf", (cat) => {
+  cat.scene.scale.set(1, 1, 1);
+  cat.scene.position.set(0, -3, 0);
+  cat.scene.rotation.y = Math.PI * 0.5;
+  scene.add(cat.scene);
+
+  mixer = new THREE.AnimationMixer(cat.scene);
+  const action = mixer.clipAction(cat.animations[0]);
+  action.setLoop(THREE.LoopOnce);
+  action.play();
+});
 
 
 
@@ -319,6 +349,15 @@ const clock = new THREE.Clock();
 
 let currentIntersect = null;
 
+function animate(){
+  requestAnimationFrame(animate);
+  const elapsedTime = clock.getElapsedTime();
+  if (mixer) {
+    mixer.update(elapsedTime);
+  }
+}
+animate();
+
 const tick = () => {
   const elapsedTime = clock.getElapsedTime();
 
@@ -326,6 +365,7 @@ const tick = () => {
 
   const objectsToTest = [box1];
   const intersects = raycaster.intersectObjects(objectsToTest);
+
 
   // 교차하는 Object가 있는데, currentIntersect에 저장된 것이 없으면, mouse가 들어온 것! currentIntersect를 저장해준다.
   if (intersects.length) {
@@ -359,12 +399,12 @@ const tick = () => {
   orbitControls.update();
 
   //fixed text by html element show current camera position
-  console.log(
-    "camera position: ",
-    camera.position.x,
-    camera.position.y,
-    camera.position.z
-  );
+  // console.log(
+  //   "camera position: ",
+  //   camera.position.x,
+  //   camera.position.y,
+  //   camera.position.z
+  // );
 
   // Render
   renderer.render(scene, camera);
@@ -376,6 +416,7 @@ const tick = () => {
 
   // Call tick again on the next frame
   window.requestAnimationFrame(tick);
+  
 };
 
 tick();
