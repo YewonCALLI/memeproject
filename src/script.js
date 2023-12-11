@@ -11,6 +11,7 @@ var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent); // 안드�
 const loadingOverlayElement = document.querySelector(".loading-overlay");
 const loadingBarElement = document.querySelector(".loading-bar");
 const loadingTitleElement = document.querySelector(".loading-title");
+const loadingProgress = document.querySelector(".loading-progress");
 const loadingManager = new THREE.LoadingManager(
   // Loaded
   () => {
@@ -43,6 +44,8 @@ const loadingManager = new THREE.LoadingManager(
     // Calculate the progress and update the loadingBarElement
     const progressRatio = itemsLoaded / itemsTotal;
     loadingBarElement.style.transform = `scaleX(${progressRatio})`;
+    //html에 로딩 퍼센트 표시
+    loadingProgress.textContent = `${Math.round(progressRatio * 100)}%`;
   }
 );
 
@@ -195,9 +198,12 @@ if (isMobile) {
   loadModel("/models/meme/meme_david_top.glb");
 }
 loadModel("/models/meme/meme_david_bottom.glb");
+
 loadModel("/models/meme/meme_sofa.glb");
 loadModel("/models/meme/meme_secondfloor.glb");
-// loadModel("models/meme/meme_desk.glb");
+
+loadModel("models/meme/meme_desk.gltf");
+
 loadModel("/models/meme/meme_stair.glb");
 let mixer = null;
 const cat = gltfLoader.load("/models/meme/meme_cat-no_tex.glb", (cat) => {
