@@ -145,10 +145,24 @@ const material2 = new THREE.MeshBasicMaterial({
   transparent: true,
 });
 
+const texture2 = new THREE.TextureLoader().load("/meme/Frame 9.png");
+const material3 = new THREE.MeshBasicMaterial({
+  map: texture2,
+  transparent: true,
+});
+
+
 const plane = new THREE.Mesh(new THREE.PlaneGeometry(4, 2.5), material2);
 plane.material.side = THREE.DoubleSide;
 plane.rotateY(Math.PI / 2);
 plane.position.x = 0;
+
+const plane2 = new THREE.Mesh(new THREE.PlaneGeometry(3.5, 2), material3);
+plane2.material.side = THREE.DoubleSide;
+plane2.rotateY(Math.PI / 2);
+plane2.position.z = -5;
+plane2.position.y = -1.0;
+plane2.rotateZ(-Math.PI / 6);
 
 /**
  * Models
@@ -267,6 +281,7 @@ gltfLoader.load("/models/meme/meme_stair.glb", (stair) => {
 // });
 
 scene.add(plane);
+scene.add(plane2);
 
 
 const box1 = new THREE.Mesh(
