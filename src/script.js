@@ -11,7 +11,7 @@ var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent); // 안드�
  * Style Script
  */
 
-let step = 0;
+let step = 0; 
 
 function moveCamera(x, y, z) {
   gsap.to(camera.position, {
@@ -105,8 +105,7 @@ const loadingManager = new THREE.LoadingManager(
       modal.classList.add("on");
     }, 1500);
 
-    typeWriter(conversation, "host", "user", 100);
-
+    typeWriter(conversation, "host", "user", 50);
   },
 
   // Progress
@@ -120,8 +119,11 @@ const loadingManager = new THREE.LoadingManager(
 );
 
 //typeWriter
+let typeStep = 0;
+//typeWriter 단계 - host와 user의 대화를 구분하기 위한 변수 host와 user의 대화가 끝나면 0으로 초기화
 function typeWriter(conversation, hostId, userId, speed, index = 0) {
   if (index >= conversation.length) {
+    typeStep = 0;
     return; // 모든 대화가 완료되면 함수 종료
   }
 
@@ -152,8 +154,9 @@ function typeWriter(conversation, hostId, userId, speed, index = 0) {
 
   function next(nextIndex) {
     // 다음 대화로 넘어가기 전에 필요한 초기화 작업
-    document.getElementById(hostId).innerHTML = '';
-    document.getElementById(userId).innerHTML = '';
+    document.getElementById(hostId).innerHTML = "";
+    document.getElementById(userId).innerHTML = "";
+    typeStep += 1;
     typeWriter(conversation, hostId, userId, speed, nextIndex);
   }
 
@@ -454,10 +457,11 @@ const tick = () => {
 
   // Render
   renderer.render(scene, camera);
-  // console.log(zooming);
-  console.log("position", camera.position);
-  console.log("rotation", camera.rotation);
-  console.log("step", step);
+  // console.log("position", camera.position);
+  // console.log("rotation", camera.rotation);
+  // console.log("step", step);
+  // console.log("typeStep", typeStep);
+
   // Call tick again on the next frame
   window.requestAnimationFrame(tick);
 };
