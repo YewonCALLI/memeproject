@@ -16,42 +16,74 @@ menuBtn.addEventListener("click", () => {
 
 let zooming = false;
 
-const camToFisrtSpace = document.querySelector("#camToFirstSpace");
-camToFisrtSpace.addEventListener("click", () => {
-  zooming = true;
-  gsap.to(camera.position, {
-    duration: 1,
-    ease: "power2.out",
-    x: 0.12193774130445909,
-    y: -0.8321227521104341,
-    z: -4.603546736047687,
-  });
+let step = 0;
 
+function movingCamera() {
+  switch (step) {
+    case 0:
+      moveCamera(200, 300, -200);
+      rotateCamera(0, 0, 0);
+      break;
+    case 1:
+      moveCamera(70, 10, -70);
+      rotateCamera(0, 0, 0);
+      hideBackBtn();
+      break;
+    case 2:
+      moveCamera(0, 10, 0);
+      rotateCamera(0, 0, 0);
+      showBackBtn();
+
+      break;
+  }
+}
+
+function moveCamera(x, y, z) {
+  gsap.to(camera.position, {
+    x,
+    y,
+    z,
+    duration: 3,
+  });
+}
+
+function rotateCamera(x, y, z) {
+  gsap.to(camera.rotation, {
+    x,
+    y,
+    z,
+    duration: 3.2,
+  });
+}
+
+function showBackBtn() {
   gsap.to(backBtn, {
     duration: 1,
     ease: "power2.out",
     opacity: 1,
     display: "block",
   });
-});
-const camToSecondSpace = document.querySelector("#camToSecondSpace");
-const camToThirdSpace = document.querySelector("#camToThirdSpace");
-const backBtn = document.querySelector(".back-btn");
-backBtn.addEventListener("click", () => {
-  zooming = false;
-  gsap.to(camera.position, {
-    duration: 1,
-    ease: "power2.out",
-    x: 70,
-    y: 10,
-    z: -70,
-  });
+}
+
+function hideBackBtn() {
   gsap.to(backBtn, {
     duration: 1,
     ease: "power2.out",
     opacity: 0,
     display: "none",
   });
+}
+
+const camToFisrtSpace = document.querySelector("#camToFirstSpace");
+camToFisrtSpace.addEventListener("click", () => {
+  step = 2;
+});
+const camToSecondSpace = document.querySelector("#camToSecondSpace");
+const camToThirdSpace = document.querySelector("#camToThirdSpace");
+
+const backBtn = document.querySelector(".back-btn");
+backBtn.addEventListener("click", () => {
+  step = 1;
 });
 
 /**
@@ -79,14 +111,7 @@ const loadingManager = new THREE.LoadingManager(
       loadingTitleElement.classList.add("fade-out");
     }, 500);
 
-    gsap.to(camera.position, {
-      duration: 1,
-      delay: 1,
-      ease: "power2.out",
-      x: 70,
-      y: 10,
-      z: -70,
-    });
+    step = 1;
 
     window.setTimeout(() => {
       menuContainer.classList.add("on");
@@ -239,7 +264,7 @@ loadModel("/models/meme/meme_david_bottom.glb");
 loadModel("/models/meme/meme_sofa.glb");
 loadModel("/models/meme/meme_secondfloor.glb");
 
-// loadModel("models/meme/meme_desk.gltf");
+!isMobile && loadModel("models/meme/meme_desk.gltf");
 
 loadModel("/models/meme/meme_stair.glb");
 let mixer = null;
@@ -356,6 +381,7 @@ const tick = () => {
   }
 
   //Update Camera
+  movingCamera();
 
   // Update controls
   zooming
@@ -366,8 +392,9 @@ const tick = () => {
   // Render
   renderer.render(scene, camera);
   // console.log(zooming);
-  // console.log(camera.position);
-
+  console.log("position", camera.position);
+  console.log("rotation", camera.rotation);
+  console.log("step", step);
   // Call tick again on the next frame
   window.requestAnimationFrame(tick);
 };
