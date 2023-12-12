@@ -38,7 +38,7 @@ const camToSecondSpace = document.querySelector("#camToSecondSpace");
 const camToThirdSpace = document.querySelector("#camToThirdSpace");
 const backBtn = document.querySelector(".back-btn");
 backBtn.addEventListener("click", () => {
-  orbitControls.dispose();
+  zooming = false;
   gsap.to(camera.position, {
     duration: 1,
     ease: "power2.out",
@@ -358,12 +358,15 @@ const tick = () => {
   //Update Camera
 
   // Update controls
+  zooming
+    ? (orbitControls.enableZoom = false)
+    : (orbitControls.enableZoom = true);
   orbitControls.update();
 
   // Render
   renderer.render(scene, camera);
-  console.log(zooming);
-  console.log(camera.position);
+  // console.log(zooming);
+  // console.log(camera.position);
 
   // Call tick again on the next frame
   window.requestAnimationFrame(tick);
