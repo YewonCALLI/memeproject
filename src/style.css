@@ -131,11 +131,6 @@ body {
   fill: #fff;
 }
 
-.logo-btn:hover {
-  transition: all 0.5s ease-in-out;
-  opacity: 0.7;
-}
-
 .explain {
   opacity: 0;
   position: fixed;
@@ -173,11 +168,6 @@ body {
   font-family: "Oliver", sans-serif;
 }
 
-.back-btn:hover {
-  opacity: 0.5;
-  transition: all 0.5s ease-in-out;
-}
-
 .menu {
   z-index: 100;
   opacity: 0;
@@ -206,13 +196,9 @@ body {
 .menu-tab {
   border-right: 2px solid #fff;
   padding-right: 10px;
+  font-size: 18px;
   font-family: "Oliver", sans-serif;
   text-decoration: none;
-}
-
-.menu-tab:hover {
-  opacity: 0.5;
-  transition: all 0.5s ease-in-out;
 }
 
 .menu-tab:last-child {
@@ -231,12 +217,14 @@ body {
   color: #fff;
   display: flex;
   flex-direction: row;
-  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
 }
 
 .submenu2.on {
   display: flex;
-  bottom: 100px;
+  bottom: 96px;
   opacity: 1;
   transition: all 0.5s;
 }
@@ -244,9 +232,46 @@ body {
 .submenu2-tab {
   background-color: rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(10px);
-  font-family: "Oliver", sans-serif;
   padding: 6px 12px;
   border-radius: 8px;
+  display: flex;
+  width: fit-content;
+  min-width: 80px;
+  justify-content: center;
+  align-items: center;
+  font-family: "SUITE", sans-serif;
+  font-size: 16px;
   font-weight: 300;
-  font-family: "Suite", sans-serif;
+}
+
+/* desktop 규격 */
+@media screen and (min-width: 1024px) {
+  .logo-btn:hover {
+    transition: all 0.5s ease-in-out;
+    opacity: 0.7;
+  }
+  .back-btn:hover {
+    opacity: 0.5;
+    transition: all 0.5s ease-in-out;
+  }
+  .menu-tab:hover {
+    opacity: 0.5;
+    transition: all 0.5s ease-in-out;
+  }
+}
+
+/* mobile 규격 */
+@media screen and (max-width: 540px) {
+  .logo-btn:active {
+    transition: all 0.5s ease-in-out;
+    opacity: 0.7;
+  }
+  .back-btn:active {
+    opacity: 0.5;
+    transition: all 0.5s ease-in-out;
+  }
+  .menu-tab:active {
+    opacity: 0.5;
+    transition: all 0.5s ease-in-out;
+  }
 }
