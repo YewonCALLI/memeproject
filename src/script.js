@@ -3,16 +3,13 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 import { gsap } from "gsap";
+import { conversation } from "./context.json";
 
 var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent); // 안드로이드 아이폰을 검사해 체크
 /**
  *
  * Style Script
  */
-const menuBtn = document.querySelector(".menu-tab");
-menuBtn.addEventListener("click", () => {
-  menuBtn.classList.add("onfocus");
-});
 
 let step = 0;
 
@@ -84,7 +81,7 @@ const loadingOverlayElement = document.querySelector(".loading-overlay");
 const loadingBarElement = document.querySelector(".loading-bar");
 const loadingTitleElement = document.querySelector(".loading-title");
 const loadingProgress = document.querySelector(".loading-progress");
-const menuContainer = document.querySelector(".menu");
+const modal = document.querySelector(".modal");
 const loadingManager = new THREE.LoadingManager(
   // Loaded
   () => {
@@ -105,8 +102,11 @@ const loadingManager = new THREE.LoadingManager(
     step = 1;
 
     window.setTimeout(() => {
-      menuContainer.classList.add("on");
+      modal.classList.add("on");
     }, 1500);
+
+    typeWriter(conversation, "host", "user", 100);
+
   },
 
   // Progress
@@ -118,6 +118,47 @@ const loadingManager = new THREE.LoadingManager(
     loadingProgress.textContent = `${Math.round(progressRatio * 100)}%`;
   }
 );
+
+//typeWriter
+function typeWriter(conversation, hostId, userId, speed, index = 0) {
+  if (index >= conversation.length) {
+    return; // 모든 대화가 완료되면 함수 종료
+  }
+
+  let hostText = conversation[index].Host;
+  let userText = conversation[index].User;
+  let hostIndex = 0;
+  let userIndex = 0;
+
+  function host() {
+    if (hostIndex < hostText.length) {
+      document.getElementById(hostId).innerHTML += hostText.charAt(hostIndex);
+      hostIndex++;
+      setTimeout(host, speed);
+    } else {
+      user(); // Host 텍스트가 모두 표시된 후 User 함수 호출
+    }
+  }
+
+  function user() {
+    if (userIndex < userText.length) {
+      document.getElementById(userId).innerHTML += userText.charAt(userIndex);
+      userIndex++;
+      setTimeout(user, speed);
+    } else {
+      setTimeout(() => next(index + 1), 1000); // User 텍스트가 모두 표시된 후 다음 대화로 넘어감
+    }
+  }
+
+  function next(nextIndex) {
+    // 다음 대화로 넘어가기 전에 필요한 초기화 작업
+    document.getElementById(hostId).innerHTML = '';
+    document.getElementById(userId).innerHTML = '';
+    typeWriter(conversation, hostId, userId, speed, nextIndex);
+  }
+
+  host();
+}
 
 const dracoLoader = new DRACOLoader();
 dracoLoader.setDecoderPath("/draco/");
