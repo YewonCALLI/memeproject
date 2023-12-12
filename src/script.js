@@ -14,29 +14,7 @@ menuBtn.addEventListener("click", () => {
   menuBtn.classList.add("onfocus");
 });
 
-let zooming = false;
-
 let step = 0;
-
-function movingCamera() {
-  switch (step) {
-    case 0:
-      moveCamera(200, 300, -200);
-      rotateCamera(0, 0, 0);
-      break;
-    case 1:
-      moveCamera(70, 10, -70);
-      rotateCamera(0, 0, 0);
-      hideBackBtn();
-      break;
-    case 2:
-      moveCamera(0, 10, 0);
-      rotateCamera(0, 0, 0);
-      showBackBtn();
-
-      break;
-  }
-}
 
 function moveCamera(x, y, z) {
   gsap.to(camera.position, {
@@ -46,13 +24,12 @@ function moveCamera(x, y, z) {
     duration: 3,
   });
 }
-
-function rotateCamera(x, y, z) {
-  gsap.to(camera.rotation, {
+function moveCamera2(x, y, z) {
+  gsap.to(camera.position, {
     x,
     y,
     z,
-    duration: 3.2,
+    duration: 10,
   });
 }
 
@@ -79,7 +56,21 @@ camToFisrtSpace.addEventListener("click", () => {
   step = 2;
 });
 const camToSecondSpace = document.querySelector("#camToSecondSpace");
+camToSecondSpace.addEventListener("click", () => {
+  step = 3;
+});
 const camToThirdSpace = document.querySelector("#camToThirdSpace");
+camToThirdSpace.addEventListener("click", () => {
+  step = 4;
+});
+const camToFourthSpace = document.querySelector("#camToFourthSpace");
+camToFourthSpace.addEventListener("click", () => {
+  step = 5;
+});
+const camToFifthSpace = document.querySelector("#camToFifthSpace");
+camToFifthSpace.addEventListener("click", () => {
+  step = 6;
+});
 
 const backBtn = document.querySelector(".back-btn");
 backBtn.addEventListener("click", () => {
@@ -248,7 +239,7 @@ loadModel("/models/meme/meme_door.glb");
 loadModel("/models/meme/meme_door2.glb");
 loadModel("/models/meme/meme_soup1.glb");
 loadModel("/models/meme/meme_soup2.glb");
-loadModel("/models/meme/meme_strawberry.gltf", updateAllMaterials);
+loadModel("/models/meme/meme_strawberry.gltf");
 loadModel("/models/meme/meme_sink.glb");
 loadModel("/models/meme/meme_bone.glb");
 const Fire = loadModel("/models/meme/meme_fire.glb");
@@ -292,6 +283,9 @@ const gridHelper = new THREE.GridHelper(size, divisions);
 gridHelper.position.set(0, 0, 0);
 // scene.add(gridHelper);
 
+const axesHelper = new THREE.AxesHelper(5);
+scene.add(axesHelper);
+
 /**
  * Lights
  */
@@ -333,22 +327,20 @@ window.addEventListener("resize", () => {
  */
 // Base camera
 const camera = new THREE.PerspectiveCamera(
-  15,
+  45,
   sizes.width / sizes.height,
   1,
   10000
 );
 camera.position.set(200, 300, -200);
-scene.add(camera);
+camera.lookAt(0, 0, 0);
+// scene.add(camera);
 
-// Orbit Controls
-const orbitControls = new OrbitControls(camera, canvas);
-// orbitControls.autoRotate = true;
-// orbitControls.autoRotateSpeed = 1;
-orbitControls.enableDamping = true;
-orbitControls.maxPolarAngle = Math.PI * 0.49;
-orbitControls.minDistance = 0.0001;
-orbitControls.maxDistance = 150;
+/**
+ * Controls
+ */
+const controls = new OrbitControls(camera, canvas);
+controls.enableDamping = true;
 
 /**
  * Renderer
@@ -365,6 +357,40 @@ renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
+function movingCamera() {
+  switch (step) {
+    case 0:
+      moveCamera(100, 150, -100);
+      camera.lookAt(0, 0, 0);
+      break;
+    case 1:
+      moveCamera(50, 10, -50);
+      camera.lookAt(0, 0, 0);
+      hideBackBtn();
+      break;
+    case 2:
+      moveCamera(-3, -1, 2);
+      camera.lookAt(-2.5, -2, -6);
+      showBackBtn();
+      break;
+    case 3:
+      moveCamera(-2, 1, -2);
+      camera.lookAt(-5, -3, -5);
+      showBackBtn();
+      break;
+    case 4:
+      moveCamera2(-2, 0, 3);
+      camera.lookAt(-5, -3, -5);
+      showBackBtn();
+      break;
+    case 5:
+      moveCamera(-4.5, -2, 3);
+      camera.lookAt(0, -2, 5);
+      showBackBtn();
+      break;
+  }
+}
+
 /**
  * Animate
  */
@@ -379,15 +405,11 @@ const tick = () => {
   if (mixer) {
     mixer.update(deltaTime * 1.5);
   }
+  //update controls
+  controls.update();
 
   //Update Camera
   movingCamera();
-
-  // Update controls
-  zooming
-    ? (orbitControls.enableZoom = false)
-    : (orbitControls.enableZoom = true);
-  orbitControls.update();
 
   // Render
   renderer.render(scene, camera);
