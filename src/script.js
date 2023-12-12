@@ -14,6 +14,46 @@ menuBtn.addEventListener("click", () => {
   menuBtn.classList.add("onfocus");
 });
 
+let zooming = false;
+
+const camToFisrtSpace = document.querySelector("#camToFirstSpace");
+camToFisrtSpace.addEventListener("click", () => {
+  zooming = true;
+  gsap.to(camera.position, {
+    duration: 1,
+    ease: "power2.out",
+    x: 0.12193774130445909,
+    y: -0.8321227521104341,
+    z: -4.603546736047687,
+  });
+
+  gsap.to(backBtn, {
+    duration: 1,
+    ease: "power2.out",
+    opacity: 1,
+    display: "block",
+  });
+});
+const camToSecondSpace = document.querySelector("#camToSecondSpace");
+const camToThirdSpace = document.querySelector("#camToThirdSpace");
+const backBtn = document.querySelector(".back-btn");
+backBtn.addEventListener("click", () => {
+  orbitControls.dispose();
+  gsap.to(camera.position, {
+    duration: 1,
+    ease: "power2.out",
+    x: 70,
+    y: 10,
+    z: -70,
+  });
+  gsap.to(backBtn, {
+    duration: 1,
+    ease: "power2.out",
+    opacity: 0,
+    display: "none",
+  });
+});
+
 /**
  * Loaders
  */
@@ -88,23 +128,6 @@ const mouse = new THREE.Vector2();
 window.addEventListener("mousemove", (event) => {
   mouse.x = (event.clientX / sizes.width) * 2 - 1;
   mouse.y = -(event.clientY / sizes.height) * 2 + 1;
-});
-
-const backBtn = document.querySelector(".back-btn");
-backBtn.addEventListener("click", () => {
-  gsap.to(camera.position, {
-    duration: 1,
-    ease: "power2.out",
-    x: 70,
-    y: 10,
-    z: -70,
-  });
-  gsap.to(backBtn, {
-    duration: 1,
-    ease: "power2.out",
-    opacity: 0,
-    display: "none",
-  });
 });
 
 /**
@@ -189,7 +212,7 @@ function loadModel(modelUrl, updateMaterialsCallback) {
     model.scene.position.set(0, -3, 0);
     model.scene.rotation.y = Math.PI * 0.5;
     scene.add(model.scene);
-
+    console.log(model);
     updateMaterialsCallback && updateMaterialsCallback(model.scene);
   });
 }
@@ -203,7 +226,7 @@ loadModel("/models/meme/meme_soup2.glb");
 loadModel("/models/meme/meme_strawberry.gltf", updateAllMaterials);
 loadModel("/models/meme/meme_sink.glb");
 loadModel("/models/meme/meme_bone.glb");
-loadModel("/models/meme/meme_fire.glb");
+const Fire = loadModel("/models/meme/meme_fire.glb");
 loadModel("/models/meme/meme_frame.glb");
 //when device is mobile, load low poly models
 if (isMobile) {
@@ -220,7 +243,8 @@ loadModel("/models/meme/meme_secondfloor.glb");
 
 loadModel("/models/meme/meme_stair.glb");
 let mixer = null;
-const cat = gltfLoader.load("/models/meme/meme_cat-no_tex.glb", (cat) => {
+
+gltfLoader.load("/models/meme/meme_cat-no_tex.glb", (cat) => {
   mixer = new THREE.AnimationMixer(cat.scene);
   const action = mixer.clipAction(cat.animations[0]);
   action.play();
@@ -298,7 +322,7 @@ const orbitControls = new OrbitControls(camera, canvas);
 // orbitControls.autoRotateSpeed = 1;
 orbitControls.enableDamping = true;
 orbitControls.maxPolarAngle = Math.PI * 0.49;
-orbitControls.minDistance = 0.001;
+orbitControls.minDistance = 0.0001;
 orbitControls.maxDistance = 150;
 
 /**
@@ -331,11 +355,15 @@ const tick = () => {
     mixer.update(deltaTime * 1.5);
   }
 
+  //Update Camera
+
   // Update controls
   orbitControls.update();
 
   // Render
   renderer.render(scene, camera);
+  console.log(zooming);
+  console.log(camera.position);
 
   // Call tick again on the next frame
   window.requestAnimationFrame(tick);
