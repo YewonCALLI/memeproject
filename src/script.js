@@ -292,7 +292,7 @@ loadModel("/models/meme/meme_door.glb");
 loadModel("/models/meme/meme_door2.glb");
 loadModel("/models/meme/meme_soup1.glb");
 loadModel("/models/meme/meme_soup2.glb");
-loadModel("/models/meme/meme_strawberry.gltf");
+!isMobile && loadModel("/models/meme/meme_strawberry.gltf");
 loadModel("/models/meme/meme_sink.glb");
 loadModel("/models/meme/meme_bone.glb");
 const Fire = loadModel("/models/meme/meme_fire.glb");
