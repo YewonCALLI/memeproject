@@ -12,6 +12,7 @@ var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent); // 안드�
  */
 
 let step = 0;
+const backBtn = document.querySelector(".back-btn");
 
 function moveCamera(x, y, z) {
   gsap.to(camera.position, {
@@ -48,32 +49,6 @@ function hideBackBtn() {
   });
 }
 
-const camToFisrtSpace = document.querySelector("#camToFirstSpace");
-camToFisrtSpace.addEventListener("click", () => {
-  step = 2;
-});
-const camToSecondSpace = document.querySelector("#camToSecondSpace");
-camToSecondSpace.addEventListener("click", () => {
-  step = 3;
-});
-const camToThirdSpace = document.querySelector("#camToThirdSpace");
-camToThirdSpace.addEventListener("click", () => {
-  step = 4;
-});
-const camToFourthSpace = document.querySelector("#camToFourthSpace");
-camToFourthSpace.addEventListener("click", () => {
-  step = 5;
-});
-const camToFifthSpace = document.querySelector("#camToFifthSpace");
-camToFifthSpace.addEventListener("click", () => {
-  step = 6;
-});
-
-const backBtn = document.querySelector(".back-btn");
-backBtn.addEventListener("click", () => {
-  step = 1;
-});
-
 /**
  * Loaders
  */
@@ -89,7 +64,7 @@ const loadingManager = new THREE.LoadingManager(
     window.setTimeout(() => {
       gsap.to(loadingOverlayElement, {
         opacity: 0,
-        duration: 1,
+        duration: 0.5,
         onComplete: () => {
           loadingOverlayElement.style.display = "none";
         },
@@ -97,7 +72,7 @@ const loadingManager = new THREE.LoadingManager(
       loadingBarElement.classList.add("ended");
       loadingBarElement.style.transform = "";
       loadingTitleElement.classList.add("fade-out");
-    }, 500);
+    }, 100);
 
     step = 1;
 
@@ -292,10 +267,10 @@ loadModel("/models/meme/meme_door.glb");
 loadModel("/models/meme/meme_door2.glb");
 loadModel("/models/meme/meme_soup1.glb");
 loadModel("/models/meme/meme_soup2.glb");
-!isMobile && loadModel("/models/meme/meme_strawberry.gltf");
+loadModel("/models/meme/meme_strawberry.gltf");
 loadModel("/models/meme/meme_sink.glb");
 loadModel("/models/meme/meme_bone.glb");
-const Fire = loadModel("/models/meme/meme_fire.glb");
+loadModel("/models/meme/meme_fire.glb");
 loadModel("/models/meme/meme_frame.glb");
 //when device is mobile, load low poly models
 if (isMobile) {
@@ -308,23 +283,24 @@ loadModel("/models/meme/meme_david_bottom.glb");
 loadModel("/models/meme/meme_sofa.glb");
 loadModel("/models/meme/meme_secondfloor.glb");
 
-!isMobile && loadModel("models/meme/meme_desk.gltf");
+loadModel("models/meme/meme_desk.gltf");
 
 loadModel("/models/meme/meme_stair.glb");
 let mixer = null;
 
-gltfLoader.load("/models/meme/meme_cat-no_tex.glb", (cat) => {
-  mixer = new THREE.AnimationMixer(cat.scene);
-  const action = mixer.clipAction(cat.animations[0]);
-  action.play();
-  cat.scene.scale.set(1, 1, 1);
-  cat.scene.position.set(0, -3, 0);
-  cat.scene.rotation.y = Math.PI * 0.5;
-  cat.receiveShadow = true;
-  cat.castShadow = true;
-  scene.add(cat.scene);
-  updateCatMaterials(cat.scene);
-});
+!isMobile &&
+  gltfLoader.load("/models/meme/meme_cat-no_tex.glb", (cat) => {
+    mixer = new THREE.AnimationMixer(cat.scene);
+    const action = mixer.clipAction(cat.animations[0]);
+    action.play();
+    cat.scene.scale.set(1, 1, 1);
+    cat.scene.position.set(0, -3, 0);
+    cat.scene.rotation.y = Math.PI * 0.5;
+    cat.receiveShadow = true;
+    cat.castShadow = true;
+    scene.add(cat.scene);
+    updateCatMaterials(cat.scene);
+  });
 
 /**
  * Helpers

@@ -141,7 +141,7 @@ body {
   padding: 8px 10px;
   border-radius: 8px;
   width: fit-content;
-  font-family: 'Oliver', sans-serif;
+  font-family: "Oliver", sans-serif;
   color: #fff;
   font-weight: 200;
   font-size: 24px;
@@ -152,7 +152,7 @@ body {
   display: none;
   opacity: 0;
   position: absolute;
-  top: 20px;
+  top: 40px;
   left: 20px;
   width: fit-content;
   height: fit-content;
@@ -163,7 +163,7 @@ body {
   z-index: 100;
   border: none;
   background: none;
-  color: #000;
+  color: #fff;
   font-size: large;
   font-family: "Oliver", sans-serif;
 }
@@ -204,7 +204,7 @@ body {
 }
 
 .bottomContainer {
-  font-family: "Oliver", sans-serif;
+  font-family: "SUIT", sans-serif;
   padding: 20px 10px;
 }
 
