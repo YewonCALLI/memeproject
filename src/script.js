@@ -122,8 +122,14 @@ const loadingManager = new THREE.LoadingManager(
 let typeStep = 0;
 //typeWriter 단계 - host와 user의 대화를 구분하기 위한 변수 host와 user의 대화가 끝나면 0으로 초기화
 function typeWriter(conversation, hostId, userId, speed, index = 0) {
-  if (typeStep > 8) {
+  if (typeStep == 1) {
     step = 2;
+  } else if (typeStep == 6) {
+    step = 3;
+  } else if (typeStep == 7) {
+    step = 4;
+  } else if (typeStep == 8) {
+    step = 5;
   }
 
   if (index >= conversation.length) {
