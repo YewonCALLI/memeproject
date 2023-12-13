@@ -11,7 +11,7 @@ var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent); // 안드�
  * Style Script
  */
 
-let step = 0; 
+let step = 0;
 
 function moveCamera(x, y, z) {
   gsap.to(camera.position, {
@@ -122,6 +122,10 @@ const loadingManager = new THREE.LoadingManager(
 let typeStep = 0;
 //typeWriter 단계 - host와 user의 대화를 구분하기 위한 변수 host와 user의 대화가 끝나면 0으로 초기화
 function typeWriter(conversation, hostId, userId, speed, index = 0) {
+  if (typeStep > 8) {
+    step = 2;
+  }
+
   if (index >= conversation.length) {
     typeStep = 0;
     return; // 모든 대화가 완료되면 함수 종료
@@ -272,7 +276,6 @@ function loadModel(modelUrl, updateMaterialsCallback) {
     model.scene.position.set(0, -3, 0);
     model.scene.rotation.y = Math.PI * 0.5;
     scene.add(model.scene);
-    console.log(model);
     updateMaterialsCallback && updateMaterialsCallback(model.scene);
   });
 }
@@ -327,8 +330,8 @@ const gridHelper = new THREE.GridHelper(size, divisions);
 gridHelper.position.set(0, 0, 0);
 // scene.add(gridHelper);
 
-const axesHelper = new THREE.AxesHelper(5);
-scene.add(axesHelper);
+const Helper = new THREE.AxesHelper(5);
+// scene.add(axesHelper);
 
 /**
  * Lights
@@ -459,8 +462,8 @@ const tick = () => {
   renderer.render(scene, camera);
   // console.log("position", camera.position);
   // console.log("rotation", camera.rotation);
-  // console.log("step", step);
-  // console.log("typeStep", typeStep);
+  console.log("step", step);
+  console.log("typeStep", typeStep);
 
   // Call tick again on the next frame
   window.requestAnimationFrame(tick);
