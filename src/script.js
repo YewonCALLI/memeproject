@@ -25,7 +25,7 @@ function moveCamera(x, y, z) {
     x,
     y,
     z,
-    duration: 3,
+    duration: 5,
   });
 }
 function moveCamera2(x, y, z) {
@@ -36,7 +36,6 @@ function moveCamera2(x, y, z) {
     duration: 10,
   });
 }
-
 function showBackBtn() {
   gsap.to(backBtn, {
     duration: 1,
@@ -45,7 +44,6 @@ function showBackBtn() {
     display: "block",
   });
 }
-
 function hideBackBtn() {
   gsap.to(backBtn, {
     duration: 1,
@@ -54,6 +52,39 @@ function hideBackBtn() {
     display: "none",
   });
 }
+
+const camToFisrtSpace = document.querySelector("#camToFirstSpace");
+camToFisrtSpace.addEventListener("click", () => {
+  step = 2;
+});
+const camToSecondSpace = document.querySelector("#camToSecondSpace");
+camToSecondSpace.addEventListener("click", () => {
+  step = 3;
+});
+const camToThirdSpace = document.querySelector("#camToThirdSpace");
+camToThirdSpace.addEventListener("click", () => {
+  step = 4;
+});
+const camToFourthSpace = document.querySelector("#camToFourthSpace");
+camToFourthSpace.addEventListener("click", () => {
+  step = 5;
+});
+const camToFifthSpace = document.querySelector("#camToFifthSpace");
+camToFifthSpace.addEventListener("click", () => {
+  step = 6;
+});
+const camToSixthSpace = document.querySelector("#camToSixthSpace");
+camToSixthSpace.addEventListener("click", () => {
+  step = 7;
+});
+const camToSeventhSpace = document.querySelector("#camToSeventhSpace");
+camToSeventhSpace.addEventListener("click", () => {
+  step = 8;
+});
+const backBtn = document.querySelector(".back-btn");
+backBtn.addEventListener("click", () => {
+  step = 1;
+});
 
 /**
  * Loaders
@@ -86,7 +117,7 @@ const loadingManager = new THREE.LoadingManager(
       modal.classList.add("on");
     }, 1500);
 
-    typeWriter(conversation, "host", "user", 50);
+    // typeWriter(conversation, "host", "user", 100);
   },
 
   // Progress
@@ -101,6 +132,7 @@ const loadingManager = new THREE.LoadingManager(
 
 //typeWriter
 let typeStep = 0;
+
 //typeWriter 단계 - host와 user의 대화를 구분하기 위한 변수 host와 user의 대화가 끝나면 0으로 초기화
 function typeWriter(conversation, hostId, userId, speed, index = 0) {
   if (typeStep == 1) {
@@ -258,6 +290,30 @@ grafti02.position.y = -1.0;
 grafti02.rotateZ(-Math.PI / 6);
 scene.add(grafti02);
 
+const grafti03 = createGraftiPlane(3.5, 2, "/meme/bubble.png");
+grafti03.position.x = -1.5;
+grafti03.position.z = 6;
+grafti03.position.y = 0.2;
+grafti03.scale.set(0.2, 0.2);
+grafti03.rotateY(-Math.PI-Math.PI/3);
+scene.add(grafti03);
+
+const grafti04 = createGraftiPlane(1.5, 1.5, "/meme/heart.png");
+grafti04.position.x = -1.2;
+grafti04.position.z = 5.5;
+grafti04.position.y = 0;
+grafti04.rotateY(-Math.PI);
+grafti04.scale.set(0.15,0.15);
+scene.add(grafti04);
+
+const grafti05 = createGraftiPlane(1.5, 1.5, "/meme/light.png");
+grafti05.position.x = -1.2;
+grafti05.position.z = 6.0;
+grafti05.position.y = 0;
+grafti05.scale.set(0.1, 0.1);
+grafti05.rotateY(-Math.PI);
+scene.add(grafti05);
+
 /**
  * GLTF Models
  */
@@ -289,6 +345,7 @@ if (isMobile) {
   loadModel("/models/meme/meme_david_top.glb");
 }
 loadModel("/models/meme/meme_david_bottom.glb");
+loadModel("/models/meme/meme_hermes.glb");
 
 loadModel("/models/meme/meme_sofa.glb");
 loadModel("/models/meme/meme_secondfloor.glb");
@@ -322,7 +379,7 @@ const gridHelper = new THREE.GridHelper(size, divisions);
 gridHelper.position.set(0, 0, 0);
 // scene.add(gridHelper);
 
-const Helper = new THREE.AxesHelper(5);
+const axesHelper = new THREE.AxesHelper(5);
 // scene.add(axesHelper);
 
 /**
@@ -371,7 +428,7 @@ const camera = new THREE.PerspectiveCamera(
   1,
   10000
 );
-camera.position.set(200, 300, -200);
+camera.position.set(100, 150, -100);
 camera.lookAt(0, 0, 0);
 // scene.add(camera);
 
@@ -403,7 +460,7 @@ function movingCamera() {
       camera.lookAt(0, 0, 0);
       break;
     case 1:
-      moveCamera(50, 10, -50);
+      moveCamera(25, 5, -25);
       camera.lookAt(0, 0, 0);
       hideBackBtn();
       break;
@@ -418,13 +475,28 @@ function movingCamera() {
       showBackBtn();
       break;
     case 4:
-      moveCamera2(-2, 0, 3);
-      camera.lookAt(-5, -3, -5);
+      moveCamera2(-2, 0, 2);
+      camera.lookAt(-7, -3, -5);
       showBackBtn();
       break;
     case 5:
       moveCamera(-4.5, -2, 3);
       camera.lookAt(0, -2, 5);
+      showBackBtn();
+      break;
+    case 6:
+      moveCamera(-4.5, -2, 6);
+      camera.lookAt(0, -2, 5);
+      showBackBtn();
+      break;
+    case 7:
+      moveCamera(-4, -0.25, 5);
+      camera.lookAt(1, -0.25, 5);
+      showBackBtn();
+      break;
+    case 8:
+      moveCamera(-1, -2, 0);
+      camera.lookAt(-5, -4, 0);
       showBackBtn();
       break;
   }

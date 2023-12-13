@@ -209,8 +209,8 @@ body {
 }
 
 .submenu2 {
-  display: flex;
-  top: 80px;
+  display: absolute;
+  bottom: 40px;
   opacity: 1;
   position: fixed;
   left: 50%;
