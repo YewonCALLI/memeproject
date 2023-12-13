@@ -12,7 +12,13 @@ var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent); // 안드�
  */
 
 let step = 0;
+let prevStep = 0;
+const backMove = false;
 const backBtn = document.querySelector(".back-btn");
+backBtn.addEventListener("click", () => {
+  step = 1;
+  !backMove ? (backMove = true) : (backMove = false);
+});
 
 function moveCamera(x, y, z) {
   gsap.to(camera.position, {
@@ -99,12 +105,16 @@ let typeStep = 0;
 function typeWriter(conversation, hostId, userId, speed, index = 0) {
   if (typeStep == 1) {
     step = 2;
+    prevStep = 2;
   } else if (typeStep == 6) {
     step = 3;
+    prevStep = 3;
   } else if (typeStep == 7) {
     step = 4;
+    prevStep = 4;
   } else if (typeStep == 8) {
     step = 5;
+    prevStep = 5;
   }
 
   if (index >= conversation.length) {
@@ -446,6 +456,8 @@ const tick = () => {
   // console.log("rotation", camera.rotation);
   console.log("step", step);
   console.log("typeStep", typeStep);
+  console.log("prevStep", prevStep);
+  console.log("backMove", backMove);
 
   // Call tick again on the next frame
   window.requestAnimationFrame(tick);
