@@ -40,7 +40,7 @@ const loadingManager = new THREE.LoadingManager(
       delay: 1,
       ease: "power2.out",
       x: 15,
-      y: 5,
+      y: 0,
       z: -15,
     });
     window.setTimeout(() => {
@@ -307,7 +307,7 @@ const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true;
 controls.maxPolarAngle = Math.PI * 0.495;
 controls.autoRotate = true;
-controls.autoRotateSpeed = 1;
+controls.autoRotateSpeed = 1.5;
 
 /**
  * Renderer
