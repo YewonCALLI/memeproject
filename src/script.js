@@ -84,7 +84,7 @@ const loadingManager = new THREE.LoadingManager(
       modal.classList.add("on");
     }, 1500);
 
-    typeWriter(conversation, "host", "user", 100);
+    typeWriter(conversation, "host", "user", "user2", 100);
   },
 
   // Progress
@@ -101,7 +101,7 @@ const loadingManager = new THREE.LoadingManager(
 let typeStep = 0;
 
 //typeWriter 단계 - host와 user의 대화를 구분하기 위한 변수 host와 user의 대화가 끝나면 0으로 초기화
-function typeWriter(conversation, hostId, userId, speed, index = 0) {
+function typeWriter(conversation, hostId, userId, userId2, speed, index = 0) {
   if (typeStep == 1) {
     step = 2;
     prevStep = 2;
@@ -123,6 +123,7 @@ function typeWriter(conversation, hostId, userId, speed, index = 0) {
 
   let hostText = conversation[index].Host;
   let userText = conversation[index].User;
+  let userText2 = conversation[index].User2;
   let hostIndex = 0;
   let userIndex = 0;
 
@@ -137,23 +138,33 @@ function typeWriter(conversation, hostId, userId, speed, index = 0) {
   }
 
   function user() {
-    if (userIndex < userText.length) {
-      document.getElementById(userId).innerHTML += userText.charAt(userIndex);
-      userIndex++;
-      setTimeout(user, speed);
-    } else {
-      setTimeout(() => next(index + 1), 1000); // User 텍스트가 모두 표시된 후 다음 대화로 넘어감
-    }
+    // User 텍스트 표시 함수 타이핑 없이 바로 표시
+    document.getElementById(userId).innerHTML = userText;
+    document.getElementById(userId2).innerHTML = userText2;
+    //User 텍스트를 클릭해야만 다음 대화로 넘어가도록 이벤트 리스너 추가
+    document.getElementById(userId).addEventListener("click", () => {
+      next(index + 1);
+      document.getElementById(userId).removeEventListener("click", () => {
+        next(index + 1);
+      });
+    });
+    document.getElementById(userId2).addEventListener("click", () => {
+      next(index + 1);
+      document.getElementById(userId2).removeEventListener("click", () => {
+        next(index + 1);
+      });
+    });
   }
 
   function next(nextIndex) {
     // 다음 대화로 넘어가기 전에 필요한 초기화 작업
     document.getElementById(hostId).innerHTML = "";
     document.getElementById(userId).innerHTML = "";
+    // document.getElementById(userId2).innerHTML = "";
     typeStep += 1;
-    typeWriter(conversation, hostId, userId, speed, nextIndex);
+    typeWriter(conversation, hostId, userId, userId2, speed, nextIndex);
   }
-
+  console.log(hostIndex, userIndex);
   host();
 }
 
