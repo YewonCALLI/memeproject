@@ -53,39 +53,6 @@ function hideBackBtn() {
   });
 }
 
-const camToFisrtSpace = document.querySelector("#camToFirstSpace");
-camToFisrtSpace.addEventListener("click", () => {
-  step = 2;
-});
-const camToSecondSpace = document.querySelector("#camToSecondSpace");
-camToSecondSpace.addEventListener("click", () => {
-  step = 3;
-});
-const camToThirdSpace = document.querySelector("#camToThirdSpace");
-camToThirdSpace.addEventListener("click", () => {
-  step = 4;
-});
-const camToFourthSpace = document.querySelector("#camToFourthSpace");
-camToFourthSpace.addEventListener("click", () => {
-  step = 5;
-});
-const camToFifthSpace = document.querySelector("#camToFifthSpace");
-camToFifthSpace.addEventListener("click", () => {
-  step = 6;
-});
-const camToSixthSpace = document.querySelector("#camToSixthSpace");
-camToSixthSpace.addEventListener("click", () => {
-  step = 7;
-});
-const camToSeventhSpace = document.querySelector("#camToSeventhSpace");
-camToSeventhSpace.addEventListener("click", () => {
-  step = 8;
-});
-const backBtn = document.querySelector(".back-btn");
-backBtn.addEventListener("click", () => {
-  step = 1;
-});
-
 /**
  * Loaders
  */
@@ -117,7 +84,7 @@ const loadingManager = new THREE.LoadingManager(
       modal.classList.add("on");
     }, 1500);
 
-    // typeWriter(conversation, "host", "user", 100);
+    typeWriter(conversation, "host", "user", 100);
   },
 
   // Progress
@@ -295,7 +262,7 @@ grafti03.position.x = -1.5;
 grafti03.position.z = 6;
 grafti03.position.y = 0.2;
 grafti03.scale.set(0.2, 0.2);
-grafti03.rotateY(-Math.PI-Math.PI/3);
+grafti03.rotateY(-Math.PI - Math.PI / 3);
 scene.add(grafti03);
 
 const grafti04 = createGraftiPlane(1.5, 1.5, "/meme/heart.png");
@@ -303,7 +270,7 @@ grafti04.position.x = -1.2;
 grafti04.position.z = 5.5;
 grafti04.position.y = 0;
 grafti04.rotateY(-Math.PI);
-grafti04.scale.set(0.15,0.15);
+grafti04.scale.set(0.15, 0.15);
 scene.add(grafti04);
 
 const grafti05 = createGraftiPlane(1.5, 1.5, "/meme/light.png");
