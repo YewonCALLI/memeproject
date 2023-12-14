@@ -138,7 +138,6 @@ function createGraftiPlane(width, height, imgSrc) {
       map: new THREE.TextureLoader().load(imgSrc),
       transparent: true,
       alphaTest: 0.5,
-      DoubleSide: true,
     })
   );
   plane.rotateY(Math.PI / 2);
@@ -218,7 +217,7 @@ loadModel("/models/meme/meme_david_bottom.glb");
 loadModel("/models/meme/meme_sofa.glb");
 loadModel("/models/meme/meme_secondfloor.glb");
 
-loadModel("models/meme/meme_desk.gltf");
+loadModel("models/meme/meme_desk.glb");
 
 loadModel("/models/meme/meme_stair.glb");
 let mixer = null;
