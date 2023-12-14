@@ -213,7 +213,7 @@ if (isMobile) {
   loadModel("/models/meme/meme_david_top.glb");
 }
 loadModel("/models/meme/meme_david_bottom.glb");
-loadModel("/models/meme/meme_hermes.glb");
+!isMobile && loadModel("/models/meme/meme_hermes.glb");
 
 loadModel("/models/meme/meme_sofa.glb");
 loadModel("/models/meme/meme_secondfloor.glb");
