@@ -3,16 +3,22 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 import { gsap } from "gsap";
-import { conversation } from "./context.json";
+import {
+  conversation,
+  firstfloor,
+  secondfloor,
+  thirdfloor,
+} from "./conversation.json";
 
 var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent); // 안드로이드 아이폰을 검사해 체크
 /**
  *
  * Style Script
  */
-
 let step = 0;
 let prevStep = 0;
+let scriptIsEnd = false;
+let scriptStep = 0;
 const backMove = false;
 const backBtn = document.querySelector(".back-btn");
 backBtn.addEventListener("click", () => {
@@ -85,6 +91,27 @@ const loadingManager = new THREE.LoadingManager(
     }, 1500);
 
     typeWriter(conversation, "host", "user", "user2", 100);
+
+    document.getElementById("fisrtBtn").addEventListener("click", () => {
+      scriptStep = 1;
+      document.getElementById("textbox").style.display = "flex";
+      document.getElementById("buttonbox").style.display = "none";
+      typeWriter(firstfloor, "host", "user", "user2", 100);
+    });
+
+    document.getElementById("secondBtn").addEventListener("click", () => {
+      scriptStep = 2;
+      document.getElementById("textbox").style.display = "flex";
+      document.getElementById("buttonbox").style.display = "none";
+      typeWriter(secondfloor, "host", "user", "user2", 100);
+    });
+
+    document.getElementById("thirdBtn").addEventListener("click", () => {
+      scriptStep = 3;
+      document.getElementById("textbox").style.display = "flex";
+      document.getElementById("buttonbox").style.display = "none";
+      typeWriter(thirdfloor, "host", "user", "user2", 100);
+    });
   },
 
   // Progress
@@ -102,22 +129,26 @@ let typeStep = 0;
 
 //typeWriter 단계 - host와 user의 대화를 구분하기 위한 변수 host와 user의 대화가 끝나면 0으로 초기화
 function typeWriter(conversation, hostId, userId, userId2, speed, index = 0) {
-  if (typeStep == 1) {
+  if (typeStep == 2) {
     step = 2;
     prevStep = 2;
-  } else if (typeStep == 6) {
+  } else if (typeStep == 10) {
     step = 3;
     prevStep = 3;
-  } else if (typeStep == 7) {
+  } else if (typeStep == 12) {
     step = 4;
     prevStep = 4;
-  } else if (typeStep == 8) {
+  } else if (typeStep == 17) {
     step = 5;
     prevStep = 5;
   }
 
   if (index >= conversation.length) {
     typeStep = 0;
+    scriptIsEnd = true;
+    //typeWriter가 종료되면 #textbox와 #buttonbox를 교체
+    document.getElementById("textbox").style.display = "none";
+    document.getElementById("buttonbox").style.display = "flex";
     return; // 모든 대화가 완료되면 함수 종료
   }
 
@@ -511,8 +542,7 @@ const tick = () => {
   console.log("step", step);
   console.log("typeStep", typeStep);
   console.log("prevStep", prevStep);
-  console.log("backMove", backMove);
-
+  console.log("scriptStep", scriptStep);
   // Call tick again on the next frame
   window.requestAnimationFrame(tick);
 };
