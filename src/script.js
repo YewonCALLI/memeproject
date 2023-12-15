@@ -133,38 +133,43 @@ function typeWriter(conversation, hostId, userId, userId2, speed, index = 0) {
       hostIndex++;
       setTimeout(host, speed);
     } else {
-      user(); // Host 텍스트가 모두 표시된 후 User 함수 호출
+      // Host 텍스트가 모두 표시된 후 User 함수 호출
+      if (userText.length > 0 || userText2.length > 0) {
+        user();
+      } else {
+        // User 텍스트가 없는 경우 약간의 지연 후에 다음 대화로 넘어감
+        setTimeout(handleNext, 500);
+      }
     }
   }
 
+  function handleNext() {
+    next(index + 1);
+  }
+
   function user() {
-    // User 텍스트 표시 함수 타이핑 없이 바로 표시
     document.getElementById(userId).innerHTML = userText;
     document.getElementById(userId2).innerHTML = userText2;
-    //User 텍스트를 클릭해야만 다음 대화로 넘어가도록 이벤트 리스너 추가
-    document.getElementById(userId).addEventListener("click", () => {
-      next(index + 1);
-      document.getElementById(userId).removeEventListener("click", () => {
-        next(index + 1);
-      });
-    });
-    document.getElementById(userId2).addEventListener("click", () => {
-      next(index + 1);
-      document.getElementById(userId2).removeEventListener("click", () => {
-        next(index + 1);
-      });
-    });
+
+    // 기존 이벤트 리스너 제거 및 새 이벤트 리스너 추가
+    if (userText.length > 0 || userText2.length > 0) {
+      document.getElementById(userId).removeEventListener("click", handleNext);
+      document.getElementById(userId2).removeEventListener("click", handleNext);
+      document.getElementById(userId).addEventListener("click", handleNext);
+      document.getElementById(userId2).addEventListener("click", handleNext);
+    }
   }
 
   function next(nextIndex) {
     // 다음 대화로 넘어가기 전에 필요한 초기화 작업
+    document.getElementById(userId).removeEventListener("click", handleNext);
+    document.getElementById(userId2).removeEventListener("click", handleNext);
     document.getElementById(hostId).innerHTML = "";
     document.getElementById(userId).innerHTML = "";
-    // document.getElementById(userId2).innerHTML = "";
+    document.getElementById(userId2).innerHTML = "";
     typeStep += 1;
     typeWriter(conversation, hostId, userId, userId2, speed, nextIndex);
   }
-  console.log(hostIndex, userIndex);
   host();
 }
 
