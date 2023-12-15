@@ -538,9 +538,9 @@ const tick = () => {
   // console.log("position", camera.position);
   // console.log("rotation", camera.rotation);
   scriptIsEnd && (
-    document.getElementById("textbox").style.display = "none";
-    document.getElementById("buttonbox").style.display = "flex";
-    )
+    document.getElementById("textbox").style.display = "none",
+    document.getElementById("buttonbox").style.display = "flex"
+  )
 
   // Call tick again on the next frame
   window.requestAnimationFrame(tick);
