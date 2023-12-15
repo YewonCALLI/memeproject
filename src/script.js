@@ -539,10 +539,8 @@ const tick = () => {
   renderer.render(scene, camera);
   // console.log("position", camera.position);
   // console.log("rotation", camera.rotation);
-  console.log("step", step);
-  console.log("typeStep", typeStep);
-  console.log("prevStep", prevStep);
-  console.log("scriptStep", scriptStep);
+
+
   // Call tick again on the next frame
   window.requestAnimationFrame(tick);
 };
