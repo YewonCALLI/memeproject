@@ -147,8 +147,6 @@ function typeWriter(conversation, hostId, userId, userId2, speed, index = 0) {
     typeStep = 0;
     scriptIsEnd = true;
     //typeWriter가 종료되면 #textbox와 #buttonbox를 교체
-    document.getElementById("textbox").style.display = "none";
-    document.getElementById("buttonbox").style.display = "flex";
     return; // 모든 대화가 완료되면 함수 종료
   }
 
@@ -539,7 +537,10 @@ const tick = () => {
   renderer.render(scene, camera);
   // console.log("position", camera.position);
   // console.log("rotation", camera.rotation);
-
+  scriptIsEnd && (
+    document.getElementById("textbox").style.display = "none";
+    document.getElementById("buttonbox").style.display = "flex";
+    )
 
   // Call tick again on the next frame
   window.requestAnimationFrame(tick);
