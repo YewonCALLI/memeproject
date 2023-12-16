@@ -26,6 +26,9 @@ backBtn.addEventListener("click", () => {
   !backMove ? (backMove = true) : (backMove = false);
 });
 const floorBtn = document.querySelector(".floorBox");
+const firstBtn = document.querySelector("#firstBtn");
+const secondBtn = document.querySelector("#secondBtn");
+const thirdBtn = document.querySelector("#thirdBtn");
 
 function moveCamera(x, y, z) {
   gsap.to(camera.position, {
@@ -109,18 +112,18 @@ const loadingManager = new THREE.LoadingManager(
       !scriptIsEnd && modal.classList.add("on");
     }, 1500);
 
-    typeWriter(conversation, "host", "user", "user2", 100);
+    typeWriter(conversation, "host", "user", "user2", 10);
 
-    document.getElementById("fisrtBtn").addEventListener("click", () => {
-      scriptIsEnd = false;
+    firstBtn.addEventListener("click", () => {
+      turnOnTypeWriter(typeWriter1(firstfloor, "host", "user", "user2", 10));
     });
 
-    document.getElementById("secondBtn").addEventListener("click", () => {
-      scriptIsEnd = false;
+    secondBtn.addEventListener("click", () => {
+      turnOnTypeWriter(typeWriter2(secondfloor, "host", "user", "user2", 10));
     });
 
-    document.getElementById("thirdBtn").addEventListener("click", () => {
-      scriptIsEnd = false;
+    thirdBtn.addEventListener("click", () => {
+      turnOnTypeWriter(typeWriter3(thirdfloor, "host", "user", "user2", 10));
     });
   },
 
@@ -134,27 +137,33 @@ const loadingManager = new THREE.LoadingManager(
   }
 );
 
-//typeWriter
-let typeStep = 0;
+function turnOnTypeWriter(typeWriter) {
+  console.log("turnOnTypeWriter");
+  scriptIsEnd = false;
+  modal.classList.add("on");
+  typeWriter && typeWriter();
+}
+
+let typeStep0 = 0;
 
 //typeWriter 단계 - host와 user의 대화를 구분하기 위한 변수 host와 user의 대화가 끝나면 0으로 초기화
 function typeWriter(conversation, hostId, userId, userId2, speed, index = 0) {
-  if (typeStep == 2) {
+  if (typeStep0 == 2) {
     step = 2;
     prevStep = 2;
-  } else if (typeStep == 10) {
+  } else if (typeStep0 == 10) {
     step = 3;
     prevStep = 3;
-  } else if (typeStep == 12) {
+  } else if (typeStep0 == 12) {
     step = 4;
     prevStep = 4;
-  } else if (typeStep == 17) {
+  } else if (typeStep0 == 17) {
     step = 5;
     prevStep = 5;
   }
 
   if (index >= conversation.length) {
-    typeStep = 0;
+    typeStep0 = 0;
     scriptIsEnd = true;
     return; // 모든 대화가 완료되면 함수 종료
   }
@@ -205,8 +214,211 @@ function typeWriter(conversation, hostId, userId, userId2, speed, index = 0) {
     document.getElementById(hostId).innerHTML = "";
     document.getElementById(userId).innerHTML = "";
     document.getElementById(userId2).innerHTML = "";
-    typeStep += 1;
+    typeStep0 += 1;
     typeWriter(conversation, hostId, userId, userId2, speed, nextIndex);
+  }
+  host();
+}
+
+let typeStep1 = 0;
+
+function typeWriter1(conversation, hostId, userId, userId2, speed, index = 0) {
+  if (typeStep1 == 2) {
+    step = 2;
+    prevStep = 2;
+  } else if (typeStep1 == 10) {
+    step = 3;
+    prevStep = 3;
+  }
+
+  if (index >= conversation.length) {
+    typeStep1 = 0;
+    scriptIsEnd = true;
+    return; // 모든 대화가 완료되면 함수 종료
+  }
+
+  let hostText = conversation[index].Host;
+  let userText = conversation[index].User;
+  let userText2 = conversation[index].User2;
+  let hostIndex = 0;
+
+  function host() {
+    if (hostIndex < hostText.length) {
+      document.getElementById(hostId).innerHTML += hostText.charAt(hostIndex);
+      hostIndex++;
+      setTimeout(host, speed);
+    } else {
+      // Host 텍스트가 모두 표시된 후 User 함수 호출
+      if (userText.length > 0 || userText2.length > 0) {
+        user();
+      } else {
+        // User 텍스트가 없는 경우 약간의 지연 후에 다음 대화로 넘어감
+        setTimeout(handleNext, 500);
+      }
+    }
+  }
+
+  function handleNext() {
+    next(index + 1);
+  }
+
+  function user() {
+    document.getElementById(userId).innerHTML = userText;
+    document.getElementById(userId2).innerHTML = userText2;
+
+    // 기존 이벤트 리스너 제거 및 새 이벤트 리스너 추가
+    if (userText.length > 0 || userText2.length > 0) {
+      document.getElementById(userId).removeEventListener("click", handleNext);
+      document.getElementById(userId2).removeEventListener("click", handleNext);
+      document.getElementById(userId).addEventListener("click", handleNext);
+      document.getElementById(userId2).addEventListener("click", handleNext);
+    }
+  }
+
+  function next(nextIndex) {
+    // 다음 대화로 넘어가기 전에 필요한 초기화 작업
+    document.getElementById(userId).removeEventListener("click", handleNext);
+    document.getElementById(userId2).removeEventListener("click", handleNext);
+    document.getElementById(hostId).innerHTML = "";
+    document.getElementById(userId).innerHTML = "";
+    document.getElementById(userId2).innerHTML = "";
+    typeStep1 += 1;
+    typeWriter1(conversation, hostId, userId, userId2, speed, nextIndex);
+  }
+  host();
+}
+
+let typeStep2 = 0;
+
+function typeWriter2(conversation, hostId, userId, userId2, speed, index = 0) {
+  if (typeStep2 == 2) {
+    step = 2;
+    prevStep = 2;
+  } else if (typeStep2 == 10) {
+    step = 3;
+    prevStep = 3;
+  }
+
+  if (index >= conversation.length) {
+    typeStep2 = 0;
+    scriptIsEnd = true;
+    return; // 모든 대화가 완료되면 함수 종료
+  }
+
+  let hostText = conversation[index].Host;
+  let userText = conversation[index].User;
+  let userText2 = conversation[index].User2;
+  let hostIndex = 0;
+
+  function host() {
+    if (hostIndex < hostText.length) {
+      document.getElementById(hostId).innerHTML += hostText.charAt(hostIndex);
+      hostIndex++;
+      setTimeout(host, speed);
+    } else {
+      // Host 텍스트가 모두 표시된 후 User 함수 호출
+      if (userText.length > 0 || userText2.length > 0) {
+        user();
+      } else {
+        // User 텍스트가 없는 경우 약간의 지연 후에 다음 대화로 넘어감
+        setTimeout(handleNext, 500);
+      }
+    }
+  }
+
+  function handleNext() {
+    next(index + 1);
+  }
+
+  function user() {
+    document.getElementById(userId).innerHTML = userText;
+    document.getElementById(userId2).innerHTML = userText2;
+
+    // 기존 이벤트 리스너 제거 및 새 이벤트 리스너 추가
+    if (userText.length > 0 || userText2.length > 0) {
+      document.getElementById(userId).removeEventListener("click", handleNext);
+      document.getElementById(userId2).removeEventListener("click", handleNext);
+      document.getElementById(userId).addEventListener("click", handleNext);
+      document.getElementById(userId2).addEventListener("click", handleNext);
+    }
+  }
+
+  function next(nextIndex) {
+    // 다음 대화로 넘어가기 전에 필요한 초기화 작업
+    document.getElementById(userId).removeEventListener("click", handleNext);
+    document.getElementById(userId2).removeEventListener("click", handleNext);
+    document.getElementById(hostId).innerHTML = "";
+    document.getElementById(userId).innerHTML = "";
+    document.getElementById(userId2).innerHTML = "";
+    typeStep2 += 1;
+    typeWriter2(conversation, hostId, userId, userId2, speed, nextIndex);
+  }
+  host();
+}
+let typeStep3 = 0;
+
+function typeWriter3(conversation, hostId, userId, userId2, speed, index = 0) {
+  if (typeStep3 == 2) {
+    step = 2;
+    prevStep = 2;
+  } else if (typeStep3 == 10) {
+    step = 3;
+    prevStep = 3;
+  }
+
+  if (index >= conversation.length) {
+    typeStep3 = 0;
+    scriptIsEnd = true;
+    return; // 모든 대화가 완료되면 함수 종료
+  }
+
+  let hostText = conversation[index].Host;
+  let userText = conversation[index].User;
+  let userText2 = conversation[index].User2;
+  let hostIndex = 0;
+
+  function host() {
+    if (hostIndex < hostText.length) {
+      document.getElementById(hostId).innerHTML += hostText.charAt(hostIndex);
+      hostIndex++;
+      setTimeout(host, speed);
+    } else {
+      // Host 텍스트가 모두 표시된 후 User 함수 호출
+      if (userText.length > 0 || userText2.length > 0) {
+        user();
+      } else {
+        // User 텍스트가 없는 경우 약간의 지연 후에 다음 대화로 넘어감
+        setTimeout(handleNext, 500);
+      }
+    }
+  }
+
+  function handleNext() {
+    next(index + 1);
+  }
+
+  function user() {
+    document.getElementById(userId).innerHTML = userText;
+    document.getElementById(userId2).innerHTML = userText2;
+
+    // 기존 이벤트 리스너 제거 및 새 이벤트 리스너 추가
+    if (userText.length > 0 || userText2.length > 0) {
+      document.getElementById(userId).removeEventListener("click", handleNext);
+      document.getElementById(userId2).removeEventListener("click", handleNext);
+      document.getElementById(userId).addEventListener("click", handleNext);
+      document.getElementById(userId2).addEventListener("click", handleNext);
+    }
+  }
+
+  function next(nextIndex) {
+    // 다음 대화로 넘어가기 전에 필요한 초기화 작업
+    document.getElementById(userId).removeEventListener("click", handleNext);
+    document.getElementById(userId2).removeEventListener("click", handleNext);
+    document.getElementById(hostId).innerHTML = "";
+    document.getElementById(userId).innerHTML = "";
+    document.getElementById(userId2).innerHTML = "";
+    typeStep3 += 1;
+    typeWriter3(conversation, hostId, userId, userId2, speed, nextIndex);
   }
   host();
 }
@@ -519,6 +731,16 @@ function movingCamera() {
       camera.lookAt(-5, -4, 0);
       showBackBtn();
       break;
+    case 9:
+      moveCamera(-1, -2, 0);
+      camera.lookAt(-5, -4, 0);
+      showBackBtn();
+      break;
+    case 10:
+      moveCamera(-1, -2, 0);
+      camera.lookAt(-5, -4, 0);
+      showBackBtn();
+      break;
   }
 }
 
@@ -548,6 +770,11 @@ const tick = () => {
   // console.log("rotation", camera.rotation);
 
   scriptIsEnd ? (showFloorBtn(), modal.classList.remove("on")) : hideFloorBtn();
+
+  console.log("typeStep0", typeStep0);
+  console.log("typeStep1", typeStep1);
+  console.log("typeStep2", typeStep2);
+  console.log("typeStep3", typeStep3);
 
   // Call tick again on the next frame
   window.requestAnimationFrame(tick);
