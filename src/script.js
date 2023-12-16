@@ -82,6 +82,47 @@ function hideFloorBtn() {
 }
 
 /**
+ * Audio
+ */
+const soundArray = [
+  "meme/sound/01.wav",
+  "meme/sound/02.wav",
+  "meme/sound/03.wav",
+  "meme/sound/04.wav",
+  "meme/sound/05.wav",
+  "meme/sound/06.wav",
+  "meme/sound/07.wav",
+  "meme/sound/08.wav",
+  "meme/sound/09.wav",
+  "meme/sound/10.wav",
+  "meme/sound/11.wav",
+  "meme/sound/12.wav",
+  "meme/sound/13.wav",
+  "meme/sound/14.wav",
+  "meme/sound/15.wav",
+  "meme/sound/16.wav",
+  "meme/sound/17.wav",
+  "meme/sound/18.wav",
+];
+
+const listener = new THREE.AudioListener();
+
+// create a global audio source
+const sound = new THREE.Audio(listener);
+
+const audioLoader = new THREE.AudioLoader();
+
+const PlayAudio = (audio) => {
+  audioLoader.load(audio, function (buffer) {
+    sound.setBuffer(buffer);
+    sound.setLoop(false);
+    sound.setVolume(0.5);
+    sound.play();
+    //let me know when the sound has finished playing
+    sound.onEnded = function () {};
+  });
+};
+/**
  * Loaders
  */
 const loadingOverlayElement = document.querySelector(".loading-overlay");
@@ -112,18 +153,18 @@ const loadingManager = new THREE.LoadingManager(
       !scriptIsEnd && modal.classList.add("on");
     }, 1500);
 
-    typeWriter(conversation, "host", "user", "user2", 10);
+    typeWriter(conversation, "host", "user", "user2", 100);
 
     firstBtn.addEventListener("click", () => {
-      turnOnTypeWriter(typeWriter1(firstfloor, "host", "user", "user2", 10));
+      turnOnTypeWriter(typeWriter1(firstfloor, "host", "user", "user2", 100));
     });
 
     secondBtn.addEventListener("click", () => {
-      turnOnTypeWriter(typeWriter2(secondfloor, "host", "user", "user2", 10));
+      turnOnTypeWriter(typeWriter2(secondfloor, "host", "user", "user2", 100));
     });
 
     thirdBtn.addEventListener("click", () => {
-      turnOnTypeWriter(typeWriter3(thirdfloor, "host", "user", "user2", 10));
+      turnOnTypeWriter(typeWriter3(thirdfloor, "host", "user", "user2", 100));
     });
   },
 
@@ -143,6 +184,8 @@ function turnOnTypeWriter(typeWriter) {
   modal.classList.add("on");
   typeWriter && typeWriter();
 }
+
+let typeStepAll = 0;
 
 let typeStep0 = 0;
 
@@ -175,6 +218,16 @@ function typeWriter(conversation, hostId, userId, userId2, speed, index = 0) {
   let userIndex = 0;
 
   function host() {
+    let audioIsEnd = false;
+    // PlayAudio(soundArray[typeStep0]);
+    audioLoader.load(soundArray[typeStep0], function (buffer) {
+      sound.on;
+      sound.setBuffer(buffer);
+      sound.setLoop(false);
+      sound.setVolume(0.5);
+      sound.play();
+      //let me know when the sound has finished playing
+    });
     if (hostIndex < hostText.length) {
       document.getElementById(hostId).innerHTML += hostText.charAt(hostIndex);
       hostIndex++;
@@ -215,6 +268,7 @@ function typeWriter(conversation, hostId, userId, userId2, speed, index = 0) {
     document.getElementById(userId).innerHTML = "";
     document.getElementById(userId2).innerHTML = "";
     typeStep0 += 1;
+    typeStepAll += 1;
     typeWriter(conversation, hostId, userId, userId2, speed, nextIndex);
   }
   host();
@@ -253,7 +307,7 @@ function typeWriter1(conversation, hostId, userId, userId2, speed, index = 0) {
         user();
       } else {
         // User 텍스트가 없는 경우 약간의 지연 후에 다음 대화로 넘어감
-        setTimeout(handleNext, 500);
+        setTimeout(handleNext, 1000);
       }
     }
   }
@@ -283,6 +337,7 @@ function typeWriter1(conversation, hostId, userId, userId2, speed, index = 0) {
     document.getElementById(userId).innerHTML = "";
     document.getElementById(userId2).innerHTML = "";
     typeStep1 += 1;
+    typeStepAll += 1;
     typeWriter1(conversation, hostId, userId, userId2, speed, nextIndex);
   }
   host();
@@ -321,7 +376,7 @@ function typeWriter2(conversation, hostId, userId, userId2, speed, index = 0) {
         user();
       } else {
         // User 텍스트가 없는 경우 약간의 지연 후에 다음 대화로 넘어감
-        setTimeout(handleNext, 500);
+        setTimeout(handleNext, 1000);
       }
     }
   }
@@ -351,6 +406,7 @@ function typeWriter2(conversation, hostId, userId, userId2, speed, index = 0) {
     document.getElementById(userId).innerHTML = "";
     document.getElementById(userId2).innerHTML = "";
     typeStep2 += 1;
+    typeStepAll += 1;
     typeWriter2(conversation, hostId, userId, userId2, speed, nextIndex);
   }
   host();
@@ -388,7 +444,7 @@ function typeWriter3(conversation, hostId, userId, userId2, speed, index = 0) {
         user();
       } else {
         // User 텍스트가 없는 경우 약간의 지연 후에 다음 대화로 넘어감
-        setTimeout(handleNext, 500);
+        setTimeout(handleNext, 1000);
       }
     }
   }
@@ -418,6 +474,7 @@ function typeWriter3(conversation, hostId, userId, userId2, speed, index = 0) {
     document.getElementById(userId).innerHTML = "";
     document.getElementById(userId2).innerHTML = "";
     typeStep3 += 1;
+    typeStepAll += 1;
     typeWriter3(conversation, hostId, userId, userId2, speed, nextIndex);
   }
   host();
@@ -662,6 +719,9 @@ const camera = new THREE.PerspectiveCamera(
 );
 camera.position.set(100, 150, -100);
 camera.lookAt(0, 0, 0);
+
+camera.add(listener);
+
 // scene.add(camera);
 
 /**
@@ -771,10 +831,11 @@ const tick = () => {
 
   scriptIsEnd ? (showFloorBtn(), modal.classList.remove("on")) : hideFloorBtn();
 
-  console.log("typeStep0", typeStep0);
-  console.log("typeStep1", typeStep1);
-  console.log("typeStep2", typeStep2);
-  console.log("typeStep3", typeStep3);
+  // console.log("typeStep0", typeStep0);
+  // console.log("typeStep1", typeStep1);
+  // console.log("typeStep2", typeStep2);
+  // console.log("typeStep3", typeStep3);
+  console.log("typeStepAll", typeStepAll);
 
   // Call tick again on the next frame
   window.requestAnimationFrame(tick);
