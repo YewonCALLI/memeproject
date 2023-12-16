@@ -25,6 +25,7 @@ backBtn.addEventListener("click", () => {
   step = 1;
   !backMove ? (backMove = true) : (backMove = false);
 });
+const floorBtn = document.querySelector(".floorBox");
 
 function moveCamera(x, y, z) {
   gsap.to(camera.position, {
@@ -59,6 +60,24 @@ function hideBackBtn() {
   });
 }
 
+function showFloorBtn() {
+  gsap.to(floorBtn, {
+    duration: 1,
+    ease: "power2.out",
+    opacity: 1,
+    display: "flex",
+  });
+}
+
+function hideFloorBtn() {
+  gsap.to(floorBtn, {
+    duration: 1,
+    ease: "power2.out",
+    opacity: 0,
+    display: "none",
+  });
+}
+
 /**
  * Loaders
  */
@@ -86,31 +105,22 @@ const loadingManager = new THREE.LoadingManager(
 
     step = 1;
 
-    window.setTimeout(() => {
-      modal.classList.add("on");
+    window.setTimeout((scriptIsEnd) => {
+      !scriptIsEnd && modal.classList.add("on");
     }, 1500);
 
     typeWriter(conversation, "host", "user", "user2", 100);
 
     document.getElementById("fisrtBtn").addEventListener("click", () => {
-      scriptStep = 1;
-      document.getElementById("textbox").style.display = "flex";
-      document.getElementById("buttonbox").style.display = "none";
-      typeWriter(firstfloor, "host", "user", "user2", 100);
+      scriptIsEnd = false;
     });
 
     document.getElementById("secondBtn").addEventListener("click", () => {
-      scriptStep = 2;
-      document.getElementById("textbox").style.display = "flex";
-      document.getElementById("buttonbox").style.display = "none";
-      typeWriter(secondfloor, "host", "user", "user2", 100);
+      scriptIsEnd = false;
     });
 
     document.getElementById("thirdBtn").addEventListener("click", () => {
-      scriptStep = 3;
-      document.getElementById("textbox").style.display = "flex";
-      document.getElementById("buttonbox").style.display = "none";
-      typeWriter(thirdfloor, "host", "user", "user2", 100);
+      scriptIsEnd = false;
     });
   },
 
@@ -146,7 +156,6 @@ function typeWriter(conversation, hostId, userId, userId2, speed, index = 0) {
   if (index >= conversation.length) {
     typeStep = 0;
     scriptIsEnd = true;
-    //typeWriter가 종료되면 #textbox와 #buttonbox를 교체
     return; // 모든 대화가 완료되면 함수 종료
   }
 
@@ -537,10 +546,8 @@ const tick = () => {
   renderer.render(scene, camera);
   // console.log("position", camera.position);
   // console.log("rotation", camera.rotation);
-  scriptIsEnd && (
-    document.getElementById("textbox").style.display = "none",
-    document.getElementById("buttonbox").style.display = "flex"
-  )
+
+  scriptIsEnd ? (showFloorBtn(), modal.classList.remove("on")) : hideFloorBtn();
 
   // Call tick again on the next frame
   window.requestAnimationFrame(tick);
