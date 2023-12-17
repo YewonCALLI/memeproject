@@ -35,7 +35,7 @@ function moveCamera(x, y, z) {
     x,
     y,
     z,
-    duration: 5,
+    duration: 1,
   });
 }
 function moveCamera2(x, y, z) {
@@ -43,7 +43,7 @@ function moveCamera2(x, y, z) {
     x,
     y,
     z,
-    duration: 10,
+    duration: 1,
   });
 }
 function showBackBtn() {
@@ -112,19 +112,19 @@ const loadingManager = new THREE.LoadingManager(
       !scriptIsEnd && modal.classList.add("on");
     }, 1500);
 
-    typeWriter(conversation, "host", "user", "user2", 10);
+    // typeWriter(conversation, "host", "user", "user2", 10);
 
-    firstBtn.addEventListener("click", () => {
-      turnOnTypeWriter(typeWriter1(firstfloor, "host", "user", "user2", 10));
-    });
+    // firstBtn.addEventListener("click", () => {
+    //   turnOnTypeWriter(typeWriter1(firstfloor, "host", "user", "user2", 10));
+    // });
 
-    secondBtn.addEventListener("click", () => {
-      turnOnTypeWriter(typeWriter2(secondfloor, "host", "user", "user2", 10));
-    });
+    // secondBtn.addEventListener("click", () => {
+    //   turnOnTypeWriter(typeWriter2(secondfloor, "host", "user", "user2", 10));
+    // });
 
-    thirdBtn.addEventListener("click", () => {
-      turnOnTypeWriter(typeWriter3(thirdfloor, "host", "user", "user2", 10));
-    });
+    // thirdBtn.addEventListener("click", () => {
+    //   turnOnTypeWriter(typeWriter3(thirdfloor, "host", "user", "user2", 10));
+    // });
   },
 
   // Progress
@@ -135,6 +135,42 @@ const loadingManager = new THREE.LoadingManager(
     //html에 로딩 퍼센트 표시
     loadingProgress.textContent = `${Math.round(progressRatio * 100)}%`;
   }
+);
+
+//  Raycaster
+var Raycaster = new THREE.Raycaster();
+var Mouse = new THREE.Vector2();
+
+document.addEventListener(
+  "mousedown",
+  function (event) {
+    Mouse.x =
+      ((event.clientX - renderer.domElement.offsetLeft) /
+        renderer.domElement.clientWidth) *
+        2 -
+      1;
+    Mouse.y =
+      -(
+        (event.clientY - renderer.domElement.offsetTop) /
+        renderer.domElement.clientHeight
+      ) *
+        2 +
+      1;
+
+    Raycaster.setFromCamera(Mouse, camera);
+
+    var intersects = Raycaster.intersectObjects(scene.children);
+    if (intersects.length > 0) {
+      var arrow = new THREE.ArrowHelper(
+        Raycaster.ray.direction,
+        Raycaster.ray.origin,
+        8,
+        0xff0000
+      );
+      scene.add(arrow);
+    }
+  },
+  false
 );
 
 function turnOnTypeWriter(typeWriter) {
@@ -609,10 +645,11 @@ const divisions = 50;
 
 const gridHelper = new THREE.GridHelper(size, divisions);
 gridHelper.position.set(0, 0, 0);
-// scene.add(gridHelper);
+scene.add(gridHelper);
 
 const axesHelper = new THREE.AxesHelper(5);
-// scene.add(axesHelper);
+axesHelper.position.set(-5, 0, 0);
+scene.add(axesHelper);
 
 /**
  * Lights
@@ -685,6 +722,59 @@ renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
+const result = document.querySelector(".result-content");
+
+document.getElementById("1").addEventListener("click", () => {
+  step = 1;
+  result.innerHTML =
+    camera.position.x + ", " + camera.position.y + ", " + camera.position.z;
+});
+document.getElementById("2").addEventListener("click", () => {
+  step = 2;
+  result.innerHTML =
+    camera.position.x + ", " + camera.position.y + ", " + camera.position.z;
+});
+document.getElementById("3").addEventListener("click", () => {
+  step = 3;
+  result.innerHTML =
+    camera.position.x + ", " + camera.position.y + ", " + camera.position.z;
+});
+document.getElementById("4").addEventListener("click", () => {
+  step = 4;
+  result.innerHTML =
+    camera.position.x + ", " + camera.position.y + ", " + camera.position.z;
+});
+document.getElementById("5").addEventListener("click", () => {
+  step = 5;
+  result.innerHTML =
+    camera.position.x + ", " + camera.position.y + ", " + camera.position.z;
+});
+document.getElementById("6").addEventListener("click", () => {
+  step = 6;
+  result.innerHTML =
+    camera.position.x + ", " + camera.position.y + ", " + camera.position.z;
+});
+document.getElementById("7").addEventListener("click", () => {
+  step = 7;
+  result.innerHTML =
+    camera.position.x + ", " + camera.position.y + ", " + camera.position.z;
+});
+document.getElementById("8").addEventListener("click", () => {
+  step = 8;
+  result.innerHTML =
+    camera.position.x + ", " + camera.position.y + ", " + camera.position.z;
+});
+document.getElementById("9").addEventListener("click", () => {
+  step = 9;
+  result.innerHTML =
+    camera.position.x + ", " + camera.position.y + ", " + camera.position.z;
+});
+document.getElementById("10").addEventListener("click", () => {
+  step = 10;
+  result.innerHTML =
+    camera.position.x + ", " + camera.position.y + ", " + camera.position.z;
+});
+
 function movingCamera() {
   switch (step) {
     case 0:
@@ -692,7 +782,7 @@ function movingCamera() {
       camera.lookAt(0, 0, 0);
       break;
     case 1:
-      moveCamera(25, 5, -25);
+      moveCamera(20, 5, -20);
       camera.lookAt(0, 0, 0);
       hideBackBtn();
       break;
@@ -707,38 +797,41 @@ function movingCamera() {
       showBackBtn();
       break;
     case 4:
-      moveCamera2(-2, 0, 2);
-      camera.lookAt(-7, -3, -5);
+      moveCamera2(-1.5, -1, -4);
+      camera.lookAt(-2, -2, -1);
       showBackBtn();
       break;
     case 5:
-      moveCamera(-4.5, -2, 3);
-      camera.lookAt(0, -2, 5);
+      moveCamera2(-2, -2, 0);
+      camera.lookAt(-2, -2, 3);
       showBackBtn();
       break;
     case 6:
-      moveCamera(-4.5, -2, 6);
+      moveCamera2(-4, -2, 3);
       camera.lookAt(0, -2, 5);
       showBackBtn();
       break;
     case 7:
-      moveCamera(-4, -0.25, 5);
-      camera.lookAt(1, -0.25, 5);
+      moveCamera2(-1, -2, 3);
+      camera.lookAt(-1, -2, 5);
       showBackBtn();
       break;
+
     case 8:
-      moveCamera(-1, -2, 0);
-      camera.lookAt(-5, -4, 0);
+      moveCamera2(-3.5, -0.3, 4.5);
+      camera.lookAt(-1, 0, 6);
       showBackBtn();
       break;
+
     case 9:
-      moveCamera(-1, -2, 0);
-      camera.lookAt(-5, -4, 0);
+      moveCamera2(-3.5, -0.3, 6);
+      camera.lookAt(-4, 0, 0);
       showBackBtn();
       break;
+
     case 10:
-      moveCamera(-1, -2, 0);
-      camera.lookAt(-5, -4, 0);
+      moveCamera2(-3.5, 1.5, 4.5);
+      camera.lookAt(-1, 1.5, 4.5);
       showBackBtn();
       break;
   }
