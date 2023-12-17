@@ -37,14 +37,7 @@ function moveCamera(x, y, z) {
     duration: 5,
   });
 }
-function moveCamera2(x, y, z) {
-  gsap.to(camera.position, {
-    x,
-    y,
-    z,
-    duration: 10,
-  });
-}
+
 function showBackBtn() {
   gsap.to(backBtn, {
     duration: 1,
@@ -160,15 +153,24 @@ const loadingManager = new THREE.LoadingManager(
     typeWriter0(conversation, "host", "user", "user2", 100);
 
     firstBtn.addEventListener("click", () => {
-      turnOnTypeWriter(typeWriter1(firstfloor, "host", "user", "user2", 100));
+      turnOnTypeWriter(
+        6,
+        typeWriter1(firstfloor, "host", "user", "user2", 100)
+      );
     });
 
     secondBtn.addEventListener("click", () => {
-      turnOnTypeWriter(typeWriter2(secondfloor, "host", "user", "user2", 100));
+      turnOnTypeWriter(
+        8,
+        typeWriter2(secondfloor, "host", "user", "user2", 100)
+      );
     });
 
     thirdBtn.addEventListener("click", () => {
-      turnOnTypeWriter(typeWriter3(thirdfloor, "host", "user", "user2", 100));
+      turnOnTypeWriter(
+        10,
+        typeWriter3(thirdfloor, "host", "user", "user2", 100)
+      );
     });
   },
 
@@ -182,10 +184,11 @@ const loadingManager = new THREE.LoadingManager(
   }
 );
 
-function turnOnTypeWriter(typeWriter) {
+function turnOnTypeWriter(cameraStep, typeWriter) {
   // console.log("turnOnTypeWriter");
   scriptIsEnd = false;
   modal.classList.add("on");
+  step = cameraStep;
   typeWriter && typeWriter();
 }
 
@@ -195,16 +198,16 @@ let typeStep0 = 0;
 
 //typeWriter 단계 - host와 user의 대화를 구분하기 위한 변수 host와 user의 대화가 끝나면 0으로 초기화
 function typeWriter0(conversation, hostId, userId, userId2, speed, index = 0) {
-  if (typeStep0 == 2) {
+  if (typeStep0 == 3 - 1) {
     step = 2;
     prevStep = 2;
-  } else if (typeStep0 == 10) {
+  } else if (typeStep0 == 11 - 1) {
     step = 3;
     prevStep = 3;
-  } else if (typeStep0 == 12) {
+  } else if (typeStep0 == 13 - 1) {
     step = 4;
     prevStep = 4;
-  } else if (typeStep0 == 17) {
+  } else if (typeStep0 == 16 - 1) {
     step = 5;
     prevStep = 5;
   }
@@ -276,12 +279,9 @@ function typeWriter0(conversation, hostId, userId, userId2, speed, index = 0) {
 let typeStep1 = 0;
 
 function typeWriter1(conversation, hostId, userId, userId2, speed, index = 0) {
-  if (typeStep1 == 2) {
-    step = 2;
-    prevStep = 2;
-  } else if (typeStep1 == 10) {
-    step = 3;
-    prevStep = 3;
+  if (typeStep1 == 5 - 1) {
+    step = 7;
+    prevStep = 7;
   }
 
   if (index >= conversation.length) {
@@ -345,12 +345,9 @@ function typeWriter1(conversation, hostId, userId, userId2, speed, index = 0) {
 let typeStep2 = 0;
 
 function typeWriter2(conversation, hostId, userId, userId2, speed, index = 0) {
-  if (typeStep2 == 2) {
-    step = 2;
-    prevStep = 2;
-  } else if (typeStep2 == 10) {
-    step = 3;
-    prevStep = 3;
+  if (typeStep2 == 4 - 1) {
+    step = 9;
+    prevStep = 9;
   }
 
   if (index >= conversation.length) {
@@ -413,14 +410,6 @@ function typeWriter2(conversation, hostId, userId, userId2, speed, index = 0) {
 let typeStep3 = 0;
 
 function typeWriter3(conversation, hostId, userId, userId2, speed, index = 0) {
-  if (typeStep3 == 2) {
-    step = 2;
-    prevStep = 2;
-  } else if (typeStep3 == 10) {
-    step = 3;
-    prevStep = 3;
-  }
-
   if (index >= conversation.length) {
     typeStep3 = 0;
     scriptIsEnd = true;
@@ -748,57 +737,57 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 function movingCamera() {
   switch (step) {
     case 0:
-      moveCamera(100, 150, -100);
+      moveCamera(100, 150, -100); //초기 카메라 위치
       camera.lookAt(0, 0, 0);
       break;
     case 1:
-      moveCamera(25, 5, -25);
+      moveCamera(20, 5, -20); //로드된 후 카메라 위치
       camera.lookAt(0, 0, 0);
       hideBackBtn();
       break;
     case 2:
-      moveCamera(-3, -1, 2);
+      moveCamera(-3, -1, 2); //냉장고 바로 앞
       camera.lookAt(-2.5, -2, -6);
       showBackBtn();
       break;
     case 3:
-      moveCamera(-2, 1, -2);
+      moveCamera(-2, 1, -2); //원시 수프 앞
       camera.lookAt(-5, -3, -5);
       showBackBtn();
       break;
     case 4:
-      moveCamera2(-2, 0, 2);
-      camera.lookAt(-7, -3, -5);
+      moveCamera(-1.5, -1, -4); //고양이 앞
+      camera.lookAt(-2, -2, -1);
       showBackBtn();
       break;
     case 5:
-      moveCamera(-4.5, -2, 3);
-      camera.lookAt(0, -2, 5);
+      moveCamera(-2, -2, 0); //1층 입구 앞
+      camera.lookAt(-2, -2, 3);
       showBackBtn();
       break;
     case 6:
-      moveCamera(-4.5, -2, 6);
+      moveCamera(-4, -2, 3); //1층 그림 앞
       camera.lookAt(0, -2, 5);
       showBackBtn();
       break;
     case 7:
-      moveCamera(-4, -0.25, 5);
-      camera.lookAt(1, -0.25, 5);
+      moveCamera(-1, -2, 3); //1층 다비드 앞
+      camera.lookAt(-1, -2, 5);
       showBackBtn();
       break;
     case 8:
-      moveCamera(-1, -2, 0);
-      camera.lookAt(-5, -4, 0);
+      moveCamera(-3.5, -0.3, 4.5); //2층 헤르메스 앞
+      camera.lookAt(-1, 0, 6);
       showBackBtn();
       break;
     case 9:
-      moveCamera(-1, -2, 0);
-      camera.lookAt(-5, -4, 0);
+      moveCamera(-3.5, -0.3, 6); //2층 컴퓨터 앞
+      camera.lookAt(-4, 0, 0);
       showBackBtn();
       break;
     case 10:
-      moveCamera(-1, -2, 0);
-      camera.lookAt(-5, -4, 0);
+      moveCamera(-3.5, 1.5, 4.5); // 3층 앞
+      camera.lookAt(-1, 1.5, 4.5);
       showBackBtn();
       break;
   }
