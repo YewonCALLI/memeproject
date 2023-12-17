@@ -46,6 +46,54 @@ body {
   outline: none;
 }
 
+.start-container {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 500;
+  background: #fff;
+  font-family: 'Olivier', sans-serif;
+}
+
+.start-title {
+  color: #000;
+  font-size: 18px;
+  margin-bottom: 10px;
+  font-family: "Oliver", sans-serif;
+}
+
+.start-btn {
+  width: 100px;
+  height: 40px;
+  border-radius: 10px;
+  background: #000;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 300;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.5s;
+  font-family: "Oliver",
+    sans-serif;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+.start-btn:hover {
+  background: #fff;
+  color: #000;
+  transition: all 0.3s;
+}
+
+
 .loading-overlay {
   position: fixed;
   top: 0;

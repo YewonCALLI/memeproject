@@ -18,7 +18,6 @@ var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent); // 안드�
 let step = 0;
 let prevStep = 0;
 let scriptIsEnd = false;
-let scriptStep = 0;
 const backMove = false;
 const backBtn = document.querySelector(".back-btn");
 backBtn.addEventListener("click", () => {
@@ -113,18 +112,21 @@ const sound = new THREE.Audio(listener);
 const audioLoader = new THREE.AudioLoader();
 
 const PlayAudio = (audio) => {
+  // console.log("audio", audio);
   audioLoader.load(audio, function (buffer) {
     sound.setBuffer(buffer);
     sound.setLoop(false);
     sound.setVolume(0.5);
     sound.play();
-    //let me know when the sound has finished playing
-    sound.onEnded = function () {};
   });
 };
+
 /**
  * Loaders
  */
+const startContainer = document.querySelector(".start-container");
+const startBtn = document.querySelector(".start-btn");
+let isStarted = false;
 const loadingOverlayElement = document.querySelector(".loading-overlay");
 const loadingBarElement = document.querySelector(".loading-bar");
 const loadingTitleElement = document.querySelector(".loading-title");
@@ -133,19 +135,21 @@ const modal = document.querySelector(".modal");
 const loadingManager = new THREE.LoadingManager(
   // Loaded
   () => {
-    // Wait a little
-    window.setTimeout(() => {
-      gsap.to(loadingOverlayElement, {
-        opacity: 0,
-        duration: 0.5,
-        onComplete: () => {
-          loadingOverlayElement.style.display = "none";
-        },
-      });
-      loadingBarElement.classList.add("ended");
-      loadingBarElement.style.transform = "";
-      loadingTitleElement.classList.add("fade-out");
-    }, 100);
+    loadingOverlayElement.style.display = "none";
+    loadingBarElement.classList.add("ended");
+    loadingBarElement.style.transform = "";
+    loadingTitleElement.classList.add("fade-out");
+    startContainer.style.display = "flex";
+    startBtn.addEventListener("click", () => {
+      // Wait a little
+      window.setTimeout(() => {
+        gsap.to(startContainer, {
+          display: "none",
+          duration: 0.5,
+        });
+      }, 100);
+      isStarted = true;
+    });
 
     step = 1;
 
@@ -153,7 +157,7 @@ const loadingManager = new THREE.LoadingManager(
       !scriptIsEnd && modal.classList.add("on");
     }, 1500);
 
-    typeWriter(conversation, "host", "user", "user2", 100);
+    typeWriter0(conversation, "host", "user", "user2", 100);
 
     firstBtn.addEventListener("click", () => {
       turnOnTypeWriter(typeWriter1(firstfloor, "host", "user", "user2", 100));
@@ -179,7 +183,7 @@ const loadingManager = new THREE.LoadingManager(
 );
 
 function turnOnTypeWriter(typeWriter) {
-  console.log("turnOnTypeWriter");
+  // console.log("turnOnTypeWriter");
   scriptIsEnd = false;
   modal.classList.add("on");
   typeWriter && typeWriter();
@@ -190,7 +194,7 @@ let typeStepAll = 0;
 let typeStep0 = 0;
 
 //typeWriter 단계 - host와 user의 대화를 구분하기 위한 변수 host와 user의 대화가 끝나면 0으로 초기화
-function typeWriter(conversation, hostId, userId, userId2, speed, index = 0) {
+function typeWriter0(conversation, hostId, userId, userId2, speed, index = 0) {
   if (typeStep0 == 2) {
     step = 2;
     prevStep = 2;
@@ -217,17 +221,13 @@ function typeWriter(conversation, hostId, userId, userId2, speed, index = 0) {
   let hostIndex = 0;
   let userIndex = 0;
 
+  function handleNext() {
+    next(index + 1);
+  }
+
   function host() {
-    let audioIsEnd = false;
-    // PlayAudio(soundArray[typeStep0]);
-    audioLoader.load(soundArray[typeStep0], function (buffer) {
-      sound.on;
-      sound.setBuffer(buffer);
-      sound.setLoop(false);
-      sound.setVolume(0.5);
-      sound.play();
-      //let me know when the sound has finished playing
-    });
+    isStarted && PlayAudio(soundArray[typeStep0]);
+    // console.log("json index", conversation[index].index);
     if (hostIndex < hostText.length) {
       document.getElementById(hostId).innerHTML += hostText.charAt(hostIndex);
       hostIndex++;
@@ -237,14 +237,13 @@ function typeWriter(conversation, hostId, userId, userId2, speed, index = 0) {
       if (userText.length > 0 || userText2.length > 0) {
         user();
       } else {
-        // User 텍스트가 없는 경우 약간의 지연 후에 다음 대화로 넘어감
-        setTimeout(handleNext, 500);
+        // User 텍스트가 없는 경우 conversation[index].sec에서 타이핑된 시간을 뺀 만큼의 지연 후에 다음 대화로 넘어감
+        setTimeout(
+          handleNext,
+          conversation[index].sec - hostText.length * speed + 100 //100은 약간의 지연을 위한 값
+        );
       }
     }
-  }
-
-  function handleNext() {
-    next(index + 1);
   }
 
   function user() {
@@ -269,7 +268,7 @@ function typeWriter(conversation, hostId, userId, userId2, speed, index = 0) {
     document.getElementById(userId2).innerHTML = "";
     typeStep0 += 1;
     typeStepAll += 1;
-    typeWriter(conversation, hostId, userId, userId2, speed, nextIndex);
+    typeWriter0(conversation, hostId, userId, userId2, speed, nextIndex);
   }
   host();
 }
@@ -376,7 +375,7 @@ function typeWriter2(conversation, hostId, userId, userId2, speed, index = 0) {
         user();
       } else {
         // User 텍스트가 없는 경우 약간의 지연 후에 다음 대화로 넘어감
-        setTimeout(handleNext, 1000);
+        setTimeout(handleNext, 2000);
       }
     }
   }
@@ -434,19 +433,20 @@ function typeWriter3(conversation, hostId, userId, userId2, speed, index = 0) {
   let hostIndex = 0;
 
   function host() {
-    if (hostIndex < hostText.length) {
-      document.getElementById(hostId).innerHTML += hostText.charAt(hostIndex);
-      hostIndex++;
-      setTimeout(host, speed);
-    } else {
-      // Host 텍스트가 모두 표시된 후 User 함수 호출
-      if (userText.length > 0 || userText2.length > 0) {
-        user();
+    if (host.length > 0 || userText2.length > 0)
+      if (hostIndex < hostText.length) {
+        document.getElementById(hostId).innerHTML += hostText.charAt(hostIndex);
+        hostIndex++;
+        setTimeout(host, speed);
       } else {
-        // User 텍스트가 없는 경우 약간의 지연 후에 다음 대화로 넘어감
-        setTimeout(handleNext, 1000);
+        // Host 텍스트가 모두 표시된 후 User 함수 호출
+        if (userText.length > 0 || userText2.length > 0) {
+          user();
+        } else {
+          // User 텍스트가 없는 경우 약간의 지연 후에 다음 대화로 넘어감
+          setTimeout(handleNext, 500);
+        }
       }
-    }
   }
 
   function handleNext() {
@@ -835,7 +835,7 @@ const tick = () => {
   // console.log("typeStep1", typeStep1);
   // console.log("typeStep2", typeStep2);
   // console.log("typeStep3", typeStep3);
-  console.log("typeStepAll", typeStepAll);
+  // console.log("typeStepAll", typeStepAll);
 
   // Call tick again on the next frame
   window.requestAnimationFrame(tick);
