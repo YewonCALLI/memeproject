@@ -93,8 +93,24 @@ const soundArray = [
   "meme/sound/14.wav",
   "meme/sound/15.wav",
   "meme/sound/16.wav",
-  "meme/sound/17.wav",
-  "meme/sound/18.wav",
+];
+
+const sound1F = [
+  "meme/sound/1F-1.wav",
+  "meme/sound/1F-2.wav",
+  "meme/sound/1F-3.wav",
+  "meme/sound/1F-4.wav",
+  "meme/sound/1F-5.wav",
+  "meme/sound/1F-6.wav",
+  "meme/sound/1F-7.wav",
+];
+
+const sound2F = [
+  "meme/sound/2F-1.wav",
+  "meme/sound/2F-2.wav",
+  "meme/sound/2F-3.wav",
+  "meme/sound/2F-4.wav",
+  "meme/sound/2F-5.wav",
 ];
 
 const listener = new THREE.AudioListener();
@@ -296,6 +312,7 @@ function typeWriter1(conversation, hostId, userId, userId2, speed, index = 0) {
   let hostIndex = 0;
 
   function host() {
+    isStarted && PlayAudio(sound1F[typeStep1]);
     if (hostIndex < hostText.length) {
       document.getElementById(hostId).innerHTML += hostText.charAt(hostIndex);
       hostIndex++;
@@ -306,7 +323,10 @@ function typeWriter1(conversation, hostId, userId, userId2, speed, index = 0) {
         user();
       } else {
         // User 텍스트가 없는 경우 약간의 지연 후에 다음 대화로 넘어감
-        setTimeout(handleNext, 1000);
+        setTimeout(
+          handleNext,
+          conversation[index].sec - hostText.length * speed + 100 //100은 약간의 지연을 위한 값
+        );
       }
     }
   }
@@ -362,6 +382,7 @@ function typeWriter2(conversation, hostId, userId, userId2, speed, index = 0) {
   let hostIndex = 0;
 
   function host() {
+    isStarted && PlayAudio(sound2F[typeStep2]);
     if (hostIndex < hostText.length) {
       document.getElementById(hostId).innerHTML += hostText.charAt(hostIndex);
       hostIndex++;
@@ -372,7 +393,10 @@ function typeWriter2(conversation, hostId, userId, userId2, speed, index = 0) {
         user();
       } else {
         // User 텍스트가 없는 경우 약간의 지연 후에 다음 대화로 넘어감
-        setTimeout(handleNext, 2000);
+        setTimeout(
+          handleNext,
+          conversation[index].sec - hostText.length * speed + 100 //100은 약간의 지연을 위한 값
+        );
       }
     }
   }
