@@ -40,7 +40,6 @@
     <link rel="manifest" href="/manifest.json" />
     <link rel="mask-icon" color="#000000" href="/icons/logo.svg" />
     <link rel="apple-touch-startup-image" href="/icons/logo.png" />
-
     <meta
       name="viewport"
       content="width=device-width, minimum-scale=1, initial-scale=1.0"
@@ -109,16 +108,69 @@
         <script src="./sketch.js"></script>
     </div>
     <div class="container">
-		<form method="post" action="" name="contact-form">
-			<h4>Contact Us</h4>
-			<input type="text" name="your-name" placeholder="Name">
-			<input type="text" name="your-number" placeholder="Number">
-			<input type="email" name="your-email" placeholder="Email">
-			<textarea name="message" rows="7" placeholder="Your Message"></textarea>
-			<input type="submit" value="Submit" id="submit">
-		</form>
-	</div>
+      <input 
+      type="file" 
+      class="inputFile"
+      id="fileInp"
+      onchange="getFileTo(event)"
+      accept="image/png, image/jpeg"
+      />
+      <label for ="fileInp">+</label>
+      <div id="fileText"></div>
+      <button onclick="uploadImage()"> UPLOAD IMAGE </button>
+      <div class="bar">
+        <div class="progress"></div>
+      </div>
+      <div class="uploadPercentage">0%</div>
+    </div>
+    <script src="https://www.gstatic.com/firebasejs/6.0.2/firebase-app.js"></script>
+      <script>
+        const firebaseConfig = {
+          apiKey: "AIzaSyDfPi21no_LTdi5szygldb0jF6l_ZDj9HQ",
+          authDomain: "memeprojectimage.firebaseapp.com",
+          projectId: "memeprojectimage",
+          storageBucket: "memeprojectimage.appspot.com",
+          messagingSenderId: "483003395248",
+          appId: "1:483003395248:web:31c748750795d997ed1f75"
+      };
+  
+      firebase.initializeApp(firebaseConfig);
+  
+      var fileText=document.getElementById(".fileText");
+      var uploadPercentage = document.getElementById(".uploadPercentage");
+      var progress = document.getElementById(".progress");
+      var percentVal;
+      var fileItem;
+      var fileName;
+  
+      function getFileTo(e){
+        fileItem = e.target.files[0];
+        console.log(fileItem);
+        fileName = fileItem.name;
+        fileText.innerHTML = fileName;
+      }
+  
+      function uploadImage(){
+          let storageRef = firebase.storage().ref('images/'+fileName);
+          let uploadTask = storageRef.put(fileItem);
+  
+          uploadTask.on('state_changed', function(snapshot){
+              console.log(snapshot);
+              percentVal = Math.floor((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+              console.log(percentVal);
+              uploadPercentage.innerHTML = percentVal + '%';
+              progress.style.width = percentVal + '%';
+          },(error)=>{
+              console.log(error);
+          },()=>{
+              uploadTask.snapshot.ref.getDownloadURL().then((downloadURL)=>{
+                  console.log(downloadURL);
+              });
+          }
+          );
+      }
+      </script>
     <main>
-        <script type="module" src="./imageapi.js"></script>
+    <script type="module" src="./imageapi.js"></script>
   </body>
 </html>

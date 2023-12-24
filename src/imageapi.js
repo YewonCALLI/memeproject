@@ -14,7 +14,7 @@ button.onclick = function() {
     });
 };
 
-const scriptURL = 'https://script.google.com/macros/s/AKfycbw2M-NV89YQpAlA1myLs2-BMYaEet_AJulxYWf2fKjqIof6xjLLyTvBn9HhkTo9IyuZeg/exec'
+const scriptURL = 'https://script.google.com/macros/s/AKfycbyUg7F3G_913p87jFCn9npXHWb1ALEwRRsHUsou-2lHEnffX-CeLERioDYI4b7Vq6nr7Q/exec'
 
 const form = document.forms['contact-form']
 

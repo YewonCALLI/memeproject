@@ -535,6 +535,35 @@ button {
   font-weight: 300;
 }
 
+label{
+  height:100px;
+  width: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color:white;
+  margin-bottom: 10px;
+  font-size: 100px;
+  background: linear-gradient(45deg, #000, #fff);
+}
+
+.bar{
+  height: 50px;
+  width: 500px;
+  background: gray;
+}
+
+.progress{
+  background: linear-gradient(12deg,red,blue);
+  height: 100%;
+  width: 5%;;
+}
+
+.uploadPercentage{
+  font-size: 25px;
+}
+
+
 /* desktop 규격 */
 @media screen and (min-width: 1024px) {
   .logo-btn:hover {

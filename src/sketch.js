@@ -4,8 +4,9 @@ let img;
 let selButton = 0;
 
 let paintColor = (0, 0, 0);
-let box = 50;
+let box = 70;
 let canvas;
+let canvas2;
 let selectimg="";
 let preselectimg="";
 let input2 = document.getElementById('textinput');
@@ -18,7 +19,10 @@ let preinput;
 function setup() {
 
   canvas = createCanvas(350, 420);
+  canvas2 = createGraphics(350, 420);
   stroke(0, 0, 0);
+  background(255);
+
 }
 
 
@@ -27,21 +31,21 @@ function preload(){
 }
 
 function draw() {
-  if(n==0){
-    background(255);
-  }
 
+  if(n==0){
+    canvas2.background(255); 
+  }
+  image(canvas2, 0, 0, 350, 420);
   image(img1, 0, 0, 350,70);
+
 
   // image(img[2], 0, 0);
   // image(img[3], 550, 0);
   // image(img[4], 0, 530);
   strokeWeight(3);
   stroke(255);
-
-
   if (selectimg != ""&n==0){
-    image(selectimg,0,120,350,200);
+    canvas2.image(selectimg,0,120,350,200);
     preselectimg = selectimg;
     n++;
   }
@@ -65,14 +69,14 @@ function draw() {
   button3.onclick = function() {
     input2 = document.getElementById('textinput');
     push();
-    strokeWeight(0);
-    textSize(15);
-    textAlign(CENTER);
-    text(input2.value, 175, 370);
+    canvas2.strokeWeight(0);
+    canvas2.textSize(15);
+    canvas2.textAlign(CENTER);
+    canvas2.text(input2.value, 175, 370);
     pop();
-    saveCanvas(canvas, 'myCanvas', 'jpg');
+    saveCanvas(canvas2, 'myCanvas', 'jpg');
   };
-  
+  console.log(n);
 
   //crayons
   if (mouseIsPressed == true) {
@@ -139,18 +143,18 @@ function draw() {
       paintColor = color(154, 154, 154);
     }
     if (mouseX < a*16 && mouseX >a*15 && mouseY <box && mouseY >0) {
-      clear();
+      canvas2.background(255);
     }
     
-    if (mouseX < 600 && mouseX >560 && mouseY <box && mouseY >0) {
-      image(img[0], 0, 0);
+
+
+    canvas2.strokeWeight(b);
+    canvas2.stroke(paintColor);
+
+
+    if (mouseY > 30) {
+      canvas2.line(pmouseX, pmouseY, mouseX, mouseY);
     }
-
-    strokeWeight(b);
-    stroke(paintColor);
-
-
-    if (mouseY > 30) line(pmouseX, pmouseY, mouseX, mouseY);
 
 
   }
