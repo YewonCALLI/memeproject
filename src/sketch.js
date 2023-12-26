@@ -14,6 +14,7 @@ let img1;
 let n=0;
 let result2="";
 let preinput;
+let savefile;
 
 
 function setup() {
@@ -66,6 +67,8 @@ function draw() {
 
   //click submit button to save canvas
   let button3 = document.getElementById('button3');
+  let modal3 = document.querySelector('.modal3-container');
+
   button3.onclick = function() {
     input2 = document.getElementById('textinput');
     push();
@@ -75,8 +78,9 @@ function draw() {
     canvas2.text(input2.value, 175, 370);
     pop();
     saveCanvas(canvas2, 'myCanvas', 'jpg');
+    modal3.style.display="flex";
+
   };
-  console.log(n);
 
   //crayons
   if (mouseIsPressed == true) {
@@ -147,12 +151,12 @@ function draw() {
     }
     
 
-
+    
     canvas2.strokeWeight(b);
     canvas2.stroke(paintColor);
 
 
-    if (mouseY > 30) {
+    if (mouseY > 100 && mouseY < 300) {
       canvas2.line(pmouseX, pmouseY, mouseX, mouseY);
     }
 

@@ -13,15 +13,3 @@ button.onclick = function() {
         result.innerHTML = photos.photos.map(photo => `<img src="${photo.src.medium}">`).join('');
     });
 };
-
-const scriptURL = 'https://script.google.com/macros/s/AKfycbyUg7F3G_913p87jFCn9npXHWb1ALEwRRsHUsou-2lHEnffX-CeLERioDYI4b7Vq6nr7Q/exec'
-
-const form = document.forms['contact-form']
-
-form.addEventListener('submit', e => {
-  e.preventDefault()
-  fetch(scriptURL, { method: 'POST', body: new FormData(form)})
-  .then(response => alert("Thank you! your form is submitted successfully." ))
-  .then(() => { window.location.reload(); })
-  .catch(error => console.error('Error!', error.message))
-})

@@ -3,6 +3,8 @@
   <head>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/addons/p5.sound.min.js"></script>
+    <script type="module" src="./imageapi.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.0.2/firebase.js"></script>
     <meta charset="utf-8" />
     <meta name="language" content="korean" />
     <meta httpEquiv="content-type" content="text/html" />
@@ -55,122 +57,122 @@
   </head>
 
   <body>
-    <div class="Rectangle-18"></div>
-    <main>
-    <div class="input1">
-        <input type="text" id="firstname" value="Funny">
-        <button id="button2" type="button">Search</button>
-        <div id = "result">
-            <img src="">
-            <img src="">
-            <img src="">
-            <img src="">
-            <img src="">
-            <img src="">
-            <img src="">
-            <img src="">
-        </div>
-    </div>
-    <div class="input2"><input type="text" id="textinput" value="캡션을 달아주세요.">
-    </div>
-    <div class="title3">MEME Project</div>
-    <span class="explain2">
-        <span class="Text-Style">밈이란?<br><br></span>
-        인간에게는 2가지 복제자가 있습니다. 하나는 우리의 유전자로, 유전자는 난자와 정자의 수정을 통해 후손에게 전달됩니다. 이것은 나를 나타내는 생물학적인 특성과 유전 정보를 담고 있어, 나의 생물학적인 특성을 이어받는 중요한 역할을 합니다.
-        <br><br>
-        나의 다른 복제자는 바로 나의 밈입니다. 밈은 문화적인 정보의 단위로, 언어, 아이디어, 행동, 관습 등과 같은 형태의 문화적 콘텐츠를 나타냅니다. 나의 밈은 주변 사람들 뿐만 아니라, 수백 년 후의 미래 세대에게도 전달될 수 있는 특별한 성질을 지니고 있습니다.
-        <br><br>
-        이 공간은 유전 정보에 구애받지 않고, 나의 밈이 자유롭게 전파되는 곳입니다. 언어의 장벽을 넘어 사회 다양한 사람들에게 전달될 수 있습니다. 나의 밈은 시대를 초월하여 미래로 향하는 길에도 계속해서 흘러갈 것입니다.
-        <br><br>
-        이곳에 나의 복제자를 남겨보세요! 
-        이곳은 유전 정보도 필요 없으며 밈은 자유롭습니다!
-      </span>
+    <div class="background">
+      <div class="Rectangle-18" contenteditable="true" ></div>
       
-    <span class="explain">
-        <span class="text-style-1">밈을 만드는 방법 <br><br> </span>
-        1. 주제를 선택해요.<br>
-        밈을 만들기 전에 어떤 주제로 밈을 만들 것인지 결정하세요.
-        내가 관심있는 무언가, 나 자신을 상징할 수 있는 무언가이면 충분합니다. 전달하고 싶은 어떠한 메세지도 좋습니다.
-        <br><br>
-        2. 이미지 찾기.<br>
-         선택한 주제와 관련된 이미지를 찾아야 합니다. 검색창에 필요한 이미지에 대한 키워드를 입력하고 골라봅시다! 컬러팔레트를 이용하여 직접 이미지를 만들어도 됩니다.
-      
-         <br><br>
-        3. 캡션을 달아봐요.<br>
-        이미지에 웃긴 또는 특별한 캡션을 추가하세요. 캡션은 밈의 핵심 부분이며, 사람들이 메시지를 이해하고 공유하는 데 중요한 역할을 합니다.
-        <br><br>
-        4. 편집이 끝나면 ‘save’버튼을 눌러 나의 밈을 MEME PROJECT에 전송해요.
-    </span>
-    <div class="button_area">
-        <button id="button3" type="button">Send</button>
-    </div>  
-    <div class="sketch">
-        <script src="./sketch.js"></script>
-    </div>
-    <div class="container">
-      <input 
-      type="file" 
-      class="inputFile"
-      id="fileInp"
-      onchange="getFileTo(event)"
-      accept="image/png, image/jpeg"
-      />
-      <label for ="fileInp">+</label>
-      <div id="fileText"></div>
-      <button onclick="uploadImage()"> UPLOAD IMAGE </button>
-      <div class="bar">
-        <div class="progress"></div>
+      <div class="input1">
+          <input type="text" id="firstname" value="Funny">
+          <button id="button2" type="button">Search</button>
+          <div id = "result">
+              <img src="">
+              <img src="">
+              <img src="">
+              <img src="">
+              <img src="">
+              <img src="">
+              <img src="">
+              <img src="">
+          </div>
       </div>
-      <div class="uploadPercentage">0%</div>
+
+      <div class="input2"><input type="text" id="textinput" value="캡션을 달아주세요."></div>
+      <div class="title3">MEME Project</div>
+      <div class="button_area">
+          <button id="button3" type="button">Save</button>
+      </div>  
+      <div class="sketch">
+          <script src="./sketch.js"></script>
+      </div>
+      <div class="world">
+        <img src="">
+        <img src="">
+      </div>
+      <div class="modal2-container">
+        <div class="modal2">
+        <div class="modal_body">
+          <div class="Rectangle-55">
+            <div class="Rectangle-58">
+              <img src="./meme/Vector 8.svg">
+            </div>
+            <div class="Rectangle-59">
+              <p>How to make meme?</p>
+            </div>
+            <div class="Rectangle-56">
+              <img src="./meme/Union-1.svg">
+            </div>
+            <div class="Rectangle-57">
+              <img src="./meme/Union.svg">
+            </div>
+          </div>
+          <div class="meme_info1">
+            <img src="./meme/meme_info1.svg">
+            <div class="Rectangle-60">
+              <p>1. 주제를 선택해요.<br>
+                밈을 만들기 전에 어떤 주제로 밈을 만들 것인지 결정하세요.내가 관심있는 무언가, 나 자신을 상징할 수 있는 무언가이면 충분합니다. 전달하고 싶은 어떠한 메세지도 좋습니다.</p>
+            </div>
+          </div>
+          <div class="meme_info2">
+            <img src="./meme/meme_info2.svg">
+            <div class="Rectangle-60">
+              <p>2. 이미지 찾기.<br>
+                선택한 주제와 관련된 이미지를 찾아야 합니다. 
+                검색창에 필요한 이미지에 대한 키워드를 입력하고 골라봅시다! 컬러팔레트를 이용하여 직접 이미지를 만들어도 됩니다.            </div>
+          </div>
+          <div class="meme_info3">
+            <img src="./meme/meme_info3.svg">
+            <div class="Rectangle-60">
+              <p>3. 캡션을 달아봐요.<br>이미지에 웃긴 또는 특별한 캡션을 추가하세요. 캡션은 밈의 핵심 부분이며, 사람들이 메시지를 이해하고 공유하는 데 중요한 역할을 합니다.
+            </div>
+          </div>
+          <div class="meme_info4">
+            <img src="./meme/meme_info4.svg">
+            <div class="Rectangle-60">
+              <p>편집이 끝나면 ‘save’버튼을 눌러 나의 밈을 다운로드 받고 MEME PROJECT에 전송해요.<p></p>
+            </div>
+          </div>
+        </div>
+        </div>
+      </div>
+      <button class="btn-open-modal">Modal열기</button>
+      <button class="btn-open-modal2">World</button>
+      <div class="modal3-container">
+        <div class="modal3">
+          <img class="modal3-background" src="./meme/dna.gif"/>
+          <div class="modal_body">
+            <div class="Rectangle-55">
+              <div class="Rectangle-58">
+                <img src="./meme/Vector 8.svg">
+              </div>
+              <div class="Rectangle-59">
+                <p>Send your meme to MEMEPROJECT</p>
+              </div>
+              <div class="Rectangle-61">
+                <img src="./meme/Group 27.svg">
+              </div>
+            </div>
+            <div class="sendbox">
+              <p>
+                다운로드 받은 이미지 파일을 업로드 해주세요.
+              </p>
+              <input 
+              type="file" 
+              class="inputFile"
+              id="fileInp"
+              accept="image/png, image/jpeg"
+              onchange="getFileTo(event)"
+              />
+              <img class="fileText"/>
+              <button onclick="uploadImageTo()" id="button4"> UPLOAD IMAGE </button>
+              <div class="bar">
+                <div class="progress"></div>
+              </div>
+              <div class="uploadPercentage">0%</div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <script src="https://www.gstatic.com/firebasejs/6.0.2/firebase-app.js"></script>
-      <script>
-        const firebaseConfig = {
-          apiKey: "AIzaSyDfPi21no_LTdi5szygldb0jF6l_ZDj9HQ",
-          authDomain: "memeprojectimage.firebaseapp.com",
-          projectId: "memeprojectimage",
-          storageBucket: "memeprojectimage.appspot.com",
-          messagingSenderId: "483003395248",
-          appId: "1:483003395248:web:31c748750795d997ed1f75"
-      };
-  
-      firebase.initializeApp(firebaseConfig);
-  
-      var fileText=document.getElementById(".fileText");
-      var uploadPercentage = document.getElementById(".uploadPercentage");
-      var progress = document.getElementById(".progress");
-      var percentVal;
-      var fileItem;
-      var fileName;
-  
-      function getFileTo(e){
-        fileItem = e.target.files[0];
-        console.log(fileItem);
-        fileName = fileItem.name;
-        fileText.innerHTML = fileName;
-      }
-  
-      function uploadImage(){
-          let storageRef = firebase.storage().ref('images/'+fileName);
-          let uploadTask = storageRef.put(fileItem);
-  
-          uploadTask.on('state_changed', function(snapshot){
-              console.log(snapshot);
-              percentVal = Math.floor((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
-              console.log(percentVal);
-              uploadPercentage.innerHTML = percentVal + '%';
-              progress.style.width = percentVal + '%';
-          },(error)=>{
-              console.log(error);
-          },()=>{
-              uploadTask.snapshot.ref.getDownloadURL().then((downloadURL)=>{
-                  console.log(downloadURL);
-              });
-          }
-          );
-      }
-      </script>
-    <main>
-    <script type="module" src="./imageapi.js"></script>
+    <script type="module" src="./firebase-image.js"></script>
+    <script type="module" src="./modalopen.js"></script>
   </body>
 </html>
