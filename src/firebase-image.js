@@ -45,25 +45,80 @@ uploadTask.on('state_changed', function(snapshot){
 }
 
 let worldfile = document.querySelector(".world img");
+let background = document.querySelector(".background img");
+let memefile = document.querySelector(".meme-image img");
+const memeItem = document.createElement("div");
 
 window.getImageFrom= function(){
 
-    // Create a reference under which you want to list
-    const listRef = firebase.storage().ref('images/'+fileName);
+    var storageRef = firebase.storage().ref("images");
 
-    // Find all the prefixes and items.
-    listAll(listRef)
-    .then((res) => {
-        res.prefixes.forEach((folderRef) => {
-        // All the prefixes under listRef.
-        // You may call listAll() recursively on them.
-        });
-        res.items.forEach((itemRef) => {
-        // All the items under listRef.
-        });
-    }).catch((error) => {
-        // Uh-oh, an error occurred!
-        console.log(error)
+    let imagelist = [];
+    let i = 0;
+
+    // Now we get the references of these images
+    storageRef.listAll().then(function(result) {
+      result.items.forEach(function(imageRef) {
+        // And finally display them
+        imagelist.push(imageRef);
+        console.log(imagelist.length)
+        i++;
+      });
+    }).then(function() {
+      displayImage(imagelist);
+    }).catch(function(error) {
+      // Handle any errors
     });
+
+    // function displayImage(imageRef) {
+    //     imageRef.getDownloadURL().then(function(url) {
+    //         memefile.src=url;
+    //         background.src= url;
+    //         console.log(url);
+    //         worldfile.src=url;
+    //     }).catch(function(error) {
+    //       // Handle any errors
+    //     });
+    // }
+
+    function displayImage(imagelist){
+
+      const memeContainer3 = document.createElement("div");
+      memeContainer3.className = "meme-container3";
+
+      document.body.appendChild(memeContainer3);
+
+      imagelist.forEach(function (imageRef,index){
+        createMemeItem(imageRef,index,memeContainer3);
+      });
+    }
+
+    function createMemeItem(imageRef,index,container){
+      const memeItemDiv = document.createElement("div");
+      memeItemDiv.className = "meme-item";
+      memeItemDiv.id = "meme-item-"+index;
+
+      memeItemDiv.innerHTML = `
+          <div class="gaze-1">
+              <div class="gaze-2"></div>
+          </div>
+          <div class="meme-image">
+              <img src="">
+          </div>
+        `;
+
+        memeItemDiv.style.animationDelay = -index*3+"s";
+
+      container.appendChild(memeItemDiv);
+      const memeImage = memeItemDiv.querySelector(".meme-image img");
+
+      imageRef.getDownloadURL().then(function(url) {
+        memeImage.src=url;
+        background.src= url;
+        console.log(url);
+      }).catch(function(error) {
+        // Handle any errors
+      });
+    }
 
 }
