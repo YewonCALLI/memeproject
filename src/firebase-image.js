@@ -6,6 +6,7 @@ var progress = document.querySelector(".progress");
 var percentVal;
 var fileItem;
 var fileName;
+
 const firebaseConfig = {
     apiKey: "AIzaSyDfPi21no_LTdi5szygldb0jF6l_ZDj9HQ",
     authDomain: "memeprojectimage.firebaseapp.com",
@@ -47,7 +48,6 @@ window.uploadImageTo= function(){
       console.log(error);
   },()=>{
       uploadTask.snapshot.ref.getDownloadURL().then((downloadURL)=>{
-          console.log(downloadURL);
           fileText.src=downloadURL;
       });
   }
@@ -57,7 +57,7 @@ window.uploadImageTo= function(){
 const background = document.querySelector(".background img");
 const memeItem = document.createElement("div");
 let like_clicked_number;
-
+let j=0;
 
 window.getImageFrom= function(){
 
@@ -117,18 +117,34 @@ window.getImageFrom= function(){
           </div>
         `;
 
-        memeItemDiv.style.animationDelay = -index*3+"s";
+      memeItemDiv.style.animationDelay = -index*3+"s";
 
       container.appendChild(memeItemDiv);
       const memeImage = memeItemDiv.querySelector(".meme-image img");
+      const gaze2Div = memeItemDiv.querySelector(".gaze-2");
 
       imageRef.getDownloadURL().then(function(url) {
         memeImage.src=url;
         background.src= url;        
       })
 
+      //좋아요 수 들고오기
+      imageRef.getMetadata().then(function(metadata) {
+        const likeNumber = metadata.customMetadata.like_number;
+        console.log(likeNumber);
+
+        gaze2Div.style.width = Math.floor(likeNumber * 0.7) + '%';
+        
+        // like_clicked_number = metadata.customMetadata.like_number;
+        // console.log(like_clicked_number);
+        // var green = document.querySelector(".gaze-2");
+        // green.style.width = Math.floor(like_clicked_number*0.7) + '%';
+      });
+
+
       memeImage.addEventListener("click", function () {
         handleMemeImageClick(memeImage.src);
+        j = index;
       });
     }
     
@@ -160,7 +176,6 @@ window.getImageFrom= function(){
           console.log("매칭된 imageRef:", matchingImageRef);
           matchingImageRef.getMetadata().then(function(metadata) {
             like_clicked_number = metadata.customMetadata.like_number;
-            console.log(like_clicked_number);
           });
 
           // 이전에 등록된 이벤트 핸들러 제거
@@ -179,8 +194,8 @@ window.getImageFrom= function(){
           if (error.message.includes("429")) {
             console.log("요청 속도 제한 초과. 기다린 후 다시 시도합니다.");
             setTimeout(() => {
-              handleMemeImageClick(url); // 함수 재시도
-            }, 5000); // 5초 기다린 후 재시도 (필요에 따라 조절)
+              handleMemeImageClick(url); 
+            }, 5000); 
           } else {
             console.error(error.message);
           }
@@ -189,9 +204,11 @@ window.getImageFrom= function(){
       memeClickedImage.src = url;
     }
 
+
     // 새로운 likeClickHandler 함수를 정의
     function likeClickHandler(imageRef) {
       like_clicked_number++;
+      console.log(like_clicked_number);
 
       const newMetadata = {
         customMetadata: {
@@ -201,6 +218,14 @@ window.getImageFrom= function(){
 
       imageRef.updateMetadata(newMetadata).then(() => {
         console.log("Like clicked. Metadata updated.");
+
+        imageRef.getMetadata().then(function(metadata) {
+          const likeNumber = metadata.customMetadata.like_number;
+          console.log(likeNumber);
+          const gaze2Div1 = document.querySelector("#meme-item-" + j + " .gaze-2");
+          gaze2Div1.style.width = Math.floor(likeNumber * 0.7) + '%';
+        });
+
       });
     }
 
@@ -209,6 +234,11 @@ window.getImageFrom= function(){
       likebutton.removeEventListener("click", currentLikeClickHandler);
     });
 
+    function getImageIndex(imageRef) {
+      return imagelist.findIndex((item) => {
+        console.log(item.url);
+        return item.url === imageRef.downloadURL;
+      });
+    }
     
-
 }
