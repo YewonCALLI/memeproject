@@ -1,4 +1,4 @@
-import { getStorage, ref, listAll } from "firebase/storage";
+import { getStorage, ref, listAll, getMetadata, updateMetadata } from "firebase/storage";
 
 var fileText=document.querySelector(".fileText");
 var uploadPercentage = document.querySelector(".uploadPercentage");
@@ -24,62 +24,72 @@ fileName = fileItem.name;
 }
 
 window.uploadImageTo= function(){
-let storageRef = firebase.storage().ref('images/'+fileName);
-let uploadTask = storageRef.put(fileItem);
+  let storageRef = firebase.storage().ref('images/'+fileName);
 
-uploadTask.on('state_changed', function(snapshot){
-    console.log(snapshot);
-    percentVal = Math.floor((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
-    console.log(percentVal);
-    uploadPercentage.innerHTML = percentVal + '%';
-    progress.style.width = percentVal + '%';
-},(error)=>{
-    console.log(error);
-},()=>{
-    uploadTask.snapshot.ref.getDownloadURL().then((downloadURL)=>{
-        console.log(downloadURL);
-        fileText.src=downloadURL;
-    });
-}
-);
+  //custom metadata for each image
+  const metadata = {
+      customMetadata: {
+        like_number: 0 
+      }
+  };
+
+  //uploading metadata to firebase storage
+  let uploadTask = storageRef.put(fileItem,metadata);
+
+
+  uploadTask.on('state_changed', function(snapshot){
+      console.log(snapshot);
+      percentVal = Math.floor((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+      console.log(percentVal);
+      uploadPercentage.innerHTML = percentVal + '%';
+      progress.style.width = percentVal + '%';
+  },(error)=>{
+      console.log(error);
+  },()=>{
+      uploadTask.snapshot.ref.getDownloadURL().then((downloadURL)=>{
+          console.log(downloadURL);
+          fileText.src=downloadURL;
+      });
+  }
+  );
 }
 
-let worldfile = document.querySelector(".world img");
-let background = document.querySelector(".background img");
-let memefile = document.querySelector(".meme-image img");
+const background = document.querySelector(".background img");
 const memeItem = document.createElement("div");
+let like_clicked_number;
+
 
 window.getImageFrom= function(){
 
     var storageRef = firebase.storage().ref("images");
-
+    const likebutton = document.querySelector(".like");
     let imagelist = [];
     let i = 0;
+
+    let newMetadata;
 
     // Now we get the references of these images
     storageRef.listAll().then(function(result) {
       result.items.forEach(function(imageRef) {
         // And finally display them
         imagelist.push(imageRef);
-        console.log(imagelist.length)
         i++;
+
+        //좋아요 수 들고오기
+        // imageRef.getMetadata().then(function(metadata) {
+        //   like_clicked_number = metadata.customMetadata.like_number;
+        // });
+
+        //좋아요 수 업데이트
+        // likeClicked(imageRef);
       });
     }).then(function() {
-      displayImage(imagelist);
+      displayImage(imagelist,newMetadata);
+
     }).catch(function(error) {
       // Handle any errors
     });
 
-    // function displayImage(imageRef) {
-    //     imageRef.getDownloadURL().then(function(url) {
-    //         memefile.src=url;
-    //         background.src= url;
-    //         console.log(url);
-    //         worldfile.src=url;
-    //     }).catch(function(error) {
-    //       // Handle any errors
-    //     });
-    // }
 
     function displayImage(imagelist){
 
@@ -114,11 +124,91 @@ window.getImageFrom= function(){
 
       imageRef.getDownloadURL().then(function(url) {
         memeImage.src=url;
-        background.src= url;
-        console.log(url);
-      }).catch(function(error) {
-        // Handle any errors
+        background.src= url;        
+      })
+
+      memeImage.addEventListener("click", function () {
+        handleMemeImageClick(memeImage.src);
       });
     }
+    
+
+    // 전역 변수로 현재 등록된 이벤트 핸들러를 저장할 변수 추가
+    let currentLikeClickHandler = null;
+
+    function handleMemeImageClick(url) {
+      const memeClickedImage = document.querySelector(".meme-clicked img");
+
+      const findMatchingImage = () => {
+        return new Promise((resolve, reject) => {
+          const findImage = async (imageRef) => {
+            const url2 = await imageRef.getDownloadURL();
+            if (url2 === url) {
+              resolve(imageRef);
+            }
+          };
+
+          Promise.all(imagelist.map(findImage)).then(() => {
+            reject(new Error("매칭되는 이미지를 찾을 수 없습니다."));
+          });
+        });
+      };
+
+      // 이미지 찾기 Promise 실행
+      findMatchingImage()
+        .then((matchingImageRef) => {
+          console.log("매칭된 imageRef:", matchingImageRef);
+          matchingImageRef.getMetadata().then(function(metadata) {
+            like_clicked_number = metadata.customMetadata.like_number;
+            console.log(like_clicked_number);
+          });
+
+          // 이전에 등록된 이벤트 핸들러 제거
+          if (currentLikeClickHandler) {
+            likebutton.removeEventListener("click", currentLikeClickHandler);
+          }
+
+          // 새로운 이벤트 핸들러 등록
+          const newLikeClickHandler = likeClickHandler.bind(null, matchingImageRef);
+          likebutton.addEventListener("click", newLikeClickHandler);
+
+          // 현재 등록된 이벤트 핸들러 저장
+          currentLikeClickHandler = newLikeClickHandler;
+        })
+        .catch((error) => {
+          if (error.message.includes("429")) {
+            console.log("요청 속도 제한 초과. 기다린 후 다시 시도합니다.");
+            setTimeout(() => {
+              handleMemeImageClick(url); // 함수 재시도
+            }, 5000); // 5초 기다린 후 재시도 (필요에 따라 조절)
+          } else {
+            console.error(error.message);
+          }
+        });
+
+      memeClickedImage.src = url;
+    }
+
+    // 새로운 likeClickHandler 함수를 정의
+    function likeClickHandler(imageRef) {
+      like_clicked_number++;
+
+      const newMetadata = {
+        customMetadata: {
+          like_number: like_clicked_number,
+        },
+      };
+
+      imageRef.updateMetadata(newMetadata).then(() => {
+        console.log("Like clicked. Metadata updated.");
+      });
+    }
+
+    // 페이지 로딩 시에도 이벤트 핸들러 초기화
+    window.addEventListener("load", function() {
+      likebutton.removeEventListener("click", currentLikeClickHandler);
+    });
+
+    
 
 }

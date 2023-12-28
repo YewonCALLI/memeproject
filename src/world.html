@@ -11,6 +11,10 @@
     <div class="background">
         <img src="">
     </div>
+    <div class="date">
+        <p class="today"></p>
+        <p class="clock"></p>
+    </div>
     <div class="meme-container">
         <img src="./meme/background_circle.svg" class="MEMEPROJECTMEMEPROJECT">
     </div>
@@ -33,12 +37,23 @@
         <div class="Rectangle-100"></div>
         <div class="Rectangle-101"></div>
     </div>
+    <div class="meme-clicked">
+        <div class="meme-clicked-explain">
+            Click to see the meme.
+        </div>
+        <img src="">
+        Do you like it?<br>
+        Save the meme from primitive soup by only click this button.
+        <button class="like">♥LIKE♥</button>
+    </div>
 
     <script>
         window.onload=function(){
             getImageFrom();
-        }
+        }        
     </script>
+
     <script type="module" src="./firebase-image.js"></script>
+    <script type="module" src="./clock.js"></script>
 </body>
 </html>

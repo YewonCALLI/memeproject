@@ -1,3 +1,5 @@
+import { updateMetadata } from "firebase/storage";
+
 const firebaseConfig = {
     apiKey: "AIzaSyDfPi21no_LTdi5szygldb0jF6l_ZDj9HQ",
     authDomain: "memeprojectimage.firebaseapp.com",
@@ -16,6 +18,8 @@ var percentVal;
 var fileItem;
 var fileName;
 
+const firestore = firebase.firestore();
+
 function getFileTo(e){
   fileItem = e.target.files[0];
   fileName = fileItem.name;
@@ -24,20 +28,23 @@ function getFileTo(e){
 
 function uploadImage(){
     let storageRef = firebase.storage().ref('images/'+fileName);
-    let uploadTask = storageRef.put(fileItem);
+    const metadata = {
+        customMetadata: {
+          customMetadata: '0',
+          contentType: 'value2'
+        }
+    };
 
     uploadTask.on('state_changed', function(snapshot){
-        console.log(snapshot);
+        // console.log(snapshot);
+        console.log("update")
         percentVal = Math.floor((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
         console.log(percentVal);
         uploadPercentage.innerHTML = percentVal + '%';
         progress.style.width = percentVal + '%';
+    
     },(error)=>{
         console.log(error);
-    },()=>{
-        uploadTask.snapshot.ref.getDownloadURL().then((downloadURL)=>{
-            console.log(downloadURL);
-        });
     }
     );
 }
