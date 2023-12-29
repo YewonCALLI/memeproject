@@ -3,7 +3,6 @@ let step=1;
 const modal = document.querySelector('.modal2-container');
 const modal3 = document.querySelector('.modal3-container');
 const btnOpenModal=document.querySelector('.btn-open-modal');
-const btnOpenModal2=document.querySelector('.btn-open-modal2');
 
 const button4 = document.querySelector('.Rectangle-57');
 const button5 = document.querySelector('.Rectangle-56');
@@ -41,11 +40,6 @@ btnOpenModal.addEventListener("click", ()=>{
     }
 });
 
-
-btnOpenModal2.addEventListener("click", ()=>{
-    console.log("click");
-  getImageFrom();
-});
 
 button4.addEventListener("click", ()=>{
     step++;

@@ -849,7 +849,7 @@ const tick = () => {
   controls.update();
 
   //Update Camera
-  movingCamera();
+  // movingCamera();
 
   // Render
   renderer.render(scene, camera);

@@ -58,6 +58,7 @@ const background = document.querySelector(".background img");
 const memeItem = document.createElement("div");
 let like_clicked_number;
 let j=0;
+let totalLike = 0;
 
 window.getImageFrom= function(){
 
@@ -122,6 +123,10 @@ window.getImageFrom= function(){
       container.appendChild(memeItemDiv);
       const memeImage = memeItemDiv.querySelector(".meme-image img");
       const gaze2Div = memeItemDiv.querySelector(".gaze-2");
+      const memepng = document.getElementById("memepng");
+      const memenumber = document.getElementById("totalmeme2");
+
+      memenumber.innerHTML = 'Total number of meme : ' +  i;
 
       imageRef.getDownloadURL().then(function(url) {
         memeImage.src=url;
@@ -133,18 +138,20 @@ window.getImageFrom= function(){
         const likeNumber = metadata.customMetadata.like_number;
         console.log(likeNumber);
 
-        gaze2Div.style.width = Math.floor(likeNumber * 0.7) + '%';
+        totalLike += parseInt(likeNumber);
+
+        const totalLikeDiv = document.getElementById("totalmeme");
+        totalLikeDiv.innerHTML = 'Total number of like : ' +  totalLike;
+
+        gaze2Div.style.width = Math.floor(likeNumber * 0.85) + '%';
         
-        // like_clicked_number = metadata.customMetadata.like_number;
-        // console.log(like_clicked_number);
-        // var green = document.querySelector(".gaze-2");
-        // green.style.width = Math.floor(like_clicked_number*0.7) + '%';
       });
 
 
       memeImage.addEventListener("click", function () {
         handleMemeImageClick(memeImage.src);
         j = index;
+        memepng.innerHTML = imageRef.name;
       });
     }
     
@@ -216,16 +223,23 @@ window.getImageFrom= function(){
         },
       };
 
+      const totalLikeDiv = document.getElementById("totalmeme");
+        totalLikeDiv.innerHTML = 'Total number of ♥LIKE♥  : ' +  totalLike;
+
+
       imageRef.updateMetadata(newMetadata).then(() => {
         console.log("Like clicked. Metadata updated.");
 
         imageRef.getMetadata().then(function(metadata) {
           const likeNumber = metadata.customMetadata.like_number;
           console.log(likeNumber);
+
           const gaze2Div1 = document.querySelector("#meme-item-" + j + " .gaze-2");
           gaze2Div1.style.width = Math.floor(likeNumber * 0.7) + '%';
+          
+          console.log(totalLike);
+        
         });
-
       });
     }
 
