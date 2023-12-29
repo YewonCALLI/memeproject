@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 import { gsap } from "gsap";
 import {
@@ -573,6 +574,7 @@ function createGraftiPlane(width, height, imgSrc) {
       map: new THREE.TextureLoader().load(imgSrc),
       transparent: true,
       alphaTest: 0.5,
+      DoubleSide: true,
     })
   );
   plane.rotateY(Math.PI / 2);
@@ -635,8 +637,9 @@ loadModel("/models/meme/meme_door.glb");
 loadModel("/models/meme/meme_door2.glb");
 loadModel("/models/meme/meme_soup1.glb");
 loadModel("/models/meme/meme_soup2.glb");
-loadModel("/models/meme/meme_strawberry.glb");
+loadModel("/models/meme/meme_strawberry.gltf");
 loadModel("/models/meme/meme_sink.glb");
+loadModel("/models/meme/meme_human.glb");
 loadModel("/models/meme/meme_bone.glb");
 loadModel("/models/meme/meme_fire.glb");
 loadModel("/models/meme/meme_frame.glb");
@@ -652,9 +655,20 @@ loadModel("/models/meme/meme_david_bottom.glb");
 loadModel("/models/meme/meme_sofa.glb");
 loadModel("/models/meme/meme_secondfloor.glb");
 
-loadModel("models/meme/meme_desk.glb");
+loadModel("models/meme/meme_desk.gltf");
 
 loadModel("/models/meme/meme_stair.glb");
+
+const fbxLoader = new FBXLoader();
+gltfLoader.load("/models/meme/model.gltf", (object2) => {
+  // mixer = new THREE.AnimationMixer(object2.scene);
+  // const action = mixer.clipAction(object2.animations[0]);
+  // action.play();
+  object2.scene.scale.set(100, 100, 100);
+  scene.add(object2.scene);
+  updateCatMaterials(object2.scene);
+  console.log(object2);
+});
 let mixer = null;
 
 !isMobile &&
