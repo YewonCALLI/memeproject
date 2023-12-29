@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-import {FBXLoader} from "three/examples/jsm/loaders/FBXLoader";
+import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 import { gsap } from "gsap";
 import {
@@ -599,7 +599,7 @@ grafti03.position.x = -1.5;
 grafti03.position.z = 6;
 grafti03.position.y = 0.2;
 grafti03.scale.set(0.2, 0.2);
-grafti03.rotateY(-Math.PI-Math.PI/3);
+grafti03.rotateY(-Math.PI - Math.PI / 3);
 scene.add(grafti03);
 
 const grafti04 = createGraftiPlane(1.5, 1.5, "/meme/heart.png");
@@ -607,7 +607,7 @@ grafti04.position.x = -1.2;
 grafti04.position.z = 5.5;
 grafti04.position.y = 0;
 grafti04.rotateY(-Math.PI);
-grafti04.scale.set(0.15,0.15);
+grafti04.scale.set(0.15, 0.15);
 scene.add(grafti04);
 
 const grafti05 = createGraftiPlane(1.5, 1.5, "/meme/light.png");
@@ -659,8 +659,8 @@ loadModel("models/meme/meme_desk.gltf");
 
 loadModel("/models/meme/meme_stair.glb");
 
-const fbxLoader = new FBXLoader()
-gltfLoader.load('/models/meme/model.gltf', (object2) => {
+const fbxLoader = new FBXLoader();
+gltfLoader.load("/models/meme/model.gltf", (object2) => {
   // mixer = new THREE.AnimationMixer(object2.scene);
   // const action = mixer.clipAction(object2.animations[0]);
   // action.play();
@@ -668,7 +668,7 @@ gltfLoader.load('/models/meme/model.gltf', (object2) => {
   scene.add(object2.scene);
   updateCatMaterials(object2.scene);
   console.log(object2);
-})
+});
 let mixer = null;
 
 !isMobile &&
@@ -849,7 +849,7 @@ const tick = () => {
   controls.update();
 
   //Update Camera
-  // movingCamera();
+  movingCamera();
 
   // Render
   renderer.render(scene, camera);
