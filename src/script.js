@@ -637,12 +637,13 @@ loadModel("/models/meme/meme_door.glb");
 loadModel("/models/meme/meme_door2.glb");
 loadModel("/models/meme/meme_soup1.glb");
 loadModel("/models/meme/meme_soup2.glb");
-loadModel("/models/meme/meme_strawberry.gltf");
 loadModel("/models/meme/meme_sink.glb");
 loadModel("/models/meme/meme_human.glb");
 loadModel("/models/meme/meme_bone.glb");
 loadModel("/models/meme/meme_fire.glb");
 loadModel("/models/meme/meme_frame.glb");
+loadModel("/models/meme/tv.glb");
+loadModel("/models/meme/meme_poster1.glb");
 //when device is mobile, load low poly models
 if (isMobile) {
   loadModel("/models/meme/meme_david_top_lo.glb");
@@ -654,9 +655,6 @@ loadModel("/models/meme/meme_david_bottom.glb");
 
 loadModel("/models/meme/meme_sofa.glb");
 loadModel("/models/meme/meme_secondfloor.glb");
-
-loadModel("models/meme/meme_desk.gltf");
-
 loadModel("/models/meme/meme_stair.glb");
 
 const fbxLoader = new FBXLoader();
