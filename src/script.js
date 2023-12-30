@@ -21,6 +21,8 @@ let prevStep = 0;
 let scriptIsEnd = false;
 const backMove = false;
 const backBtn = document.querySelector(".back-btn");
+let drone;
+
 backBtn.addEventListener("click", () => {
   step = 1;
   !backMove ? (backMove = true) : (backMove = false);
@@ -618,6 +620,9 @@ grafti05.scale.set(0.1, 0.1);
 grafti05.rotateY(-Math.PI);
 scene.add(grafti05);
 
+let mixer = null;
+let mixer2 = null;
+
 /**
  * GLTF Models
  */
@@ -630,7 +635,21 @@ function loadModel(modelUrl, updateMaterialsCallback) {
     updateMaterialsCallback && updateMaterialsCallback(model.scene);
   });
 }
-
+function loadModel2(modelUrl, updateMaterialsCallback) {
+  gltfLoader.load(modelUrl, (model) => {
+    mixer2 = new THREE.AnimationMixer(model.scene);
+    const action = mixer2.clipAction(model.animations[0]);
+    action.play();
+    
+    model.scene.scale.set(1, 1, 1);
+    model.scene.position.set(0, -3, 0);
+    model.scene.rotation.y = Math.PI * 0.5;
+  
+    scene.add(model.scene);
+    console.log(model.animations)
+    updateMaterialsCallback && updateMaterialsCallback(model.scene);
+  });
+}
 loadModel("/models/meme/meme_house.glb", updateHouseMaterials);
 loadModel("/models/meme/meme_hose.glb", updateHouseMaterials);
 loadModel("/models/meme/meme_door.glb");
@@ -644,6 +663,10 @@ loadModel("/models/meme/meme_fire.glb");
 loadModel("/models/meme/meme_frame.glb");
 loadModel("/models/meme/tv.glb");
 loadModel("/models/meme/meme_poster1.glb");
+loadModel("/models/meme/meme_poster_achive.glb");
+loadModel2("/models/meme/meme_priest.glb");
+
+drone = loadModel("/models/meme/meme_drone.glb");
 //when device is mobile, load low poly models
 if (isMobile) {
   loadModel("/models/meme/meme_david_top_lo.glb");
@@ -667,7 +690,19 @@ gltfLoader.load("/models/meme/model.gltf", (object2) => {
   updateCatMaterials(object2.scene);
   console.log(object2);
 });
-let mixer = null;
+
+
+// gltfLoader.load("/models/meme/meme_priest.glb", (object3) => {
+//   mixer = new THREE.AnimationMixer(object3.scene);
+//   const action = mixer.clipAction(object3.animations[0]);
+//   action.play();
+//   object3.scene.scale.set(3, 3, 3);
+//   cat.scene.position.set(0.682, -2.375, 0);
+//   updateCatMaterials(object3.scene);
+//   console.log(object3.animations[0])
+
+//   scene.add(object3.scene);
+// });
 
 !isMobile &&
   gltfLoader.load("/models/meme/meme_cat-no_tex.glb", (cat) => {
@@ -843,11 +878,14 @@ const tick = () => {
   if (mixer) {
     mixer.update(deltaTime * 1.5);
   }
+  if (mixer2) {
+    mixer2.update(deltaTime * 1.5);
+  }
   //update controls
   controls.update();
 
   //Update Camera
-  movingCamera();
+  // movingCamera();
 
   // Render
   renderer.render(scene, camera);
