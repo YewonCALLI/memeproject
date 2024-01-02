@@ -567,6 +567,27 @@ const updateCatMaterials = (model) => {
   });
 };
 
+const video = document.getElementById("video");
+video.onloadeddata = function () {
+  video.play();
+};
+const videoTexture = new THREE.VideoTexture(video);
+videoTexture.needsUpdate = true;
+videoTexture.flipY = false;
+videoTexture.repeat.x = -1; // 수평으로 뒤집기
+videoTexture.offset.x = 1; // 오프셋 조정으로 이미지 위치 재조정
+const videoMaterial = new THREE.MeshBasicMaterial({
+  map: videoTexture,
+  side: THREE.DoubleSide,
+});
+videoMaterial.needsUpdate = true;
+
+const updateTVMaterials = (model) => {
+  //update video texture to third child of model
+  model.children[2].material = videoMaterial;
+  console.log(model.children[2]);
+};
+
 /**
  * Grafti Planes
  *  */
@@ -641,13 +662,13 @@ function loadModel2(modelUrl, updateMaterialsCallback) {
     mixer2 = new THREE.AnimationMixer(model.scene);
     const action = mixer2.clipAction(model.animations[0]);
     action.play();
-    
+
     model.scene.scale.set(1, 1, 1);
     model.scene.position.set(0, -3, 0);
     model.scene.rotation.y = Math.PI * 0.5;
-  
+
     scene.add(model.scene);
-    console.log(model.animations)
+    console.log(model.animations);
     updateMaterialsCallback && updateMaterialsCallback(model.scene);
   });
 }
@@ -665,18 +686,17 @@ function loadModel3(modelUrl, updateMaterialsCallback) {
 /**
  * PLY Models
  */
-const loader = new PLYLoader()
+const loader = new PLYLoader();
 
 function loadPLYModel(modelUrl, updateMaterialsCallback) {
   loader.load(modelUrl, (geometry) => {
-    
-    geometry.computeVertexNormals()
-    const mesh = new THREE.Mesh(geometry,material)
-    mesh.rotateX(-Math.PI / 2)
-    mesh.scale.set(1.8, 1.8, 1.8)
-    mesh.position.set(7.4, -3.0, 7.3)
-    scene.add(mesh)
-  
+    geometry.computeVertexNormals();
+    const mesh = new THREE.Mesh(geometry, material);
+    mesh.rotateX(-Math.PI / 2);
+    mesh.scale.set(1.8, 1.8, 1.8);
+    mesh.position.set(7.4, -3.0, 7.3);
+    scene.add(mesh);
+
     // model.scene.scale.set(1, 1, 1);
     // model.scene.position.set(0, -3, 0);
     // model.scene.rotation.y = Math.PI * 0.5;
@@ -684,7 +704,6 @@ function loadPLYModel(modelUrl, updateMaterialsCallback) {
     // updateMaterialsCallback && updateMaterialsCallback(model.scene);
   });
 }
-
 
 loadModel("/models/meme/meme_house.glb", updateHouseMaterials);
 loadModel("/models/meme/meme_hose.glb", updateHouseMaterials);
@@ -697,7 +716,7 @@ loadModel("/models/meme/meme_human.glb");
 loadModel("/models/meme/meme_bone.glb");
 loadModel("/models/meme/meme_fire.glb");
 loadModel("/models/meme/meme_frame.glb");
-loadModel("/models/meme/tv.glb");
+loadModel("/models/meme/tv.glb", updateTVMaterials);
 loadModel("/models/meme/meme_poster1.glb");
 loadModel("/models/meme/meme_poster_achive.glb");
 loadModel2("/models/meme/meme_priest.glb");
@@ -739,8 +758,6 @@ const material = new THREE.MeshStandardMaterial({
   color: 0xffffff,
   DoubleSide: true,
 });
-
-
 
 !isMobile &&
   gltfLoader.load("/models/meme/meme_cat-no_tex.glb", (cat) => {
