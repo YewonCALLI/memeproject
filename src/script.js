@@ -2,6 +2,7 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
+import { PLYLoader } from "three/examples/jsm/loaders/PLYLoader.js";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 import { gsap } from "gsap";
 import {
@@ -650,6 +651,41 @@ function loadModel2(modelUrl, updateMaterialsCallback) {
     updateMaterialsCallback && updateMaterialsCallback(model.scene);
   });
 }
+
+function loadModel3(modelUrl, updateMaterialsCallback) {
+  gltfLoader.load(modelUrl, (model) => {
+    model.scene.scale.set(1.2, 1.2, 1.0);
+    model.scene.position.set(1.5, -2.9, -2.0);
+    model.scene.rotation.y = Math.PI * 0.5;
+    scene.add(model.scene);
+    updateMaterialsCallback && updateMaterialsCallback(model.scene);
+  });
+}
+
+/**
+ * PLY Models
+ */
+const loader = new PLYLoader()
+
+function loadPLYModel(modelUrl, updateMaterialsCallback) {
+  loader.load(modelUrl, (geometry) => {
+    
+    geometry.computeVertexNormals()
+    const mesh = new THREE.Mesh(geometry,material)
+    mesh.rotateX(-Math.PI / 2)
+    mesh.scale.set(1.8, 1.8, 1.8)
+    mesh.position.set(7.4, -3.0, 7.3)
+    scene.add(mesh)
+  
+    // model.scene.scale.set(1, 1, 1);
+    // model.scene.position.set(0, -3, 0);
+    // model.scene.rotation.y = Math.PI * 0.5;
+    // scene.add(model.scene);
+    // updateMaterialsCallback && updateMaterialsCallback(model.scene);
+  });
+}
+
+
 loadModel("/models/meme/meme_house.glb", updateHouseMaterials);
 loadModel("/models/meme/meme_hose.glb", updateHouseMaterials);
 loadModel("/models/meme/meme_door.glb");
@@ -666,14 +702,22 @@ loadModel("/models/meme/meme_poster1.glb");
 loadModel("/models/meme/meme_poster_achive.glb");
 loadModel2("/models/meme/meme_priest.glb");
 
+loadPLYModel("/models/meme/david_box1.ply");
+loadPLYModel("/models/meme/david_box2.ply");
+loadPLYModel("/models/meme/david_box3.ply");
+loadPLYModel("/models/meme/david_box4.ply");
+loadPLYModel("/models/meme/david_box5.ply");
+loadPLYModel("/models/meme/david_box6.ply");
+loadPLYModel("/models/meme/david_box7.ply");
+
 drone = loadModel("/models/meme/meme_drone.glb");
 //when device is mobile, load low poly models
-if (isMobile) {
-  loadModel("/models/meme/meme_david_top_lo.glb");
-} else {
-  loadModel("/models/meme/meme_david_top.glb");
-}
-loadModel("/models/meme/meme_david_bottom.glb");
+// if (isMobile) {
+//   loadModel("/models/meme/meme_david_top_lo.glb");
+// } else {
+//   loadModel("/models/meme/meme_david_top.glb");
+// }
+// loadModel("/models/meme/meme_david_bottom.glb");
 !isMobile && loadModel("/models/meme/meme_hermes.glb");
 
 loadModel("/models/meme/meme_sofa.glb");
@@ -691,18 +735,12 @@ gltfLoader.load("/models/meme/model.gltf", (object2) => {
   console.log(object2);
 });
 
+const material = new THREE.MeshStandardMaterial({
+  color: 0xffffff,
+  DoubleSide: true,
+});
 
-// gltfLoader.load("/models/meme/meme_priest.glb", (object3) => {
-//   mixer = new THREE.AnimationMixer(object3.scene);
-//   const action = mixer.clipAction(object3.animations[0]);
-//   action.play();
-//   object3.scene.scale.set(3, 3, 3);
-//   cat.scene.position.set(0.682, -2.375, 0);
-//   updateCatMaterials(object3.scene);
-//   console.log(object3.animations[0])
 
-//   scene.add(object3.scene);
-// });
 
 !isMobile &&
   gltfLoader.load("/models/meme/meme_cat-no_tex.glb", (cat) => {
@@ -766,6 +804,17 @@ window.addEventListener("resize", () => {
   renderer.setSize(sizes.width, sizes.height);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 });
+
+/**
+ * Video Texture
+ */
+
+// const video = document.getElementById( 'video' );
+// const texture = new THREE.VideoTexture( video );
+// texture = new THREE.Texture(video);
+// texture.minFilter = THREE.LinearFilter;
+// texture.magFilter = THREE.LinearFilter;
+// texture.generateMipmaps = false;
 
 /**
  * Camera
