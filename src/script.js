@@ -754,17 +754,17 @@ loadModel("/models/meme/meme_fire.glb");
 loadModel("/models/meme/tv.glb", updateTVMaterials);
 loadModel("/models/meme/meme_poster1.glb");
 loadModel("/models/meme/meme_poster_achive.glb");
-loadModel("/models/meme/meme1.glb");
-loadModel("/models/meme/meme2.glb");
-loadModel2("/models/meme/meme3.glb");
-loadModel("/models/meme/meme4.glb");
-loadModel("/models/meme/meme5.glb");
-meme6loadModel("/models/meme/meme6.glb");
-loadModel("/models/meme/meme7.glb");
-loadModel("/models/meme/meme8.glb");
-loadModel("/models/meme/meme9.glb");
-loadModel("/models/meme/meme10.glb");
-loadModel("/models/meme/meme11.glb");
+// loadModel("/models/meme/meme1.glb");
+// loadModel("/models/meme/meme2.glb");
+// loadModel2("/models/meme/meme3.glb");
+// loadModel("/models/meme/meme4.glb");
+// loadModel("/models/meme/meme5.glb");
+// meme6loadModel("/models/meme/meme6.glb");
+// loadModel("/models/meme/meme7.glb");
+// loadModel("/models/meme/meme8.glb");
+// loadModel("/models/meme/meme9.glb");
+// loadModel("/models/meme/meme10.glb");
+// loadModel("/models/meme/meme11.glb");
 
 // loadModel2("/models/meme/meme_priest.glb");
 
