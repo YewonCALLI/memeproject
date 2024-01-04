@@ -579,13 +579,13 @@ videoTexture.offset.x = 1; // 오프셋 조정으로 이미지 위치 재조정
 const videoMaterial = new THREE.MeshBasicMaterial({
   map: videoTexture,
   side: THREE.DoubleSide,
+  lightMapIntensity: 0.1,
 });
 videoMaterial.needsUpdate = true;
 
 const updateTVMaterials = (model) => {
   //update video texture to third child of model
   model.children[2].material = videoMaterial;
-  console.log(model.children[2]);
 };
 
 /**
@@ -653,6 +653,15 @@ function loadModel(modelUrl, updateMaterialsCallback) {
     model.scene.scale.set(1, 1, 1);
     model.scene.position.set(0, -3, 0);
     model.scene.rotation.y = Math.PI * 0.5;
+    model.scene.castShadow = true;
+    model.scene.receiveShadow = true;
+    model.scene.traverse((child) => {
+      if (child instanceof THREE.Mesh) {
+        child.castShadow = true;
+        child.receiveShadow = true;
+      }
+    }
+    );
     scene.add(model.scene);
     updateMaterialsCallback && updateMaterialsCallback(model.scene);
   });
@@ -660,15 +669,42 @@ function loadModel(modelUrl, updateMaterialsCallback) {
 function loadModel2(modelUrl, updateMaterialsCallback) {
   gltfLoader.load(modelUrl, (model) => {
     mixer2 = new THREE.AnimationMixer(model.scene);
-    const action = mixer2.clipAction(model.animations[0]);
+    const action = mixer2.clipAction(model.animations[7]);
     action.play();
 
     model.scene.scale.set(1, 1, 1);
     model.scene.position.set(0, -3, 0);
     model.scene.rotation.y = Math.PI * 0.5;
-
+    model.scene.traverse((child) => {
+      if (child instanceof THREE.Mesh) {
+        child.castShadow = true;
+        child.receiveShadow = true;
+      }
+    }
+    );
     scene.add(model.scene);
-    console.log(model.animations);
+    updateMaterialsCallback && updateMaterialsCallback(model.scene);
+  });
+}
+
+var meme6;
+
+function meme6loadModel(modelUrl, updateMaterialsCallback) {
+  gltfLoader.load(modelUrl, (model) => {
+    model.scene.scale.set(1, 1, 1);
+    model.scene.position.set(0, -3, 0);
+    model.scene.rotation.y = Math.PI * 0.5;
+    model.scene.castShadow = true;
+    model.scene.receiveShadow = true;
+    model.scene.traverse((child) => {
+      if (child instanceof THREE.Mesh) {
+        child.castShadow = true;
+        child.receiveShadow = true;
+      }
+    }
+    );
+    meme6 = model.scene.children[3];
+    scene.add(model.scene);
     updateMaterialsCallback && updateMaterialsCallback(model.scene);
   });
 }
@@ -712,24 +748,26 @@ loadModel("/models/meme/meme_door2.glb");
 loadModel("/models/meme/meme_soup1.glb");
 loadModel("/models/meme/meme_soup2.glb");
 loadModel("/models/meme/meme_sink.glb");
-loadModel("/models/meme/meme_human.glb");
 loadModel("/models/meme/meme_bone.glb");
 loadModel("/models/meme/meme_fire.glb");
-loadModel("/models/meme/meme_frame.glb");
+
 loadModel("/models/meme/tv.glb", updateTVMaterials);
 loadModel("/models/meme/meme_poster1.glb");
 loadModel("/models/meme/meme_poster_achive.glb");
-loadModel2("/models/meme/meme_priest.glb");
+loadModel("/models/meme/meme1.glb");
+loadModel("/models/meme/meme2.glb");
+loadModel2("/models/meme/meme3.glb");
+loadModel("/models/meme/meme4.glb");
+loadModel("/models/meme/meme5.glb");
+meme6loadModel("/models/meme/meme6.glb");
+loadModel("/models/meme/meme7.glb");
+loadModel("/models/meme/meme8.glb");
+loadModel("/models/meme/meme9.glb");
+loadModel("/models/meme/meme10.glb");
+loadModel("/models/meme/meme11.glb");
 
-loadPLYModel("/models/meme/david_box1.ply");
-loadPLYModel("/models/meme/david_box2.ply");
-loadPLYModel("/models/meme/david_box3.ply");
-loadPLYModel("/models/meme/david_box4.ply");
-loadPLYModel("/models/meme/david_box5.ply");
-loadPLYModel("/models/meme/david_box6.ply");
-loadPLYModel("/models/meme/david_box7.ply");
+// loadModel2("/models/meme/meme_priest.glb");
 
-drone = loadModel("/models/meme/meme_drone.glb");
 //when device is mobile, load low poly models
 // if (isMobile) {
 //   loadModel("/models/meme/meme_david_top_lo.glb");
@@ -737,10 +775,8 @@ drone = loadModel("/models/meme/meme_drone.glb");
 //   loadModel("/models/meme/meme_david_top.glb");
 // }
 // loadModel("/models/meme/meme_david_bottom.glb");
-!isMobile && loadModel("/models/meme/meme_hermes.glb");
+// !isMobile && loadModel("/models/meme/meme_hermes.glb");
 
-loadModel("/models/meme/meme_sofa.glb");
-loadModel("/models/meme/meme_secondfloor.glb");
 loadModel("/models/meme/meme_stair.glb");
 
 const fbxLoader = new FBXLoader();
@@ -751,7 +787,6 @@ gltfLoader.load("/models/meme/model.gltf", (object2) => {
   object2.scene.scale.set(100, 100, 100);
   scene.add(object2.scene);
   updateCatMaterials(object2.scene);
-  console.log(object2);
 });
 
 const material = new THREE.MeshStandardMaterial({
@@ -789,16 +824,42 @@ const axesHelper = new THREE.AxesHelper(5);
 /**
  * Lights
  */
-const ambientLight = new THREE.AmbientLight("#ffffff", 1);
+const ambientLight = new THREE.AmbientLight("#ffffff", 1.5);
 
-const directionalLight = new THREE.DirectionalLight("#ffffff", 3);
+const directionalLight = new THREE.DirectionalLight("#ffffff", 5);
 directionalLight.castShadow = true;
 directionalLight.shadow.camera.far = 15;
 directionalLight.shadow.mapSize.set(1024, 1024);
 directionalLight.shadow.normalBias = 0.05;
 directionalLight.position.set(0.25, 3, -2.25);
+directionalLight.target.position.set(0, 0, 5);
 
 scene.add(ambientLight, directionalLight);
+
+const pointLight = new THREE.PointLight("#ffffff", 6);
+pointLight.castShadow = true;
+pointLight.shadow.camera.far = 15;
+pointLight.shadow.mapSize.set(1024, 1024);
+pointLight.shadow.normalBias = 0.05;
+pointLight.position.set(-1, -2, 4.5);
+
+scene.add(pointLight);
+
+const pointLight2 = new THREE.PointLight("#C3FFE3", 6);
+pointLight2.castShadow = true;
+pointLight2.shadow.camera.far = 15;
+pointLight2.shadow.mapSize.set(1024, 1024);
+pointLight2.shadow.normalBias = 0.05;
+pointLight2.position.set(-3, 1, 4.5);
+
+scene.add(pointLight2);
+
+//ligth helper
+// const directionalLightHelper = new THREE.DirectionalLightHelper(directionalLight);
+// scene.add(directionalLightHelper);
+
+// const pointLightHelper = new THREE.PointLightHelper(pointLight);
+// scene.add(pointLightHelper);
 
 /**
  * Sizes
@@ -947,7 +1008,12 @@ const tick = () => {
   if (mixer2) {
     mixer2.update(deltaTime * 1.5);
   }
+  if(meme6){
+    meme6.rotation.y += 0.01;
+    meme6.position.y = Math.sin(elapsedTime) * 0.1+2.4;
+  }
   //update controls
+
   controls.update();
 
   //Update Camera
