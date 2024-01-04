@@ -836,23 +836,23 @@ directionalLight.target.position.set(0, 0, 5);
 
 scene.add(ambientLight, directionalLight);
 
-const pointLight = new THREE.PointLight("#ffffff", 6);
-pointLight.castShadow = true;
-pointLight.shadow.camera.far = 15;
-pointLight.shadow.mapSize.set(1024, 1024);
-pointLight.shadow.normalBias = 0.05;
-pointLight.position.set(-1, -2, 4.5);
+// const pointLight = new THREE.PointLight("#ffffff", 6);
+// pointLight.castShadow = true;
+// pointLight.shadow.camera.far = 15;
+// pointLight.shadow.mapSize.set(1024, 1024);
+// pointLight.shadow.normalBias = 0.05;
+// pointLight.position.set(-1, -2, 4.5);
 
-scene.add(pointLight);
+// scene.add(pointLight);
 
-const pointLight2 = new THREE.PointLight("#C3FFE3", 6);
-pointLight2.castShadow = true;
-pointLight2.shadow.camera.far = 15;
-pointLight2.shadow.mapSize.set(1024, 1024);
-pointLight2.shadow.normalBias = 0.05;
-pointLight2.position.set(-3, 1, 4.5);
+// const pointLight2 = new THREE.PointLight("#C3FFE3", 6);
+// pointLight2.castShadow = true;
+// pointLight2.shadow.camera.far = 15;
+// pointLight2.shadow.mapSize.set(1024, 1024);
+// pointLight2.shadow.normalBias = 0.05;
+// pointLight2.position.set(-3, 1, 4.5);
 
-scene.add(pointLight2);
+// scene.add(pointLight2);
 
 //ligth helper
 // const directionalLightHelper = new THREE.DirectionalLightHelper(directionalLight);
