@@ -754,7 +754,7 @@ loadModel("/models/meme/meme_fire.glb");
 // loadModel("/models/meme/tv.glb", updateTVMaterials);
 loadModel("/models/meme/meme_poster1.glb");
 loadModel("/models/meme/meme_poster_achive.glb");
-loadModel("/models/meme/meme1.glb");
+// loadModel("/models/meme/meme1.glb");
 loadModel("/models/meme/meme2.glb");
 // loadModel2("/models/meme/meme3.glb");
 // loadModel("/models/meme/meme4.glb");
