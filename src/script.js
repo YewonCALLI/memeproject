@@ -756,7 +756,7 @@ loadModel("/models/meme/meme_poster1.glb");
 loadModel("/models/meme/meme_poster_achive.glb");
 loadModel("/models/meme/meme1.glb");
 loadModel("/models/meme/meme2.glb");
-loadModel2("/models/meme/meme3.glb");
+// loadModel2("/models/meme/meme3.glb");
 // loadModel("/models/meme/meme4.glb");
 // loadModel("/models/meme/meme5.glb");
 // meme6loadModel("/models/meme/meme6.glb");
@@ -824,9 +824,9 @@ const axesHelper = new THREE.AxesHelper(5);
 /**
  * Lights
  */
-const ambientLight = new THREE.AmbientLight("#ffffff", 1.5);
+const ambientLight = new THREE.AmbientLight("#C3FFE3", 1.5);
 
-const directionalLight = new THREE.DirectionalLight("#ffffff", 5);
+const directionalLight = new THREE.DirectionalLight("#ffffff", 10);
 directionalLight.castShadow = true;
 directionalLight.shadow.camera.far = 15;
 directionalLight.shadow.mapSize.set(1024, 1024);
@@ -836,14 +836,14 @@ directionalLight.target.position.set(0, 0, 5);
 
 scene.add(ambientLight, directionalLight);
 
-// const pointLight = new THREE.PointLight("#ffffff", 6);
-// pointLight.castShadow = true;
-// pointLight.shadow.camera.far = 15;
-// pointLight.shadow.mapSize.set(1024, 1024);
-// pointLight.shadow.normalBias = 0.05;
-// pointLight.position.set(-1, -2, 4.5);
+const pointLight = new THREE.PointLight("#ffffff", 6);
+pointLight.castShadow = true;
+pointLight.shadow.camera.far = 15;
+pointLight.shadow.mapSize.set(1024, 1024);
+pointLight.shadow.normalBias = 0.05;
+pointLight.position.set(-1, -2, 4.5);
 
-// scene.add(pointLight);
+scene.add(pointLight);
 
 // const pointLight2 = new THREE.PointLight("#C3FFE3", 6);
 // pointLight2.castShadow = true;
