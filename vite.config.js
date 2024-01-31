@@ -15,9 +15,9 @@ export default defineConfig({
     sourcemap: true, // Add sourcemap
     rollupOptions: {
       input: {
-        main: resolve(__dirname, "index.html"),
-        drawing: resolve(__dirname, "drawing.html"),
-        world: resolve(__dirname, "world.html"),
+        main: resolve(__dirname, "src/index.html"),
+        drawing: resolve(__dirname, "src/drawing.html"),
+        world: resolve(__dirname, "src/world.html"),
       },
     },
   },
