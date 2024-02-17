@@ -1,3 +1,5 @@
+import { createClient } from "pexels";
+
 let step = 1;
 
 const modal = document.querySelector(".modal2-container");
@@ -109,3 +111,22 @@ button5.addEventListener("click", () => {
 button6.addEventListener("click", () => {
   modal3.style.display = "none";
 });
+
+const client = createClient(
+  "W51detNdues2RsdrwvjZRLsnk7xdAwp7zmwRnM4u9ORQHqi4s8VxuBmX"
+);
+
+let query = document.getElementById("firstname").value;
+
+let button = document.getElementById("button2");
+let result = document.getElementById("result");
+
+button.onclick = function () {
+  console.log("search button clicked");
+  query = document.getElementById("firstname").value;
+  client.photos.search({ query, per_page: 8 }).then((photos) => {
+    result.innerHTML = photos.photos
+      .map((photo) => `<img src="${photo.src.medium}">`)
+      .join("");
+  });
+};
