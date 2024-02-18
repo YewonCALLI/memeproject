@@ -24,6 +24,7 @@ const backMove = false;
 const backBtn = document.querySelector(".back-btn");
 let drone;
 
+//확인 
 backBtn.addEventListener("click", () => {
   step = 1;
   !backMove ? (backMove = true) : (backMove = false);
@@ -554,6 +555,7 @@ const updateHouseMaterials = (model) => {
   });
 };
 
+
 const catTexture = new THREE.TextureLoader().load("/meme/cat-texture.png");
 catTexture.flipY = false;
 
@@ -725,8 +727,28 @@ function loadModel2(modelUrl, updateMaterialsCallback) {
 }
 
 var meme6;
-
+var meme1;
 var meme4;
+
+function meme1loadModel(modelUrl, updateMaterialsCallback) {
+  gltfLoader.load(modelUrl, (model) => {
+    model.scene.scale.set(1, 1, 1);
+    model.scene.position.set(0, -3, 0);
+    model.scene.rotation.y = Math.PI * 0.5;
+    model.scene.castShadow = true;
+    model.scene.receiveShadow = true;
+    model.scene.traverse((child) => {
+      if (child instanceof THREE.Mesh) {
+        child.castShadow = true;
+        child.receiveShadow = true;
+      }
+    }
+    );
+    meme1 = model.scene.children[3];
+    scene.add(model.scene);
+    updateMaterialsCallback && updateMaterialsCallback(model.scene);
+  });
+}
 
 function meme6loadModel(modelUrl, updateMaterialsCallback) {
   gltfLoader.load(modelUrl, (model) => {
@@ -785,15 +807,20 @@ function loadModel3(modelUrl, updateMaterialsCallback) {
  * PLY Models
  */
 const loader = new PLYLoader();
+const pajamaTexture = new THREE.TextureLoader().load("/meme/material_0_baseColor.png");
+
 
 function loadPLYModel(modelUrl, updateMaterialsCallback) {
   loader.load(modelUrl, (geometry) => {
     geometry.computeVertexNormals();
+    const material = new THREE.MeshStandardMaterial( { map:pajamaTexture } );
     const mesh = new THREE.Mesh(geometry, material);
     mesh.rotateX(-Math.PI / 2);
-    mesh.scale.set(1.8, 1.8, 1.8);
-    mesh.position.set(7.4, -3.0, 7.3);
+    mesh.scale.set(1.0, 1.0, 1.0);
+    mesh.position.set(0, -3.0, 0.77);
+    mesh.rotateZ(Math.PI / 2);
     scene.add(mesh);
+
 
     // model.scene.scale.set(1, 1, 1);
     // model.scene.position.set(0, -3, 0);
@@ -819,6 +846,8 @@ loadModel("/models/meme/meme_fire.glb");
 loadModel("/models/meme/tv.glb", updateTVMaterials);
 loadModel("/models/meme/meme_poster1.glb");
 loadModel("/models/meme/meme_poster_achive.glb");
+loadPLYModel("/models/meme/meme1.ply");
+meme1loadModel("/models/meme/meme1.glb");
 loadModel("/models/meme/meme2.glb");
 loadModel2("/models/meme/meme3.glb");
 meme4loadModel("/models/meme/meme4.glb");
@@ -1034,8 +1063,8 @@ function movingCamera() {
       hideBackBtn();
       break;
     case 2:
-      moveCamera(-3, -1, 2); //냉장고 바로 앞
-      camera.lookAt(-2.5, -2, -6);
+      moveCamera(-3, -1, 0.9); //냉장고 바로 앞
+      camera.lookAt(-2.0, -1, -4);
       setTimeout(()=>{ video.play(); }, 20000);
       showBackBtn();
       break;
@@ -1055,28 +1084,28 @@ function movingCamera() {
       showBackBtn();
       break;
     case 6:
-      moveCamera(-4, -2, 3); //1층 그림 앞
-      camera.lookAt(0, -2, 5);
+      moveCamera(-3, -2.5, 3.7); //1번 밈
+      camera.lookAt(0, -2.5, 3.7);
       showBackBtn();
       break;
     case 7:
-      moveCamera(-1, -2, 3); //1층 다비드 앞
-      camera.lookAt(-1, -2, 5);
+      moveCamera(-3, -2.5, 4.5); //2번 밈
+      camera.lookAt(0, -2.5, 4.5);
       showBackBtn();
       break;
     case 8:
-      moveCamera(-3.5, -0.3, 4.5); //2층 헤르메스 앞
-      camera.lookAt(-1, 0, 6);
+      moveCamera(-3, -2.5, 5.3);//3번 밈
+      camera.lookAt(0, -2.5, 5.3);
       showBackBtn();
       break;
     case 9:
-      moveCamera(-3.5, -0.3, 6); //2층 컴퓨터 앞
-      camera.lookAt(-4, 0, 0);
+      moveCamera(-3.6, -2.5, 5.3); //4번 밈
+      camera.lookAt(3, -3.5, 9.3);
       showBackBtn();
       break;
     case 10:
-      moveCamera(-3.5, 1.5, 4.5); // 3층 앞
-      camera.lookAt(-1, 1.5, 4.5);
+      moveCamera(-4.6, -2.5, 5.3); // 5번 밈
+      camera.lookAt(3, -3.5, 10.0);
       showBackBtn();
       break;
   }
@@ -1098,6 +1127,10 @@ const tick = () => {
   }
   if (mixer2) {
     mixer2.update(deltaTime * 1.5);
+  }
+  if(meme1){
+    meme1.rotation.z += 0.01;
+    meme1.position.y = Math.sin(elapsedTime) * 0.1+0.54;
   }
   if(meme6){
     meme6.rotation.y += 0.01;
