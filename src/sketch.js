@@ -16,6 +16,7 @@ var sketch = (p5) => {
   let preselectimg = "";
   let input2 = document.getElementById("textinput");
   let img1;
+  let cat;
   let n = 0;
   let result2 = "";
   let preinput;
@@ -32,6 +33,7 @@ var sketch = (p5) => {
 
   p5.preload = () => {
     img1 = p5.loadImage("./meme/palette.png");
+    cat = p5.loadImage("./meme/cat.jpg");
   };
 
   p5.draw = () => {
@@ -40,7 +42,7 @@ var sketch = (p5) => {
     }
     p5.image(canvas2, 0, 0, 350, 420);
     p5.image(img1, 0, 0, 350, 70);
-    console.log("selectedimg", selectimg);
+    // console.log("selectedimg", selectimg);
 
     // image(img[2], 0, 0);
     // image(img[3], 550, 0);
@@ -49,6 +51,7 @@ var sketch = (p5) => {
     p5.stroke(255);
 
     if ((selectimg != "") & (n == 0)) {
+      canvas2;
       console.log("go");
       canvas2.image(selectimg, 0, 120, 350, 200);
       preselectimg = selectimg;
@@ -75,11 +78,12 @@ var sketch = (p5) => {
     let modal3 = document.querySelector(".modal3-container");
 
     button3.onclick = () => {
+      console.log("submit button clicked");
       input2 = document.getElementById("textinput");
       p5.push();
       canvas2.strokeWeight(0);
       canvas2.textSize(15);
-      canvas2.textAlign(CENTER);
+      canvas2.textAlign(p5.CENTER);
       canvas2.text(input2.value, 175, 370);
       p5.pop();
       p5.saveCanvas(canvas2, "myCanvas", "jpg");
