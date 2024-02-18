@@ -568,14 +568,16 @@ const updateCatMaterials = (model) => {
 };
 
 const video = document.getElementById("video");
-video.onloadeddata = function () {
-  video.play();
-};
+// video.onloadeddata = function () {
+//   video.play();
+// };
 const videoTexture = new THREE.VideoTexture(video);
 videoTexture.needsUpdate = true;
 videoTexture.flipY = false;
 videoTexture.repeat.x = -1; // 수평으로 뒤집기
 videoTexture.offset.x = 1; // 오프셋 조정으로 이미지 위치 재조정
+videoTexture.colorSpace = THREE.SRGBColorSpace;
+
 const videoMaterial = new THREE.MeshBasicMaterial({
   map: videoTexture,
   side: THREE.DoubleSide,
@@ -583,9 +585,40 @@ const videoMaterial = new THREE.MeshBasicMaterial({
 });
 videoMaterial.needsUpdate = true;
 
+const video2 = document.getElementById("video2");
+video2.onloadeddata = function () {
+  video2.play();
+};
+const videoTexture2 = new THREE.VideoTexture(video2);
+videoTexture2.needsUpdate = true;
+videoTexture2.flipY = true;
+videoTexture2.repeat.x = -1; // 수평으로 뒤집기
+videoTexture2.offset.x = 1; // 오프셋 조정으로 이미지 위치 재조정
+videoTexture2.colorSpace = THREE.SRGBColorSpace;
+
+const videoMaterial2 = new THREE.MeshBasicMaterial({
+  map: videoTexture2,
+  lightMapIntensity: 0.1,
+});
+videoMaterial2.needsUpdate = true;
+
 const updateTVMaterials = (model) => {
   //update video texture to third child of model
   model.children[2].material = videoMaterial;
+};
+
+const updateTVMaterials2 = (model) => {
+  //update video texture to third child of model
+  model.material = videoMaterial2;
+  model.children[0].material = videoMaterial2;
+  model.children[1].material = videoMaterial2;
+  model.children[2].material = videoMaterial2;
+  model.children[3].material = videoMaterial2;
+  model.children[4].material = videoMaterial2;
+  model.children[5].material = videoMaterial2;
+  model.children[6].material = videoMaterial2;
+
+
 };
 
 /**
@@ -659,6 +692,7 @@ function loadModel(modelUrl, updateMaterialsCallback) {
       if (child instanceof THREE.Mesh) {
         child.castShadow = true;
         child.receiveShadow = true;
+        child.name = 'meme1'
       }
     }
     );
@@ -666,9 +700,12 @@ function loadModel(modelUrl, updateMaterialsCallback) {
     updateMaterialsCallback && updateMaterialsCallback(model.scene);
   });
 }
+
+
 function loadModel2(modelUrl, updateMaterialsCallback) {
   gltfLoader.load(modelUrl, (model) => {
     mixer2 = new THREE.AnimationMixer(model.scene);
+    console.log(model.animations)
     const action = mixer2.clipAction(model.animations[7]);
     action.play();
 
@@ -689,6 +726,8 @@ function loadModel2(modelUrl, updateMaterialsCallback) {
 
 var meme6;
 
+var meme4;
+
 function meme6loadModel(modelUrl, updateMaterialsCallback) {
   gltfLoader.load(modelUrl, (model) => {
     model.scene.scale.set(1, 1, 1);
@@ -708,6 +747,29 @@ function meme6loadModel(modelUrl, updateMaterialsCallback) {
     updateMaterialsCallback && updateMaterialsCallback(model.scene);
   });
 }
+
+function meme4loadModel(modelUrl, updateMaterialsCallback) {
+  gltfLoader.load(modelUrl, (model) => {
+    model.scene.scale.set(1, 1, 1);
+    model.scene.position.set(0, -3, 0);
+    model.scene.rotation.y = Math.PI * 0.5;
+    model.scene.castShadow = true;
+    model.scene.receiveShadow = true;
+    model.scene.traverse((child) => {
+      if (child instanceof THREE.Mesh) {
+        child.castShadow = true;
+        child.receiveShadow = true;
+      }
+    }
+    );
+    meme4 = model.scene.children[2];
+    scene.add(model.scene);
+    updateMaterialsCallback && updateMaterialsCallback(model.scene);
+  });
+}
+
+
+
 
 function loadModel3(modelUrl, updateMaterialsCallback) {
   gltfLoader.load(modelUrl, (model) => {
@@ -743,6 +805,9 @@ function loadPLYModel(modelUrl, updateMaterialsCallback) {
 
 loadModel("/models/meme/meme_house.glb", updateHouseMaterials);
 loadModel("/models/meme/meme_hose.glb", updateHouseMaterials);
+loadModel("/models/meme/meme_house_floor.glb",updateTVMaterials2);
+loadModel("/models/meme/meme_house_wall1.glb",updateTVMaterials2);
+
 loadModel("/models/meme/meme_door.glb");
 loadModel("/models/meme/meme_door2.glb");
 loadModel("/models/meme/meme_soup1.glb");
@@ -751,21 +816,19 @@ loadModel("/models/meme/meme_sink.glb");
 loadModel("/models/meme/meme_bone.glb");
 loadModel("/models/meme/meme_fire.glb");
 
-// loadModel("/models/meme/tv.glb", updateTVMaterials);
+loadModel("/models/meme/tv.glb", updateTVMaterials);
 loadModel("/models/meme/meme_poster1.glb");
 loadModel("/models/meme/meme_poster_achive.glb");
-// loadModel("/models/meme/meme1.glb");
 loadModel("/models/meme/meme2.glb");
-// loadModel2("/models/meme/meme3.glb");
-// loadModel("/models/meme/meme4.glb");
-// loadModel("/models/meme/meme5.glb");
-// meme6loadModel("/models/meme/meme6.glb");
-// loadModel("/models/meme/meme7.glb");
-// loadModel("/models/meme/meme8.glb");
-// loadModel("/models/meme/meme9.glb");
-// loadModel("/models/meme/meme10.glb");
-// loadModel("/models/meme/meme11.glb");
-
+loadModel2("/models/meme/meme3.glb");
+meme4loadModel("/models/meme/meme4.glb");
+loadModel("/models/meme/meme5.glb");
+meme6loadModel("/models/meme/meme6.glb");
+loadModel("/models/meme/meme7.glb");
+loadModel("/models/meme/meme8.glb");
+loadModel("/models/meme/meme9.glb");
+loadModel("/models/meme/meme10.glb");
+// loadModel("/models/meme/meme_stone.glb");
 // loadModel2("/models/meme/meme_priest.glb");
 
 //when device is mobile, load low poly models
@@ -824,7 +887,7 @@ const axesHelper = new THREE.AxesHelper(5);
 /**
  * Lights
  */
-const ambientLight = new THREE.AmbientLight("#C3FFE3", 1.5);
+const ambientLight = new THREE.AmbientLight("#ffffff", 1.5);
 
 const directionalLight = new THREE.DirectionalLight("#ffffff", 10);
 directionalLight.castShadow = true;
@@ -836,30 +899,22 @@ directionalLight.target.position.set(0, 0, 5);
 
 scene.add(ambientLight, directionalLight);
 
-const pointLight = new THREE.PointLight("#ffffff", 6);
-pointLight.castShadow = true;
-pointLight.shadow.camera.far = 15;
-pointLight.shadow.mapSize.set(1024, 1024);
-pointLight.shadow.normalBias = 0.05;
-pointLight.position.set(-1, -2, 4.5);
 
-scene.add(pointLight);
+const pointLight2 = new THREE.PointLight("#C3FFE3", 6);
+pointLight2.castShadow = true;
+pointLight2.shadow.camera.far = 15;
+pointLight2.shadow.mapSize.set(1024, 1024);
+pointLight2.shadow.normalBias = 0.05;
+pointLight2.position.set(-3, -3, 4.5);
 
-// const pointLight2 = new THREE.PointLight("#C3FFE3", 6);
-// pointLight2.castShadow = true;
-// pointLight2.shadow.camera.far = 15;
-// pointLight2.shadow.mapSize.set(1024, 1024);
-// pointLight2.shadow.normalBias = 0.05;
-// pointLight2.position.set(-3, 1, 4.5);
+scene.add(pointLight2);
 
-// scene.add(pointLight2);
 
-//ligth helper
 // const directionalLightHelper = new THREE.DirectionalLightHelper(directionalLight);
 // scene.add(directionalLightHelper);
 
-// const pointLightHelper = new THREE.PointLightHelper(pointLight);
-// scene.add(pointLightHelper);
+const pointLightHelper = new THREE.PointLightHelper(pointLight2);
+scene.add(pointLightHelper);
 
 /**
  * Sizes
@@ -932,6 +987,41 @@ renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
+const raycaster = new THREE.Raycaster();
+const mouseVector = new THREE.Vector2();
+
+
+function onDocumentMouseDown(event) {
+  event.preventDefault();
+
+  // 마우스 클릭 위치를 정규화된 디바이스 좌표로 변환
+  mouseVector.x = (event.clientX / window.innerWidth) * 2 - 1;
+  mouseVector.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+  // 카메라와 마우스 위치를 기반으로 광선 생성
+  raycaster.setFromCamera(mouseVector, camera);
+
+  // 광선과 교차하는 오브젝트 리스트 가져오기
+  const intersects = raycaster.intersectObjects(scene.children, true);
+
+  // 교차하는 오브젝트가 있다면
+  if (intersects.length > 0) {
+      const object = intersects[0].object;
+
+      // 클릭된 오브젝트가 meme1.glb 또는 meme2.glb 모델인지 확인
+      if (object.name === 'meme1' || object.name === 'meme2') {
+          // 모달창 띄우는 함수 호출
+          showModal(object.name);
+      }
+  }
+}
+
+function showModal(modelName) {
+  // 모달창 관련 로직을 여기에 구현
+  console.log(`${modelName} 모델 클릭됨, 모달창 띄우기`);
+}
+
+
 function movingCamera() {
   switch (step) {
     case 0:
@@ -946,6 +1036,7 @@ function movingCamera() {
     case 2:
       moveCamera(-3, -1, 2); //냉장고 바로 앞
       camera.lookAt(-2.5, -2, -6);
+      setTimeout(()=>{ video.play(); }, 20000);
       showBackBtn();
       break;
     case 3:
@@ -1012,12 +1103,16 @@ const tick = () => {
     meme6.rotation.y += 0.01;
     meme6.position.y = Math.sin(elapsedTime) * 0.1+2.4;
   }
+  if(meme4){
+    meme4.rotation.z += 0.01;
+    meme4.position.y = Math.sin(elapsedTime) * 0.1+0.34;
+  }
   //update controls
 
   controls.update();
 
   //Update Camera
-  // movingCamera();
+  movingCamera();
 
   // Render
   renderer.render(scene, camera);
@@ -1034,6 +1129,8 @@ const tick = () => {
 
   // Call tick again on the next frame
   window.requestAnimationFrame(tick);
+  window.addEventListener('mousedown', onDocumentMouseDown, false);
+
 };
 
 tick();
