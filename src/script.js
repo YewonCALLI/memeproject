@@ -387,7 +387,6 @@ function typeWriter2(conversation, hostId, userId, userId2, speed, index = 0) {
   let hostIndex = 0;
 
   function host() {
-    isStarted && PlayAudio(sound2F[typeStep2]);
     if (hostIndex < hostText.length) {
       document.getElementById(hostId).innerHTML += hostText.charAt(hostIndex);
       hostIndex++;
