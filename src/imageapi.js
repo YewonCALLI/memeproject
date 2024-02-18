@@ -9,7 +9,9 @@ let query = document.getElementById("firstname").value;
 let button = document.getElementById("button2");
 let result = document.getElementById("result");
 
-button.onclick = function () {
+button.addEventListener("click", searchPhotos);
+
+function searchPhotos() {
   console.log("search button clicked");
   query = document.getElementById("firstname").value;
   client.photos.search({ query, per_page: 8 }).then((photos) => {
@@ -17,4 +19,4 @@ button.onclick = function () {
       .map((photo) => `<img src="${photo.src.medium}">`)
       .join("");
   });
-};
+}
