@@ -182,14 +182,14 @@ const loadingManager = new THREE.LoadingManager(
 
     secondBtn.addEventListener("click", () => {
       turnOnTypeWriter(
-        8,
+        7,
         typeWriter2(secondfloor, "host", "user", "user2", 100)
       );
     });
 
     thirdBtn.addEventListener("click", () => {
       turnOnTypeWriter(
-        10,
+        8,
         typeWriter3(thirdfloor, "host", "user", "user2", 100)
       );
     });
@@ -301,8 +301,8 @@ let typeStep1 = 0;
 
 function typeWriter1(conversation, hostId, userId, userId2, speed, index = 0) {
   if (typeStep1 == 5 - 1) {
-    step = 7;
-    prevStep = 7;
+    step = 6;
+    prevStep = 6;
   }
 
   if (index >= conversation.length) {
@@ -371,8 +371,8 @@ let typeStep2 = 0;
 
 function typeWriter2(conversation, hostId, userId, userId2, speed, index = 0) {
   if (typeStep2 == 4 - 1) {
-    step = 9;
-    prevStep = 9;
+    step = 7;
+    prevStep = 7;
   }
 
   if (index >= conversation.length) {
