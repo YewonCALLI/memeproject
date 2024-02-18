@@ -1,17 +1,17 @@
 import { createClient } from "pexels";
 
-const client = createClient(
-  "W51detNdues2RsdrwvjZRLsnk7xdAwp7zmwRnM4u9ORQHqi4s8VxuBmX"
-);
+const client = createClient(import.meta.env.VITE_PEXELS_API_KEY);
 
-let query = document.getElementById("firstname").value;
-
-let button = document.getElementById("button2");
-let result = document.getElementById("result");
-
-button.addEventListener("click", () => {
+document.getElementById("button2").addEventListener("click", () => {
   console.log("search button clicked");
-  query = document.getElementById("firstname").value;
+  const query = document.getElementById("firstname").value; // `let`이 필요 없습니다.
+  const result = document.getElementById("result");
+
+  if (!result) {
+    console.error("Result element not found");
+    return;
+  }
+
   client.photos
     .search({ query, per_page: 8 })
     .then((photos) => {
@@ -20,6 +20,8 @@ button.addEventListener("click", () => {
         .join("");
     })
     .catch((e) => {
-      console.log("error", e);
+      console.error("error", e);
+      // 사용자에게 에러 메시지 표시
+      result.innerHTML = "<p>An error occurred while fetching photos.</p>";
     });
 });
