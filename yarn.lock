@@ -830,11 +830,6 @@ strip-ansi@^6.0.0, strip-ansi@^6.0.1:
   dependencies:
     ansi-regex "^5.0.1"
 
-three-story-controls@^1.0.6:
-  version "1.0.6"
-  resolved "https://registry.npmjs.org/three-story-controls/-/three-story-controls-1.0.6.tgz"
-  integrity sha512-weiuPkUCU/llfOTWOhEMXs7sEmYyQES+3+dYQ9Q4dTx6gc2uVVZy4L5bGbRCwlQL1bJaJH4jtJRHwOVQOO/5Ug==
-
 three@^0.159.0:
   version "0.159.0"
   resolved "https://registry.npmjs.org/three/-/three-0.159.0.tgz"

@@ -1,6 +1,10 @@
+import p5 from "p5";
+
 var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent); // 안드로이드 아이폰을 검사해 체크
 
-new p5(function (p5) {
+let started = false;
+
+var sketch = (p5) => {
   let img;
   let selButton = 0;
 
@@ -16,6 +20,8 @@ new p5(function (p5) {
   let result2 = "";
   let preinput;
   let savefile;
+
+  let result = document.getElementById("result");
 
   p5.setup = () => {
     canvas = p5.createCanvas(350, 420);
@@ -34,13 +40,16 @@ new p5(function (p5) {
     }
     p5.image(canvas2, 0, 0, 350, 420);
     p5.image(img1, 0, 0, 350, 70);
+    console.log("selectedimg", selectimg);
 
     // image(img[2], 0, 0);
     // image(img[3], 550, 0);
     // image(img[4], 0, 530);
     p5.strokeWeight(3);
     p5.stroke(255);
+
     if ((selectimg != "") & (n == 0)) {
+      console.log("go");
       canvas2.image(selectimg, 0, 120, 350, 200);
       preselectimg = selectimg;
       n++;
@@ -51,19 +60,21 @@ new p5(function (p5) {
       n = 0;
     }
 
-    //click result image to add to canvas
-    let result = document.getElementById("result");
-    result.onclick = function (e) {
+    // //click result image to add to canvas
+    result.onclick = (e) => {
       console.log(e.target.src);
-
-      selectimg = p5.loadImage(e.target.src);
+      let img = p5.createImg(e.target.src);
+      selectimg = img;
+      img.onload = function () {
+        console.log("image loaded");
+      };
     };
 
-    //click submit button to save canvas
+    // //click submit button to save canvas
     let button3 = document.getElementById("button3");
     let modal3 = document.querySelector(".modal3-container");
 
-    button3.onclick = function () {
+    button3.onclick = () => {
       input2 = document.getElementById("textinput");
       p5.push();
       canvas2.strokeWeight(0);
@@ -120,13 +131,13 @@ new p5(function (p5) {
         paintColor = p5.color(189, 213, 94);
       }
       if (
-        p5.p5.mouseX < a * 6 &&
-        p5.p5.mouseX > a * 5 &&
-        p5.p5.mouseY < box &&
-        p5.p5.mouseY > 0
+        p5.mouseX < a * 6 &&
+        p5.mouseX > a * 5 &&
+        p5.mouseY < box &&
+        p5.mouseY > 0
       ) {
         b = 5;
-        paintColor = p5.p5.color(169, 219, 208);
+        paintColor = p5.color(169, 219, 208);
       }
       if (
         p5.mouseX < a * 7 &&
@@ -226,4 +237,6 @@ new p5(function (p5) {
       }
     }
   };
-});
+};
+
+new p5(sketch);
