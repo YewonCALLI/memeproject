@@ -450,20 +450,22 @@ function typeWriter3(conversation, hostId, userId, userId2, speed, index = 0) {
   let hostIndex = 0;
 
   function host() {
-    if (host.length > 0 || userText2.length > 0)
-      if (hostIndex < hostText.length) {
-        document.getElementById(hostId).innerHTML += hostText.charAt(hostIndex);
-        hostIndex++;
-        setTimeout(host, speed);
+    if (hostIndex < hostText.length) {
+      document.getElementById(hostId).innerHTML += hostText.charAt(hostIndex);
+      hostIndex++;
+      setTimeout(host, speed);
+    } else {
+      // Host 텍스트가 모두 표시된 후 User 함수 호출
+      if (userText.length > 0 || userText2.length > 0) {
+        user();
       } else {
-        // Host 텍스트가 모두 표시된 후 User 함수 호출
-        if (userText.length > 0 || userText2.length > 0) {
-          user();
-        } else {
-          // User 텍스트가 없는 경우 약간의 지연 후에 다음 대화로 넘어감
-          setTimeout(handleNext, 500);
-        }
+        // User 텍스트가 없는 경우 약간의 지연 후에 다음 대화로 넘어감
+        setTimeout(
+          handleNext,
+          conversation[index].sec - hostText.length * speed + 100 //100은 약간의 지연을 위한 값
+        );
       }
+    }
   }
 
   function handleNext() {
