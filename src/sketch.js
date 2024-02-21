@@ -24,6 +24,9 @@ var sketch = (p5) => {
 
   let result = document.getElementById("result");
 
+  let button3 = document.getElementById("button3");
+  let modal3 = document.querySelector(".modal3-container");
+
   p5.setup = () => {
     canvas = p5.createCanvas(350, 420);
     canvas2 = p5.createGraphics(350, 420);
@@ -64,18 +67,18 @@ var sketch = (p5) => {
     }
 
     // //click result image to add to canvas
+
     result.onclick = (e) => {
       console.log(e.target.src);
-      let img = p5.createImg(e.target.src);
-      selectimg = img;
+      let img = new Image();
+      img.src = e.target.src;
       img.onload = function () {
-        console.log("image loaded");
+        selectimg = p5.loadImage(img.src);
+        console.log("Active selectimg", selectimg);
       };
     };
 
     // //click submit button to save canvas
-    let button3 = document.getElementById("button3");
-    let modal3 = document.querySelector(".modal3-container");
 
     button3.onclick = () => {
       console.log("submit button clicked");
