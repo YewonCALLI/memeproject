@@ -1,8 +1,8 @@
 import { createClient } from "pexels";
 
-const client = createClient(
-  "W51detNdues2RsdrwvjZRLsnk7xdAwp7zmwRnM4u9ORQHqi4s8VxuBmX"
-);
+const { VITE_PEXELS_API_KEY } = import.meta.env;
+
+const client = createClient(VITE_PEXELS_API_KEY);
 
 document.getElementById("button2").addEventListener("click", () => {
   console.log("search button clicked");
