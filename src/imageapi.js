@@ -27,7 +27,7 @@ const images = [...imageRequest.photos].map((image) => ({
 }));
 
 document.getElementById("button2").addEventListener("click", () => {
-  console.log("search button clicked");
+  console.log("search button clicked", query);
 
   // const query = document.getElementById("firstname").value; // `let`이 필요 없습니다.
   const result = document.getElementById("result");
