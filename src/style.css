@@ -1,5 +1,12 @@
-input[type=text], input[type=button] { -webkit-appearance: none; -webkit-border-radius: 0; }
-            
+input, textarea, button {
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  border-radius: 0;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+}
+
 @font-face {
   font-family: "Oliver";
   font-weight: normal;
@@ -80,8 +87,9 @@ body {
 #button2{
   background-color: #d9d9d9;
   z-index: 1;
-  border: 5px;
+  border: 5px solid white;
   border-style: outset;
+  color: black;
 }
 
 .button_area{
@@ -96,10 +104,11 @@ body {
   width:150px;
   height: 50px;
   background-color: #d9d9d9;
+  border: 10px solid white;
+  color: black;
   z-index: 1;
   font-size: larger;
   font-weight: bold;
-  border:10px;
   border-style: outset;
 }
 
@@ -108,6 +117,8 @@ body {
   height: 30px;
   background-color: #d9d9d9;
   z-index: 1;
+  border: 1px solid white;
+  color: black;
 }
 
 button {
@@ -630,7 +641,8 @@ label{
   position: relative;
   top:0px;
   left: 118px;
-  border: 5px;
+  border: 5px solid white;
+  color: black;
   border-style: outset;
   background-color: #d9d9d9;
   z-index:2;
@@ -844,11 +856,13 @@ label{
   align-items: center;
   gap:20px;
   font-family: Arial, Helvetica, sans-serif;
+  
 }
 
 .inputFile{
   position:relative;
   width: fit-content;
+  color: black;
 }
 
 /* desktop 규격 */
