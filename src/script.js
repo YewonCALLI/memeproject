@@ -912,27 +912,6 @@ const updateHouseMaterials = (model) => {
   });
 };
 
-var Element = function ( id, x, y, z, ry ) {
-
-  var div = document.createElement( 'div' );
-  div.style.width = '480px';
-  div.style.height = '360px';
-  div.style.backgroundColor = '#000';
-
-  var iframe = document.createElement( 'iframe' );
-  iframe.style.width = '480px';
-  iframe.style.height = '360px';
-  iframe.style.border = '0px';
-  iframe.src = [ 'http://www.youtube.com/embed/', id, '?rel=0' ].join( '' );
-  div.appendChild( iframe );
-
-  var object = new CSS3DObject( div );
-  object.position.set( x, y, z );
-  object.rotation.y = ry;
-
-  return object;
-
-};
 
 const catTexture = new THREE.TextureLoader().load("/meme/cat-texture.png");
 catTexture.flipY = false;
@@ -974,6 +953,12 @@ const video3 = document.getElementById("video3");
 video3.onloadeddata = function () {
   video3.play();
 };
+const video4 = document.getElementById("video4");
+video4.onloadeddata = function () {
+  video4.play();
+};
+
+
 
 
 const videoTexture2 = new THREE.VideoTexture(video2);
@@ -1025,9 +1010,27 @@ const updateTVMaterials3 = (model) => {
   model.children[2].material = videoMaterial3;
   model.children[3].material = videoMaterial3;
   model.children[4].material = videoMaterial3;
+};
 
+const videoTexture4 = new THREE.VideoTexture(video4);
+videoTexture4.needsUpdate = true;
+videoTexture4.flipY = true;
+videoTexture4.repeat.x = -1; // 수평으로 뒤집기
+videoTexture4.offset.x = 1; // 오프셋 조정으로 이미지 위치 재조정
+videoTexture4.colorSpace = THREE.SRGBColorSpace;
 
+const videoMaterial4 = new THREE.MeshBasicMaterial({
+  map: videoTexture4,
+});
+videoMaterial4.needsUpdate = true;
 
+const updateTVMaterials4 = (model) => {
+  //update video texture to third child of model
+  model.children[0].material = videoMaterial4;
+  model.children[1].material = videoMaterial4;
+  model.children[2].material = videoMaterial4;
+  model.children[3].material = videoMaterial4;
+  model.children[4].material = videoMaterial4;
 };
 
 const internet = document.getElementById("internet");
@@ -1334,7 +1337,7 @@ loadModel2("/models/meme/meme3.glb");
 meme4loadModel("/models/meme/meme4.glb");
 meme5loadModel("/models/meme/meme5.glb");
 meme6loadModel("/models/meme/meme6.glb");
-loadModel("/models/meme/meme7.glb");
+loadModel("/models/meme/meme_plane.glb", updateTVMaterials4);
 meme8loadModel("/models/meme/meme8.glb");
 // loadModel("/models/meme/meme_stone.glb");
 // loadModel2("/models/meme/meme_priest.glb");
@@ -1571,8 +1574,8 @@ function movingCamera() {
       showBackBtn();
       break;
     case 12:
-      moveCamera(-5,2,4.55); //3층
-      camera.lookAt(0, 2, 4.55);
+      moveCamera(-2.5,2.35,4.7); //3층
+      camera.lookAt(0, 2.35, 4.7);
       showBackBtn();
       break;
   }
@@ -1630,19 +1633,8 @@ const tick = () => {
   controls.update();
 
   //Update Camera
-  // movingCamera();
+  movingCamera();
 
-  var container = document.getElementById( 'container' );
-
-  var group = new THREE.Group();
-  group.add( new Element( 'njCDZWTI-xg', 0, 0, 240, 0 ) );
-  scene.add( group );
-
-  const renderer2 = new CSS3DRenderer();
-  renderer2.setSize( window.innerWidth, window.innerHeight );
-  renderer2.domElement.style.position = 'absolute';
-  renderer2.domElement.style.top = 0;
-  container.appendChild( renderer2.domElement );
 
   // Render
   renderer.render(scene, camera);
