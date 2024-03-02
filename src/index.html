@@ -51,6 +51,8 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="./style.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+
   </head>
 
   <body>
@@ -78,6 +80,23 @@
       src="/meme/0001-1000(new).mp4"
       style="display: none"
     ></video>
+    <video
+      id="video3"
+      playsinline
+      webkit-playsinline
+      muted
+      loop
+      autoplay
+      width="874"
+      height="1230"
+      src="/meme/meme_texture.mp4"
+      style="display: none"
+    ></video>
+    <div id="your-iframe">
+      <h1>your iframe</h1>
+      <iframe src="index2.html" style="display: block;background-color: white; z-index: 1;"></iframe>
+    </div>      
+    </iframe>
     <canvas class="webgl"></canvas>
     
     <div class="start-container">
@@ -121,18 +140,34 @@
         </button>
       </div>
     </div>
+    
     <div id="buttonbox" class="floorBox">
       <button id="firstBtn" class="bottomContainer">
-        <p style="padding: 0 20px">1</p>
+        <p style="padding: 0 15px">1</p>
       </button>
       <button id="secondBtn" class="bottomContainer">
-        <p style="padding: 0 20px">2</p>
+        <p style="padding: 0 15px">2</p>
       </button>
       <button id="thirdBtn" class="bottomContainer">
-        <p style="padding: 0 20px">3</p>
+        <p style="padding: 0 15px">3</p>
+      </button>
+      <button id="fourthBtn" class="bottomContainer">
+        <p style="padding: 0 15px">4</p>
+      </button>
+      <button id="fifthBtn" class="bottomContainer">
+        <p style="padding: 0 15px">5</p>
+      </button>
+      <button id="sixthBtn" class="bottomContainer">
+        <p style="padding: 0 15px">6</p>
+      </button>
+      <button id="seventhBtn" class="bottomContainer">
+        <p style="padding: 0 15px">7</p>
       </button>
     </div>
     <div id="video" src="./meme/meme.mp4"></div>
+    
     <script type="module" src="./script.js"></script>
+    
   </body>
+
 </html>

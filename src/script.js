@@ -10,7 +10,13 @@ import {
   firstfloor,
   secondfloor,
   thirdfloor,
+  fourthfloor,
+  fifthfloor,
+  sixthfloor,
+  seventhfloor
 } from "./conversation.json";
+
+import { CSS3DRenderer, CSS3DObject } from 'three/addons/renderers/CSS3DRenderer.js';
 
 var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent); // 안드로이드 아이폰을 검사해 체크
 /**
@@ -26,13 +32,21 @@ let drone;
 
 //확인 
 backBtn.addEventListener("click", () => {
-  step = 1;
+  step = 7;
   !backMove ? (backMove = true) : (backMove = false);
 });
 const floorBtn = document.querySelector(".floorBox");
 const firstBtn = document.querySelector("#firstBtn");
 const secondBtn = document.querySelector("#secondBtn");
 const thirdBtn = document.querySelector("#thirdBtn");
+const fourthBtn = document.querySelector("#fourthBtn");
+const fifthBtn = document.querySelector("#fifthBtn");
+const sixthBtn = document.querySelector("#sixthBtn");
+const seventhBtn = document.querySelector("#seventhBtn");
+const eigthBtn = document.querySelector("#eigthBtn");
+
+
+const memeModal = document.querySelector('.meme-modal');
 
 function moveCamera(x, y, z) {
   gsap.to(camera.position, {
@@ -116,6 +130,49 @@ const sound2F = [
   "meme/sound/2F-3.wav",
   "meme/sound/2F-4.wav",
   "meme/sound/2F-5.wav",
+  "meme/sound/2F-6.wav",
+  "meme/sound/2F-7.wav",
+  "meme/sound/2F-8.wav",
+];
+
+const sound3F = [
+  "meme/sound/3F-1.wav",
+  "meme/sound/3F-2.wav",
+  "meme/sound/3F-3.wav",
+  "meme/sound/3F-4.wav",
+  "meme/sound/3F-5.wav",
+];
+
+const sound4F = [
+  "meme/sound/4F-1.wav",
+  "meme/sound/4F-2.wav",
+  "meme/sound/4F-3.wav",
+  "meme/sound/4F-4.wav",
+  "meme/sound/4F-5.wav",
+];
+
+const sound5F = [
+  "meme/sound/5F-1.wav",
+  "meme/sound/5F-2.wav",
+  "meme/sound/5F-3.wav",
+  "meme/sound/5F-4.wav",
+  "meme/sound/5F-5.wav",
+];
+
+const sound6F = [
+  "meme/sound/6F-1.wav",
+  "meme/sound/6F-2.wav",
+  "meme/sound/6F-3.wav",
+  "meme/sound/6F-4.wav",
+  "meme/sound/6F-5.wav",
+];
+
+const sound7F = [
+  "meme/sound/7F-1.wav",
+  "meme/sound/7F-2.wav",
+  "meme/sound/7F-3.wav",
+  "meme/sound/7F-4.wav",
+  "meme/sound/7F-5.wav",
 ];
 
 const listener = new THREE.AudioListener();
@@ -134,6 +191,7 @@ const PlayAudio = (audio) => {
     sound.play();
   });
 };
+
 
 /**
  * Loaders
@@ -176,23 +234,52 @@ const loadingManager = new THREE.LoadingManager(
     firstBtn.addEventListener("click", () => {
       turnOnTypeWriter(
         6,
-        typeWriter1(firstfloor, "host", "user", "user2", 100)
+        typeWriter1(firstfloor, "host", "user", "user2", 100),
       );
     });
 
     secondBtn.addEventListener("click", () => {
       turnOnTypeWriter(
         7,
-        typeWriter2(secondfloor, "host", "user", "user2", 100)
+        typeWriter2(secondfloor, "host", "user", "user2", 130)
       );
     });
 
     thirdBtn.addEventListener("click", () => {
       turnOnTypeWriter(
         8,
-        typeWriter3(thirdfloor, "host", "user", "user2", 100)
+        typeWriter3(thirdfloor, "host", "user", "user2", 130)
       );
     });
+
+    fourthBtn.addEventListener("click", () => {
+      turnOnTypeWriter(
+        9,
+        typeWriter4(fourthfloor, "host", "user", "user2", 140)
+      );
+    });
+
+    fifthBtn.addEventListener("click", () => {
+      turnOnTypeWriter(
+        10,
+        typeWriter5(fifthfloor, "host", "user", "user2", 160)
+      );
+    });
+
+    sixthBtn.addEventListener("click", () => {
+      turnOnTypeWriter(
+        11,
+        typeWriter6(sixthfloor, "host", "user", "user2", 130)
+      );
+    });
+
+    seventhBtn.addEventListener("click", () => {
+      turnOnTypeWriter(
+        12,
+        typeWriter7(seventhfloor, "host", "user", "user2", 110)
+      );
+    });
+
   },
 
   // Progress
@@ -216,6 +303,7 @@ function turnOnTypeWriter(cameraStep, typeWriter) {
 let typeStepAll = 0;
 
 let typeStep0 = 0;
+
 
 //typeWriter 단계 - host와 user의 대화를 구분하기 위한 변수 host와 user의 대화가 끝나면 0으로 초기화
 function typeWriter0(conversation, hostId, userId, userId2, speed, index = 0) {
@@ -370,6 +458,7 @@ function typeWriter1(conversation, hostId, userId, userId2, speed, index = 0) {
 let typeStep2 = 0;
 
 function typeWriter2(conversation, hostId, userId, userId2, speed, index = 0) {
+  isStarted && PlayAudio(sound2F[typeStep2]);
   if (typeStep2 == 4 - 1) {
     step = 7;
     prevStep = 7;
@@ -438,6 +527,7 @@ function typeWriter2(conversation, hostId, userId, userId2, speed, index = 0) {
 let typeStep3 = 0;
 
 function typeWriter3(conversation, hostId, userId, userId2, speed, index = 0) {
+  isStarted && PlayAudio(sound3F[typeStep3]);
   if (index >= conversation.length) {
     typeStep3 = 0;
     scriptIsEnd = true;
@@ -462,7 +552,7 @@ function typeWriter3(conversation, hostId, userId, userId2, speed, index = 0) {
         // User 텍스트가 없는 경우 약간의 지연 후에 다음 대화로 넘어감
         setTimeout(
           handleNext,
-          conversation[index].sec - hostText.length * speed + 100 //100은 약간의 지연을 위한 값
+          conversation[index].sec - hostText.length * speed + 120 //100은 약간의 지연을 위한 값
         );
       }
     }
@@ -498,6 +588,272 @@ function typeWriter3(conversation, hostId, userId, userId2, speed, index = 0) {
   }
   host();
 }
+
+
+let typeStep4 = 0;
+
+function typeWriter4(conversation, hostId, userId, userId2, speed, index = 0) {
+  isStarted && PlayAudio(sound4F[typeStep4]);
+  if (index >= conversation.length) {
+    typeStep4 = 0;
+    scriptIsEnd = true;
+    return; // 모든 대화가 완료되면 함수 종료
+  }
+
+  let hostText = conversation[index].Host;
+  let userText = conversation[index].User;
+  let userText2 = conversation[index].User2;
+  let hostIndex = 0;
+
+  function host() {
+    if (hostIndex < hostText.length) {
+      document.getElementById(hostId).innerHTML += hostText.charAt(hostIndex);
+      hostIndex++;
+      setTimeout(host, speed);
+    } else {
+      // Host 텍스트가 모두 표시된 후 User 함수 호출
+      if (userText.length > 0 || userText2.length > 0) {
+        user();
+      } else {
+        // User 텍스트가 없는 경우 약간의 지연 후에 다음 대화로 넘어감
+        setTimeout(
+          handleNext,
+          conversation[index].sec - hostText.length * speed + 90 //100은 약간의 지연을 위한 값
+        );
+      }
+    }
+  }
+
+  function handleNext() {
+    next(index + 1);
+  }
+
+  function user() {
+    document.getElementById(userId).innerHTML = userText;
+    document.getElementById(userId2).innerHTML = userText2;
+
+    // 기존 이벤트 리스너 제거 및 새 이벤트 리스너 추가
+    if (userText.length > 0 || userText2.length > 0) {
+      document.getElementById(userId).removeEventListener("click", handleNext);
+      document.getElementById(userId2).removeEventListener("click", handleNext);
+      document.getElementById(userId).addEventListener("click", handleNext);
+      document.getElementById(userId2).addEventListener("click", handleNext);
+    }
+  }
+
+  function next(nextIndex) {
+    // 다음 대화로 넘어가기 전에 필요한 초기화 작업
+    document.getElementById(userId).removeEventListener("click", handleNext);
+    document.getElementById(userId2).removeEventListener("click", handleNext);
+    document.getElementById(hostId).innerHTML = "";
+    document.getElementById(userId).innerHTML = "";
+    document.getElementById(userId2).innerHTML = "";
+    typeStep4 += 1;
+    typeStepAll += 1;
+    typeWriter4(conversation, hostId, userId, userId2, speed, nextIndex);
+  }
+  host();
+}
+
+
+let typeStep5 = 0;
+
+function typeWriter5(conversation, hostId, userId, userId2, speed, index = 0) {
+  isStarted && PlayAudio(sound5F[typeStep5]);
+  if (index >= conversation.length) {
+    typeStep5 = 0;
+    scriptIsEnd = true;
+    return; // 모든 대화가 완료되면 함수 종료
+  }
+
+  let hostText = conversation[index].Host;
+  let userText = conversation[index].User;
+  let userText2 = conversation[index].User2;
+  let hostIndex = 0;
+
+  function host() {
+    if (hostIndex < hostText.length) {
+      document.getElementById(hostId).innerHTML += hostText.charAt(hostIndex);
+      hostIndex++;
+      setTimeout(host, speed);
+    } else {
+      // Host 텍스트가 모두 표시된 후 User 함수 호출
+      if (userText.length > 0 || userText2.length > 0) {
+        user();
+      } else {
+        // User 텍스트가 없는 경우 약간의 지연 후에 다음 대화로 넘어감
+        setTimeout(
+          handleNext,
+          conversation[index].sec - hostText.length * speed + 130 //100은 약간의 지연을 위한 값
+        );
+      }
+    }
+  }
+
+  function handleNext() {
+    next(index + 1);
+  }
+
+  function user() {
+    document.getElementById(userId).innerHTML = userText;
+    document.getElementById(userId2).innerHTML = userText2;
+
+    // 기존 이벤트 리스너 제거 및 새 이벤트 리스너 추가
+    if (userText.length > 0 || userText2.length > 0) {
+      document.getElementById(userId).removeEventListener("click", handleNext);
+      document.getElementById(userId2).removeEventListener("click", handleNext);
+      document.getElementById(userId).addEventListener("click", handleNext);
+      document.getElementById(userId2).addEventListener("click", handleNext);
+    }
+  }
+
+  function next(nextIndex) {
+    // 다음 대화로 넘어가기 전에 필요한 초기화 작업
+    document.getElementById(userId).removeEventListener("click", handleNext);
+    document.getElementById(userId2).removeEventListener("click", handleNext);
+    document.getElementById(hostId).innerHTML = "";
+    document.getElementById(userId).innerHTML = "";
+    document.getElementById(userId2).innerHTML = "";
+    typeStep5 += 1;
+    typeStepAll += 1;
+    typeWriter5(conversation, hostId, userId, userId2, speed, nextIndex);
+  }
+  host();
+}
+
+
+
+let typeStep6 = 0;
+
+function typeWriter6(conversation, hostId, userId, userId2, speed, index = 0) {
+  isStarted && PlayAudio(sound6F[typeStep6]);
+  if (index >= conversation.length) {
+    typeStep6 = 0;
+    scriptIsEnd = true;
+    return; // 모든 대화가 완료되면 함수 종료
+  }
+
+  let hostText = conversation[index].Host;
+  let userText = conversation[index].User;
+  let userText2 = conversation[index].User2;
+  let hostIndex = 0;
+
+  function host() {
+    if (hostIndex < hostText.length) {
+      document.getElementById(hostId).innerHTML += hostText.charAt(hostIndex);
+      hostIndex++;
+      setTimeout(host, speed);
+    } else {
+      // Host 텍스트가 모두 표시된 후 User 함수 호출
+      if (userText.length > 0 || userText2.length > 0) {
+        user();
+      } else {
+        // User 텍스트가 없는 경우 약간의 지연 후에 다음 대화로 넘어감
+        setTimeout(
+          handleNext,
+          conversation[index].sec - hostText.length * speed + 130 //100은 약간의 지연을 위한 값
+        );
+      }
+    }
+  }
+
+  function handleNext() {
+    next(index + 1);
+  }
+
+  function user() {
+    document.getElementById(userId).innerHTML = userText;
+    document.getElementById(userId2).innerHTML = userText2;
+
+    // 기존 이벤트 리스너 제거 및 새 이벤트 리스너 추가
+    if (userText.length > 0 || userText2.length > 0) {
+      document.getElementById(userId).removeEventListener("click", handleNext);
+      document.getElementById(userId2).removeEventListener("click", handleNext);
+      document.getElementById(userId).addEventListener("click", handleNext);
+      document.getElementById(userId2).addEventListener("click", handleNext);
+    }
+  }
+
+  function next(nextIndex) {
+    // 다음 대화로 넘어가기 전에 필요한 초기화 작업
+    document.getElementById(userId).removeEventListener("click", handleNext);
+    document.getElementById(userId2).removeEventListener("click", handleNext);
+    document.getElementById(hostId).innerHTML = "";
+    document.getElementById(userId).innerHTML = "";
+    document.getElementById(userId2).innerHTML = "";
+    typeStep6 += 1;
+    typeStepAll += 1;
+    typeWriter6(conversation, hostId, userId, userId2, speed, nextIndex);
+  }
+  host();
+}
+
+
+let typeStep7 = 0;
+function typeWriter7(conversation, hostId, userId, userId2, speed, index = 0) {
+  isStarted && PlayAudio(sound7F[typeStep7]);
+  if (index >= conversation.length) {
+    typeStep7 = 0;
+    scriptIsEnd = true;
+    return; // 모든 대화가 완료되면 함수 종료
+  }
+
+  let hostText = conversation[index].Host;
+  let userText = conversation[index].User;
+  let userText2 = conversation[index].User2;
+  let hostIndex = 0;
+
+  function host() {
+    if (hostIndex < hostText.length) {
+      document.getElementById(hostId).innerHTML += hostText.charAt(hostIndex);
+      hostIndex++;
+      setTimeout(host, speed);
+    } else {
+      // Host 텍스트가 모두 표시된 후 User 함수 호출
+      if (userText.length > 0 || userText2.length > 0) {
+        user();
+      } else {
+        // User 텍스트가 없는 경우 약간의 지연 후에 다음 대화로 넘어감
+        setTimeout(
+          handleNext,
+          conversation[index].sec - hostText.length * speed + 130 //100은 약간의 지연을 위한 값
+        );
+      }
+    }
+  }
+
+  function handleNext() {
+    next(index + 1);
+  }
+
+  function user() {
+    document.getElementById(userId).innerHTML = userText;
+    document.getElementById(userId2).innerHTML = userText2;
+
+    // 기존 이벤트 리스너 제거 및 새 이벤트 리스너 추가
+    if (userText.length > 0 || userText2.length > 0) {
+      document.getElementById(userId).removeEventListener("click", handleNext);
+      document.getElementById(userId2).removeEventListener("click", handleNext);
+      document.getElementById(userId).addEventListener("click", handleNext);
+      document.getElementById(userId2).addEventListener("click", handleNext);
+    }
+  }
+
+  function next(nextIndex) {
+    // 다음 대화로 넘어가기 전에 필요한 초기화 작업
+    document.getElementById(userId).removeEventListener("click", handleNext);
+    document.getElementById(userId2).removeEventListener("click", handleNext);
+    document.getElementById(hostId).innerHTML = "";
+    document.getElementById(userId).innerHTML = "";
+    document.getElementById(userId2).innerHTML = "";
+    typeStep7 += 1;
+    typeStepAll += 1;
+    typeWriter7(conversation, hostId, userId, userId2, speed, nextIndex);
+  }
+  host();
+}
+
+
 
 const dracoLoader = new DRACOLoader();
 dracoLoader.setDecoderPath("/draco/");
@@ -592,6 +948,13 @@ const video2 = document.getElementById("video2");
 video2.onloadeddata = function () {
   video2.play();
 };
+
+const video3 = document.getElementById("video3");
+video3.onloadeddata = function () {
+  video3.play();
+};
+
+
 const videoTexture2 = new THREE.VideoTexture(video2);
 videoTexture2.needsUpdate = true;
 videoTexture2.flipY = true;
@@ -620,9 +983,48 @@ const updateTVMaterials2 = (model) => {
   model.children[4].material = videoMaterial2;
   model.children[5].material = videoMaterial2;
   model.children[6].material = videoMaterial2;
+};
+
+const videoTexture3 = new THREE.VideoTexture(video3);
+videoTexture3.needsUpdate = true;
+videoTexture3.flipY = true;
+videoTexture3.repeat.x = -1; // 수평으로 뒤집기
+videoTexture3.offset.x = 1; // 오프셋 조정으로 이미지 위치 재조정
+videoTexture3.colorSpace = THREE.SRGBColorSpace;
+
+const videoMaterial3 = new THREE.MeshBasicMaterial({
+  map: videoTexture3,
+});
+videoMaterial3.needsUpdate = true;
+
+const updateTVMaterials3 = (model) => {
+  //update video texture to third child of model
+  model.children[0].material = videoMaterial3;
+  model.children[1].material = videoMaterial3;
+  model.children[2].material = videoMaterial3;
+  model.children[3].material = videoMaterial3;
+  model.children[4].material = videoMaterial3;
+
 
 
 };
+
+const internet = document.getElementById("internet");
+const ineternetTexture = new THREE.CanvasTexture(internet);
+ineternetTexture.canvas = internet;
+
+const internetMaterial = new THREE.MeshBasicMaterial({
+  map: ineternetTexture,
+  side: THREE.DoubleSide,
+  lightMapIntensity: 0.1,
+});
+internetMaterial.needsUpdate = true;
+
+const updateInternetMaterials = (model) => {
+  model.children[3].material = internetMaterial;
+}
+
+
 
 /**
  * Grafti Planes
@@ -654,29 +1056,13 @@ grafti02.position.y = -1.0;
 grafti02.rotateZ(-Math.PI / 6);
 scene.add(grafti02);
 
-const grafti03 = createGraftiPlane(3.5, 2, "/meme/bubble.png");
-grafti03.position.x = -1.5;
+//"against the meme"
+const grafti03 = createGraftiPlane(1.0, 0.5, "/meme/Frame 6.png");
+grafti03.position.x = -2.5;
 grafti03.position.z = 6;
-grafti03.position.y = 0.2;
-grafti03.scale.set(0.2, 0.2);
-grafti03.rotateY(-Math.PI - Math.PI / 3);
+grafti03.position.y = -2.5;
+grafti03.rotateY(Math.PI / 2);
 scene.add(grafti03);
-
-const grafti04 = createGraftiPlane(1.5, 1.5, "/meme/heart.png");
-grafti04.position.x = -1.2;
-grafti04.position.z = 5.5;
-grafti04.position.y = 0;
-grafti04.rotateY(-Math.PI);
-grafti04.scale.set(0.15, 0.15);
-scene.add(grafti04);
-
-const grafti05 = createGraftiPlane(1.5, 1.5, "/meme/light.png");
-grafti05.position.x = -1.2;
-grafti05.position.z = 6.0;
-grafti05.position.y = 0;
-grafti05.scale.set(0.1, 0.1);
-grafti05.rotateY(-Math.PI);
-scene.add(grafti05);
 
 let mixer = null;
 let mixer2 = null;
@@ -708,7 +1094,6 @@ function loadModel(modelUrl, updateMaterialsCallback) {
 function loadModel2(modelUrl, updateMaterialsCallback) {
   gltfLoader.load(modelUrl, (model) => {
     mixer2 = new THREE.AnimationMixer(model.scene);
-    console.log(model.animations)
     const action = mixer2.clipAction(model.animations[7]);
     action.play();
 
@@ -730,6 +1115,7 @@ function loadModel2(modelUrl, updateMaterialsCallback) {
 var meme6;
 var meme1;
 var meme4;
+var meme5;
 
 function meme1loadModel(modelUrl, updateMaterialsCallback) {
   gltfLoader.load(modelUrl, (model) => {
@@ -751,6 +1137,8 @@ function meme1loadModel(modelUrl, updateMaterialsCallback) {
   });
 }
 
+var meme6_1, meme6_2,meme6_3;
+
 function meme6loadModel(modelUrl, updateMaterialsCallback) {
   gltfLoader.load(modelUrl, (model) => {
     model.scene.scale.set(1, 1, 1);
@@ -765,7 +1153,37 @@ function meme6loadModel(modelUrl, updateMaterialsCallback) {
       }
     }
     );
-    meme6 = model.scene.children[3];
+    meme6_1 = model.scene.children[2];
+    meme6_2 = model.scene.children[3];
+    meme6_3 = model.scene.children[4];
+    meme6 = model.scene.children[0];
+    scene.add(model.scene);
+    updateMaterialsCallback && updateMaterialsCallback(model.scene);
+  });
+}
+
+var meme8_1, meme8_2, meme8_3, meme8_4, meme8_5;
+function meme8loadModel(modelUrl, updateMaterialsCallback) {
+  gltfLoader.load(modelUrl, (model) => {
+    model.scene.scale.set(1, 1, 1);
+    model.scene.position.set(0, -3, 0);
+    model.scene.rotation.y = Math.PI * 0.5;
+    model.scene.castShadow = true;
+    model.scene.receiveShadow = true;
+    model.scene.traverse((child) => {
+      if (child instanceof THREE.Mesh) {
+        child.castShadow = true;
+        child.receiveShadow = true;
+      }
+    }
+    );
+    meme8_1 = model.scene.children[0];
+    meme8_2 = model.scene.children[1];
+    meme8_3 = model.scene.children[2];
+    meme8_4 = model.scene.children[3];
+    meme8_5 = model.scene.children[4];
+
+
     scene.add(model.scene);
     updateMaterialsCallback && updateMaterialsCallback(model.scene);
   });
@@ -785,13 +1203,52 @@ function meme4loadModel(modelUrl, updateMaterialsCallback) {
       }
     }
     );
-    meme4 = model.scene.children[2];
+    meme4 = model.scene.children[0];
+    scene.add(model.scene);
+    updateMaterialsCallback && updateMaterialsCallback(model.scene);
+  });
+}
+function meme5loadModel(modelUrl, updateMaterialsCallback) {
+  gltfLoader.load(modelUrl, (model) => {
+    model.scene.scale.set(1, 1, 1);
+    model.scene.position.set(0, -3, 0);
+    model.scene.rotation.y = Math.PI * 0.5;
+    model.scene.castShadow = true;
+    model.scene.receiveShadow = true;
+    model.scene.traverse((child) => {
+      if (child instanceof THREE.Mesh) {
+        child.castShadow = true;
+        child.receiveShadow = true;
+      }
+    }
+    );
+    meme5 = model.scene.children[3];
     scene.add(model.scene);
     updateMaterialsCallback && updateMaterialsCallback(model.scene);
   });
 }
 
+var meme7;
 
+function meme7loadModel(modelUrl, updateMaterialsCallback) {
+  gltfLoader.load(modelUrl, (model) => {
+    model.scene.scale.set(1, 1, 1);
+    model.scene.position.set(0, -3, 0);
+    model.scene.rotation.y = Math.PI * 0.5;
+    model.scene.castShadow = true;
+    model.scene.receiveShadow = true;
+    model.scene.traverse((child) => {
+      if (child instanceof THREE.Mesh) {
+        child.castShadow = true;
+        child.receiveShadow = true;
+      }
+    }
+    );
+    meme7 = model.scene.children[3];
+    scene.add(model.scene);
+    updateMaterialsCallback && updateMaterialsCallback(model.scene);
+  });
+}
 
 
 function loadModel3(modelUrl, updateMaterialsCallback) {
@@ -835,6 +1292,8 @@ loadModel("/models/meme/meme_house.glb", updateHouseMaterials);
 loadModel("/models/meme/meme_hose.glb", updateHouseMaterials);
 loadModel("/models/meme/meme_house_floor.glb",updateTVMaterials2);
 loadModel("/models/meme/meme_house_wall1.glb",updateTVMaterials2);
+loadModel("/models/meme/meme_house_wall2.glb",updateTVMaterials3);
+
 
 loadModel("/models/meme/meme_door.glb");
 loadModel("/models/meme/meme_door2.glb");
@@ -852,12 +1311,10 @@ meme1loadModel("/models/meme/meme1.glb");
 loadModel("/models/meme/meme2.glb");
 loadModel2("/models/meme/meme3.glb");
 meme4loadModel("/models/meme/meme4.glb");
-loadModel("/models/meme/meme5.glb");
+meme5loadModel("/models/meme/meme5.glb");
 meme6loadModel("/models/meme/meme6.glb");
 loadModel("/models/meme/meme7.glb");
-loadModel("/models/meme/meme8.glb");
-loadModel("/models/meme/meme9.glb");
-loadModel("/models/meme/meme10.glb");
+meme8loadModel("/models/meme/meme8.glb");
 // loadModel("/models/meme/meme_stone.glb");
 // loadModel2("/models/meme/meme_priest.glb");
 
@@ -887,6 +1344,7 @@ const material = new THREE.MeshStandardMaterial({
   DoubleSide: true,
 });
 
+
 !isMobile &&
   gltfLoader.load("/models/meme/meme_cat-no_tex.glb", (cat) => {
     mixer = new THREE.AnimationMixer(cat.scene);
@@ -900,6 +1358,8 @@ const material = new THREE.MeshStandardMaterial({
     scene.add(cat.scene);
     updateCatMaterials(cat.scene);
   });
+
+
 
 /**
  * Helpers
@@ -919,13 +1379,13 @@ const axesHelper = new THREE.AxesHelper(5);
  */
 const ambientLight = new THREE.AmbientLight("#ffffff", 1.5);
 
-const directionalLight = new THREE.DirectionalLight("#ffffff", 10);
+const directionalLight = new THREE.DirectionalLight("#ffffff", 4);
 directionalLight.castShadow = true;
 directionalLight.shadow.camera.far = 15;
 directionalLight.shadow.mapSize.set(1024, 1024);
 directionalLight.shadow.normalBias = 0.05;
-directionalLight.position.set(0.25, 3, -2.25);
-directionalLight.target.position.set(0, 0, 5);
+directionalLight.position.set(3, 3, -4.25);
+directionalLight.target.position.set(3, 2, 0);
 
 scene.add(ambientLight, directionalLight);
 
@@ -939,12 +1399,14 @@ pointLight2.position.set(-3, -3, 4.5);
 
 scene.add(pointLight2);
 
+const pointLight3 = new THREE.PointLight("#FFD6A5", 6);
+pointLight3.castShadow = true;
+pointLight3.shadow.camera.far = 15;
+pointLight3.shadow.mapSize.set(1024, 1024);
+pointLight3.shadow.normalBias = 0.05;
+pointLight3.position.set(-4, 0, 5);
+scene.add(pointLight3);
 
-// const directionalLightHelper = new THREE.DirectionalLightHelper(directionalLight);
-// scene.add(directionalLightHelper);
-
-const pointLightHelper = new THREE.PointLightHelper(pointLight2);
-scene.add(pointLightHelper);
 
 /**
  * Sizes
@@ -994,7 +1456,6 @@ camera.lookAt(0, 0, 0);
 
 camera.add(listener);
 
-// scene.add(camera);
 
 /**
  * Controls
@@ -1002,54 +1463,28 @@ camera.add(listener);
 const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true;
 
+
 /**
  * Renderer
  */
+
 const renderer = new THREE.WebGLRenderer({
   canvas: canvas,
   antialias: true,
   alpha: true, //transparent background
 });
+
+
+
+
+
+
 renderer.toneMapping = THREE.ReinhardToneMapping;
 renderer.toneMappingExposure = 3;
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-const raycaster = new THREE.Raycaster();
-const mouseVector = new THREE.Vector2();
-
-
-function onDocumentMouseDown(event) {
-  event.preventDefault();
-
-  // 마우스 클릭 위치를 정규화된 디바이스 좌표로 변환
-  mouseVector.x = (event.clientX / window.innerWidth) * 2 - 1;
-  mouseVector.y = -(event.clientY / window.innerHeight) * 2 + 1;
-
-  // 카메라와 마우스 위치를 기반으로 광선 생성
-  raycaster.setFromCamera(mouseVector, camera);
-
-  // 광선과 교차하는 오브젝트 리스트 가져오기
-  const intersects = raycaster.intersectObjects(scene.children, true);
-
-  // 교차하는 오브젝트가 있다면
-  if (intersects.length > 0) {
-      const object = intersects[0].object;
-
-      // 클릭된 오브젝트가 meme1.glb 또는 meme2.glb 모델인지 확인
-      if (object.name === 'meme1' || object.name === 'meme2') {
-          // 모달창 띄우는 함수 호출
-          showModal(object.name);
-      }
-  }
-}
-
-function showModal(modelName) {
-  // 모달창 관련 로직을 여기에 구현
-  console.log(`${modelName} 모델 클릭됨, 모달창 띄우기`);
-}
 
 
 function movingCamera() {
@@ -1100,13 +1535,23 @@ function movingCamera() {
       showBackBtn();
       break;
     case 9:
-      moveCamera(-3.6, -2.5, 5.3); //4번 밈
+      moveCamera(-3.7, -2.4, 5.3); //4번 밈
       camera.lookAt(3, -3.5, 9.3);
       showBackBtn();
       break;
     case 10:
-      moveCamera(-4.6, -2.5, 5.3); // 5번 밈
+      moveCamera(-4.6, -2.4, 5.3); // 5번 밈
       camera.lookAt(3, -3.5, 10.0);
+      showBackBtn();
+      break;
+    case 11:
+      moveCamera(-4.5,-0.3,6.8); //2층
+      camera.lookAt(-3.0, -0.3, 3);
+      showBackBtn();
+      break;
+    case 12:
+      moveCamera(-5,2,4.55); //3층
+      camera.lookAt(0, 2, 4.55);
       showBackBtn();
       break;
   }
@@ -1134,12 +1579,30 @@ const tick = () => {
     meme1.position.y = Math.sin(elapsedTime) * 0.1+0.54;
   }
   if(meme6){
-    meme6.rotation.y += 0.01;
-    meme6.position.y = Math.sin(elapsedTime) * 0.1+2.4;
+    meme6.rotation.z += 0.01;
+    meme6.position.y = Math.sin(elapsedTime) * 0.06+2.45;
+    meme6_1.rotation.y += 0.01;
+    meme6_1.rotation.x+= 0.01;
+    meme6_2.rotation.y -= 0.01;
+    meme6_2.rotation.x-= Math.sin(elapsedTime)*0.01;
+    meme6_3.rotation.y -= 0.01;
+    meme6_3.rotation.z-= Math.sin(elapsedTime)*0.01;
   }
   if(meme4){
-    meme4.rotation.z += 0.01;
-    meme4.position.y = Math.sin(elapsedTime) * 0.1+0.34;
+    meme4.position.y = Math.sin(elapsedTime) * 0.1+0.7;
+    meme4.rotation.y += 0.01;
+  }
+  if(meme5){
+    meme5.rotation.z -= 0.01;
+    meme5.position.y = Math.sin(elapsedTime) * 0.1+0.34;
+  }
+  if(meme8_1){
+    meme8_1.position.x = Math.sin(elapsedTime)*0.5-4;
+    meme8_2.position.x = Math.sin(elapsedTime)*0.5-4;
+    meme8_3.position.x = Math.sin(elapsedTime*0.8)*0.5-4;
+    meme8_4.position.x = Math.sin(elapsedTime)*0.5-4;
+    meme8_5.position.x = Math.sin(elapsedTime*0.8)*0.3-5;
+
   }
   //update controls
 
@@ -1152,6 +1615,7 @@ const tick = () => {
   renderer.render(scene, camera);
   // console.log("position", camera.position);
   // console.log("rotation", camera.rotation);
+  // showFloorBtn();
 
   scriptIsEnd ? (showFloorBtn(), modal.classList.remove("on")) : hideFloorBtn();
 
@@ -1163,7 +1627,6 @@ const tick = () => {
 
   // Call tick again on the next frame
   window.requestAnimationFrame(tick);
-  window.addEventListener('mousedown', onDocumentMouseDown, false);
 
 };
 
