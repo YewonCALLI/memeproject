@@ -128,7 +128,7 @@ window.getImageFrom = function () {
           </div>
         `;
 
-    memeItemDiv.style.animationDelay = -index * 3 + "s";
+    memeItemDiv.style.animationDelay = -index * Math.random()+ "s";
 
     container.appendChild(memeItemDiv);
     const memeImage = memeItemDiv.querySelector(".meme-image img");
