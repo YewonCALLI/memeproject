@@ -912,6 +912,27 @@ const updateHouseMaterials = (model) => {
   });
 };
 
+var Element = function ( id, x, y, z, ry ) {
+
+  var div = document.createElement( 'div' );
+  div.style.width = '480px';
+  div.style.height = '360px';
+  div.style.backgroundColor = '#000';
+
+  var iframe = document.createElement( 'iframe' );
+  iframe.style.width = '480px';
+  iframe.style.height = '360px';
+  iframe.style.border = '0px';
+  iframe.src = [ 'http://www.youtube.com/embed/', id, '?rel=0' ].join( '' );
+  div.appendChild( iframe );
+
+  var object = new CSS3DObject( div );
+  object.position.set( x, y, z );
+  object.rotation.y = ry;
+
+  return object;
+
+};
 
 const catTexture = new THREE.TextureLoader().load("/meme/cat-texture.png");
 catTexture.flipY = false;
@@ -1609,7 +1630,19 @@ const tick = () => {
   controls.update();
 
   //Update Camera
-  movingCamera();
+  // movingCamera();
+
+  var container = document.getElementById( 'container' );
+
+  var group = new THREE.Group();
+  group.add( new Element( 'njCDZWTI-xg', 0, 0, 240, 0 ) );
+  scene.add( group );
+
+  const renderer2 = new CSS3DRenderer();
+  renderer2.setSize( window.innerWidth, window.innerHeight );
+  renderer2.domElement.style.position = 'absolute';
+  renderer2.domElement.style.top = 0;
+  container.appendChild( renderer2.domElement );
 
   // Render
   renderer.render(scene, camera);
