@@ -1330,7 +1330,6 @@ loadModel("/models/meme/meme_house.glb", updateHouseMaterials);
 loadModel("/models/meme/meme_hose.glb", updateHouseMaterials);
 loadModel("/models/meme/meme_house_floor.glb", updateTVMaterials2);
 loadModel("/models/meme/meme_house_wall1.glb", updateTVMaterials2);
-loadModel("/models/meme/meme_house_wall2.glb", updateTVMaterials3);
 
 loadModel("/models/meme/meme_door.glb");
 loadModel("/models/meme/meme_door2.glb");
@@ -1356,11 +1355,9 @@ meme8loadModel("/models/meme/meme8.glb");
 // loadModel2("/models/meme/meme_priest.glb");
 
 //when device is mobile, load low poly models
-// if (isMobile) {
-//   loadModel("/models/meme/meme_david_top_lo.glb");
-// } else {
-//   loadModel("/models/meme/meme_david_top.glb");
-// }
+if (!isMobile) {
+  loadModel("/models/meme/meme_house_wall2.glb", updateTVMaterials3);
+}
 // loadModel("/models/meme/meme_david_bottom.glb");
 // !isMobile && loadModel("/models/meme/meme_hermes.glb");
 
