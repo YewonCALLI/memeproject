@@ -13,10 +13,13 @@ import {
   fourthfloor,
   fifthfloor,
   sixthfloor,
-  seventhfloor
+  seventhfloor,
 } from "./conversation.json";
 
-import { CSS3DRenderer, CSS3DObject } from 'three/addons/renderers/CSS3DRenderer.js';
+import {
+  CSS3DRenderer,
+  CSS3DObject,
+} from "three/addons/renderers/CSS3DRenderer.js";
 
 var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent); // 안드로이드 아이폰을 검사해 체크
 /**
@@ -30,7 +33,7 @@ const backMove = false;
 const backBtn = document.querySelector(".back-btn");
 let drone;
 
-//확인 
+//확인
 backBtn.addEventListener("click", () => {
   step = 7;
   !backMove ? (backMove = true) : (backMove = false);
@@ -45,8 +48,7 @@ const sixthBtn = document.querySelector("#sixthBtn");
 const seventhBtn = document.querySelector("#seventhBtn");
 const eigthBtn = document.querySelector("#eigthBtn");
 
-
-const memeModal = document.querySelector('.meme-modal');
+const memeModal = document.querySelector(".meme-modal");
 
 function moveCamera(x, y, z) {
   gsap.to(camera.position, {
@@ -192,6 +194,16 @@ const PlayAudio = (audio) => {
   });
 };
 
+/**
+ * Raycaster
+ */
+const raycaster = new THREE.Raycaster();
+let currentIntersect = null;
+const rayOrigin = new THREE.Vector3(-3, 0, 0);
+const rayDirection = new THREE.Vector3(10, 0, 0);
+rayDirection.normalize();
+
+// raycaster.set(rayOrigin, rayDirection)
 
 /**
  * Loaders
@@ -234,7 +246,7 @@ const loadingManager = new THREE.LoadingManager(
     firstBtn.addEventListener("click", () => {
       turnOnTypeWriter(
         6,
-        typeWriter1(firstfloor, "host", "user", "user2", 100),
+        typeWriter1(firstfloor, "host", "user", "user2", 100)
       );
     });
 
@@ -279,7 +291,6 @@ const loadingManager = new THREE.LoadingManager(
         typeWriter7(seventhfloor, "host", "user", "user2", 110)
       );
     });
-
   },
 
   // Progress
@@ -303,7 +314,6 @@ function turnOnTypeWriter(cameraStep, typeWriter) {
 let typeStepAll = 0;
 
 let typeStep0 = 0;
-
 
 //typeWriter 단계 - host와 user의 대화를 구분하기 위한 변수 host와 user의 대화가 끝나면 0으로 초기화
 function typeWriter0(conversation, hostId, userId, userId2, speed, index = 0) {
@@ -589,7 +599,6 @@ function typeWriter3(conversation, hostId, userId, userId2, speed, index = 0) {
   host();
 }
 
-
 let typeStep4 = 0;
 
 function typeWriter4(conversation, hostId, userId, userId2, speed, index = 0) {
@@ -654,7 +663,6 @@ function typeWriter4(conversation, hostId, userId, userId2, speed, index = 0) {
   }
   host();
 }
-
 
 let typeStep5 = 0;
 
@@ -721,8 +729,6 @@ function typeWriter5(conversation, hostId, userId, userId2, speed, index = 0) {
   host();
 }
 
-
-
 let typeStep6 = 0;
 
 function typeWriter6(conversation, hostId, userId, userId2, speed, index = 0) {
@@ -788,7 +794,6 @@ function typeWriter6(conversation, hostId, userId, userId2, speed, index = 0) {
   host();
 }
 
-
 let typeStep7 = 0;
 function typeWriter7(conversation, hostId, userId, userId2, speed, index = 0) {
   isStarted && PlayAudio(sound7F[typeStep7]);
@@ -853,8 +858,6 @@ function typeWriter7(conversation, hostId, userId, userId2, speed, index = 0) {
   host();
 }
 
-
-
 const dracoLoader = new DRACOLoader();
 dracoLoader.setDecoderPath("/draco/");
 const gltfLoader = new GLTFLoader(loadingManager);
@@ -912,7 +915,6 @@ const updateHouseMaterials = (model) => {
   });
 };
 
-
 const catTexture = new THREE.TextureLoader().load("/meme/cat-texture.png");
 catTexture.flipY = false;
 
@@ -957,9 +959,6 @@ const video4 = document.getElementById("video4");
 video4.onloadeddata = function () {
   video4.play();
 };
-
-
-
 
 const videoTexture2 = new THREE.VideoTexture(video2);
 videoTexture2.needsUpdate = true;
@@ -1046,9 +1045,7 @@ internetMaterial.needsUpdate = true;
 
 const updateInternetMaterials = (model) => {
   model.children[3].material = internetMaterial;
-}
-
-
+};
 
 /**
  * Grafti Planes
@@ -1105,15 +1102,33 @@ function loadModel(modelUrl, updateMaterialsCallback) {
       if (child instanceof THREE.Mesh) {
         child.castShadow = true;
         child.receiveShadow = true;
-        child.name = 'meme1'
+        child.name = "meme1";
       }
-    }
-    );
+    });
     scene.add(model.scene);
     updateMaterialsCallback && updateMaterialsCallback(model.scene);
   });
 }
-
+let touchableModel = null;
+function touchableLoadModel(modelUrl, updateMaterialsCallback) {
+  gltfLoader.load(modelUrl, (model) => {
+    touchableModel = model.scene;
+    model.scene.scale.set(1, 1, 1);
+    model.scene.position.set(0, -3, 0);
+    model.scene.rotation.y = Math.PI * 0.5;
+    model.scene.castShadow = true;
+    model.scene.receiveShadow = true;
+    model.scene.traverse((child) => {
+      if (child instanceof THREE.Mesh) {
+        child.castShadow = true;
+        child.receiveShadow = true;
+        child.name = "meme1";
+      }
+    });
+    scene.add(model.scene);
+    updateMaterialsCallback && updateMaterialsCallback(model.scene);
+  });
+}
 
 function loadModel2(modelUrl, updateMaterialsCallback) {
   gltfLoader.load(modelUrl, (model) => {
@@ -1129,8 +1144,7 @@ function loadModel2(modelUrl, updateMaterialsCallback) {
         child.castShadow = true;
         child.receiveShadow = true;
       }
-    }
-    );
+    });
     scene.add(model.scene);
     updateMaterialsCallback && updateMaterialsCallback(model.scene);
   });
@@ -1153,15 +1167,14 @@ function meme1loadModel(modelUrl, updateMaterialsCallback) {
         child.castShadow = true;
         child.receiveShadow = true;
       }
-    }
-    );
+    });
     meme1 = model.scene.children[3];
     scene.add(model.scene);
     updateMaterialsCallback && updateMaterialsCallback(model.scene);
   });
 }
 
-var meme6_1, meme6_2,meme6_3;
+var meme6_1, meme6_2, meme6_3;
 
 function meme6loadModel(modelUrl, updateMaterialsCallback) {
   gltfLoader.load(modelUrl, (model) => {
@@ -1175,8 +1188,7 @@ function meme6loadModel(modelUrl, updateMaterialsCallback) {
         child.castShadow = true;
         child.receiveShadow = true;
       }
-    }
-    );
+    });
     meme6_1 = model.scene.children[2];
     meme6_2 = model.scene.children[3];
     meme6_3 = model.scene.children[4];
@@ -1199,14 +1211,12 @@ function meme8loadModel(modelUrl, updateMaterialsCallback) {
         child.castShadow = true;
         child.receiveShadow = true;
       }
-    }
-    );
+    });
     meme8_1 = model.scene.children[0];
     meme8_2 = model.scene.children[1];
     meme8_3 = model.scene.children[2];
     meme8_4 = model.scene.children[3];
     meme8_5 = model.scene.children[4];
-
 
     scene.add(model.scene);
     updateMaterialsCallback && updateMaterialsCallback(model.scene);
@@ -1225,8 +1235,7 @@ function meme4loadModel(modelUrl, updateMaterialsCallback) {
         child.castShadow = true;
         child.receiveShadow = true;
       }
-    }
-    );
+    });
     meme4 = model.scene.children[0];
     scene.add(model.scene);
     updateMaterialsCallback && updateMaterialsCallback(model.scene);
@@ -1244,8 +1253,7 @@ function meme5loadModel(modelUrl, updateMaterialsCallback) {
         child.castShadow = true;
         child.receiveShadow = true;
       }
-    }
-    );
+    });
     meme5 = model.scene.children[3];
     scene.add(model.scene);
     updateMaterialsCallback && updateMaterialsCallback(model.scene);
@@ -1266,14 +1274,12 @@ function meme7loadModel(modelUrl, updateMaterialsCallback) {
         child.castShadow = true;
         child.receiveShadow = true;
       }
-    }
-    );
+    });
     meme7 = model.scene.children[3];
     scene.add(model.scene);
     updateMaterialsCallback && updateMaterialsCallback(model.scene);
   });
 }
-
 
 function loadModel3(modelUrl, updateMaterialsCallback) {
   gltfLoader.load(modelUrl, (model) => {
@@ -1289,20 +1295,20 @@ function loadModel3(modelUrl, updateMaterialsCallback) {
  * PLY Models
  */
 const loader = new PLYLoader();
-const pajamaTexture = new THREE.TextureLoader().load("/meme/material_0_baseColor.png");
-
+const pajamaTexture = new THREE.TextureLoader().load(
+  "/meme/material_0_baseColor.png"
+);
 
 function loadPLYModel(modelUrl, updateMaterialsCallback) {
   loader.load(modelUrl, (geometry) => {
     geometry.computeVertexNormals();
-    const material = new THREE.MeshStandardMaterial( { map:pajamaTexture } );
+    const material = new THREE.MeshStandardMaterial({ map: pajamaTexture });
     const mesh = new THREE.Mesh(geometry, material);
     mesh.rotateX(-Math.PI / 2);
     mesh.scale.set(1.0, 1.0, 1.0);
     mesh.position.set(0, -3.0, 0.77);
     mesh.rotateZ(Math.PI / 2);
     scene.add(mesh);
-
 
     // model.scene.scale.set(1, 1, 1);
     // model.scene.position.set(0, -3, 0);
@@ -1314,10 +1320,9 @@ function loadPLYModel(modelUrl, updateMaterialsCallback) {
 
 loadModel("/models/meme/meme_house.glb", updateHouseMaterials);
 loadModel("/models/meme/meme_hose.glb", updateHouseMaterials);
-loadModel("/models/meme/meme_house_floor.glb",updateTVMaterials2);
-loadModel("/models/meme/meme_house_wall1.glb",updateTVMaterials2);
-loadModel("/models/meme/meme_house_wall2.glb",updateTVMaterials3);
-
+loadModel("/models/meme/meme_house_floor.glb", updateTVMaterials2);
+loadModel("/models/meme/meme_house_wall1.glb", updateTVMaterials2);
+loadModel("/models/meme/meme_house_wall2.glb", updateTVMaterials3);
 
 loadModel("/models/meme/meme_door.glb");
 loadModel("/models/meme/meme_door2.glb");
@@ -1337,7 +1342,7 @@ loadModel2("/models/meme/meme3.glb");
 meme4loadModel("/models/meme/meme4.glb");
 meme5loadModel("/models/meme/meme5.glb");
 meme6loadModel("/models/meme/meme6.glb");
-loadModel("/models/meme/meme_plane.glb", updateTVMaterials4);
+touchableLoadModel("/models/meme/meme_plane.glb", updateTVMaterials4);
 meme8loadModel("/models/meme/meme8.glb");
 // loadModel("/models/meme/meme_stone.glb");
 // loadModel2("/models/meme/meme_priest.glb");
@@ -1368,7 +1373,6 @@ const material = new THREE.MeshStandardMaterial({
   DoubleSide: true,
 });
 
-
 !isMobile &&
   gltfLoader.load("/models/meme/meme_cat-no_tex.glb", (cat) => {
     mixer = new THREE.AnimationMixer(cat.scene);
@@ -1382,8 +1386,6 @@ const material = new THREE.MeshStandardMaterial({
     scene.add(cat.scene);
     updateCatMaterials(cat.scene);
   });
-
-
 
 /**
  * Helpers
@@ -1413,7 +1415,6 @@ directionalLight.target.position.set(3, 2, 0);
 
 scene.add(ambientLight, directionalLight);
 
-
 const pointLight2 = new THREE.PointLight("#C3FFE3", 6);
 pointLight2.castShadow = true;
 pointLight2.shadow.camera.far = 15;
@@ -1430,7 +1431,6 @@ pointLight3.shadow.mapSize.set(1024, 1024);
 pointLight3.shadow.normalBias = 0.05;
 pointLight3.position.set(-4, 0, 5);
 scene.add(pointLight3);
-
 
 /**
  * Sizes
@@ -1480,13 +1480,11 @@ camera.lookAt(0, 0, 0);
 
 camera.add(listener);
 
-
 /**
  * Controls
  */
 const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true;
-
 
 /**
  * Renderer
@@ -1498,18 +1496,12 @@ const renderer = new THREE.WebGLRenderer({
   alpha: true, //transparent background
 });
 
-
-
-
-
-
 renderer.toneMapping = THREE.ReinhardToneMapping;
 renderer.toneMappingExposure = 3;
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
 
 function movingCamera() {
   switch (step) {
@@ -1525,7 +1517,9 @@ function movingCamera() {
     case 2:
       moveCamera(-3, -1, 0.9); //냉장고 바로 앞
       camera.lookAt(-2.0, -1, -4);
-      setTimeout(()=>{ video.play(); }, 20000);
+      setTimeout(() => {
+        video.play();
+      }, 20000);
       showBackBtn();
       break;
     case 3:
@@ -1554,7 +1548,7 @@ function movingCamera() {
       showBackBtn();
       break;
     case 8:
-      moveCamera(-3, -2.5, 5.3);//3번 밈
+      moveCamera(-3, -2.5, 5.3); //3번 밈
       camera.lookAt(0, -2.5, 5.3);
       showBackBtn();
       break;
@@ -1569,12 +1563,12 @@ function movingCamera() {
       showBackBtn();
       break;
     case 11:
-      moveCamera(-4.5,-0.3,6.8); //2층
+      moveCamera(-4.5, -0.3, 6.8); //2층
       camera.lookAt(-3.0, -0.3, 3);
       showBackBtn();
       break;
     case 12:
-      moveCamera(-2.5,2.35,4.7); //3층
+      moveCamera(-2.5, 2.35, 4.7); //3층
       camera.lookAt(0, 2.35, 4.7);
       showBackBtn();
       break;
@@ -1592,41 +1586,54 @@ const tick = () => {
   const deltaTime = elapsedTime - oldElapsedTime;
   oldElapsedTime = elapsedTime;
 
+  raycaster.setFromCamera(mouse, camera);
+  // Test intersect with a model
+  if (touchableModel) {
+    const modelIntersects = raycaster.intersectObject(touchableModel);
+    console.log(modelIntersects);
+    if (modelIntersects.length) {
+      //cursor is pointer
+      document.body.style.cursor = "pointer";
+    } else {
+      //cursor is default
+      document.body.style.cursor = "default";
+    }
+  }
+
   if (mixer) {
     mixer.update(deltaTime * 1.5);
   }
   if (mixer2) {
     mixer2.update(deltaTime * 1.5);
   }
-  if(meme1){
+  if (meme1) {
     meme1.rotation.z += 0.01;
-    meme1.position.y = Math.sin(elapsedTime) * 0.1+0.54;
+    meme1.position.y = Math.sin(elapsedTime) * 0.1 + 0.54;
   }
-  if(meme6){
+  if (meme6) {
     meme6.rotation.z += 0.01;
-    meme6.position.y = Math.sin(elapsedTime) * 0.06+2.45;
+    meme6.position.y = Math.sin(elapsedTime) * 0.06 + 2.45;
     meme6_1.rotation.y += 0.01;
-    meme6_1.rotation.x+= 0.01;
+    meme6_1.rotation.x += 0.01;
     meme6_2.rotation.y -= 0.01;
-    meme6_2.rotation.x-= Math.sin(elapsedTime)*0.01;
+    meme6_2.rotation.x -= Math.sin(elapsedTime) * 0.01;
     meme6_3.rotation.y -= 0.01;
-    meme6_3.rotation.z-= Math.sin(elapsedTime)*0.01;
+    meme6_3.rotation.z -= Math.sin(elapsedTime) * 0.01;
   }
-  if(meme4){
-    meme4.position.y = Math.sin(elapsedTime) * 0.1+0.7;
+  if (meme4) {
+    meme4.position.y = Math.sin(elapsedTime) * 0.1 + 0.7;
     meme4.rotation.y += 0.01;
   }
-  if(meme5){
+  if (meme5) {
     meme5.rotation.z -= 0.01;
-    meme5.position.y = Math.sin(elapsedTime) * 0.1+0.34;
+    meme5.position.y = Math.sin(elapsedTime) * 0.1 + 0.34;
   }
-  if(meme8_1){
-    meme8_1.position.x = Math.sin(elapsedTime)*0.5-4;
-    meme8_2.position.x = Math.sin(elapsedTime)*0.5-4;
-    meme8_3.position.x = Math.sin(elapsedTime*0.8)*0.5-4;
-    meme8_4.position.x = Math.sin(elapsedTime)*0.5-4;
-    meme8_5.position.x = Math.sin(elapsedTime*0.8)*0.3-5;
-
+  if (meme8_1) {
+    meme8_1.position.x = Math.sin(elapsedTime) * 0.5 - 4;
+    meme8_2.position.x = Math.sin(elapsedTime) * 0.5 - 4;
+    meme8_3.position.x = Math.sin(elapsedTime * 0.8) * 0.5 - 4;
+    meme8_4.position.x = Math.sin(elapsedTime) * 0.5 - 4;
+    meme8_5.position.x = Math.sin(elapsedTime * 0.8) * 0.3 - 5;
   }
   //update controls
 
@@ -1634,7 +1641,6 @@ const tick = () => {
 
   //Update Camera
   movingCamera();
-
 
   // Render
   renderer.render(scene, camera);
@@ -1652,7 +1658,6 @@ const tick = () => {
 
   // Call tick again on the next frame
   window.requestAnimationFrame(tick);
-
 };
 
 tick();
