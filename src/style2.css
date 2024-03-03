@@ -1,4 +1,6 @@
-input, textarea, button {
+input,
+textarea,
+button {
   appearance: none;
   -moz-appearance: none;
   -webkit-appearance: none;
@@ -16,33 +18,35 @@ body {
   margin: 0;
   overflow: hidden;
 }
-.background{
+
+.background {
   position: absolute;
   width: 100%;
   height: 100%;
 }
-.background img{
-    width: 100%;
-    height: 100%;
-    -webkit-filter: blur(40px);
-    filter: blur(40px);
-    border: solid 1px #000;
+
+.background img {
+  width: 100%;
+  height: 100%;
+  -webkit-filter: blur(40px);
+  filter: blur(40px);
+  border: solid 1px #000;
 }
 
-.meme-container{
+.meme-container {
   position: absolute;
   width: 130%;
   height: 130%;
-  top:50%;
-  left:50%;
-  transform: translate(-50%,-50%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .date {
-  position:absolute;
+  position: absolute;
   display: flex;
   height: 4.9%;
-  top:10px;
+  top: 10px;
   right: 20px;
   font-family: Oliver;
   justify-content: center;
@@ -54,11 +58,11 @@ body {
   border: solid 4px #1e1e1e;
   background-color: #d9d9d9;
   z-index: 1;
-  gap:2px;
+  gap: 2px;
 }
 
 .MEMEPROJECTMEMEPROJECT {
-  display:block;
+  display: block;
   width: 100%;
   height: 100%;
   -webkit-animation: spin 15s linear infinite;
@@ -66,16 +70,16 @@ body {
   animation: spin 15s linear infinite;
 }
 
-.MEMEPROJECTMEMEPROJECT2{
+.MEMEPROJECTMEMEPROJECT2 {
   position: absolute;
   width: 51.3%;
   bottom: 7.1%;
   left: 50%;
-  transform: translate(-50%,0%);
+  transform: translate(-50%, 0%);
   z-index: 1;
 }
 
-.footer-text{
+.footer-text {
   position: absolute;
   display: flex;
   width: 80%;
@@ -87,35 +91,37 @@ body {
   z-index: 1;
 }
 
-#memepng{
-  width: 25%;;
+#memepng {
+  width: 25%;
+  ;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 12px;
 }
 
-#totalmeme{
-  width: 25%;;
+#totalmeme {
+  width: 25%;
+  ;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 12px;
 }
 
-#totalmeme2{
+#totalmeme2 {
   width: 25%;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 12px;
 }
 
-#madeby{
+#madeby {
   width: 25%;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 12px;
 }
 
-#madeby a{
+#madeby a {
   color: #000;
 }
 
-.footer{
+.footer {
   position: absolute;
   display: flex;
   width: 80%;
@@ -161,24 +167,31 @@ body {
   left: 0%;
 }
 
-.Meme-Making{
+.Meme-Making {
   position: absolute;
   width: 140px;
   height: 30px;
   z-index: 1;
-  border: 3px;
+  border: 3px solid #fff;
+  color: #000;
   border-style: outset;
 }
 
-.meme-item{
-  position: absolute; 
+.like {
+  border: 3px solid #fff;
+  color: #000;
+  border-style: outset;
+}
+
+.meme-item {
+  position: absolute;
   left: 45%;
   top: 50%;
   animation: forwardRotate 15s linear infinite;
-  transform: translate(-50%,-50%);
+  transform: translate(-50%, -50%);
 }
 
-.gaze-1{
+.gaze-1 {
   position: relative;
   width: 15%;
   height: 14px;
@@ -189,7 +202,7 @@ body {
   background-color: #d9d9d9;
 }
 
-.gaze-2{
+.gaze-2 {
   position: relative;
   width: 15%;
   height: 14px;
@@ -198,21 +211,21 @@ body {
   background-color: #9ade90;
 }
 
-.meme-image img{
+.meme-image img {
   position: relative;
   width: 18%;
   height: 18%;
   -webkit-transition: .5s ease-in-out;
-	transition: .5s ease-in-out;
+  transition: .5s ease-in-out;
 }
 
-.meme-image img:hover{
+.meme-image img:hover {
   opacity: 0.8;
   cursor: pointer;
   border: #9ADE90 solid 4px;
 }
 
-.meme-clicked{
+.meme-clicked {
   position: absolute;
   display: flex;
   flex-direction: column;
@@ -221,13 +234,13 @@ body {
   width: 20%;
   top: 50%;
   left: 50%;
-  transform: translate(-50%,-50%);
+  transform: translate(-50%, -50%);
   text-align: center;
-  gap:10px;
+  gap: 10px;
   z-index: 2;
 }
 
-.meme-clicked img{
+.meme-clicked img {
   position: relative;
   width: 100%;
   object-fit: fit;
@@ -238,81 +251,102 @@ body {
 }
 
 @keyframes forwardRotate {
-  from { transform: rotate(0deg) translateX(50%) rotate(0deg);}
-  to { transform: rotate(360deg) translateX(50%) rotate(-360deg); }
+  from {
+    transform: rotate(0deg) translateX(50%) rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg) translateX(50%) rotate(-360deg);
+  }
 }
+
 @keyframes reverseRotate {
-  from { transform: rotate(-0deg); }
-  to { transform: rotate(-360deg); }
+  from {
+    transform: rotate(-0deg);
+  }
+
+  to {
+    transform: rotate(-360deg);
+  }
 }
 
 @-webkit-keyframes spin {
-  100%{
-    -webkit-transform: rotate(360deg) translateZ(0);  
+  100% {
+    -webkit-transform: rotate(360deg) translateZ(0);
   }
 }
 
 @-moz-keyframes spin {
-  100%{
-    -webkit-transform: rotate(360deg)translateZ(0);  
+  100% {
+    -webkit-transform: rotate(360deg)translateZ(0);
   }
 }
 
 @keyframes spin {
-  100%{
-    -webkit-transform: rotate(360deg)translateZ(0);  
+  100% {
+    -webkit-transform: rotate(360deg)translateZ(0);
   }
 }
 
 @media screen and (min-width: 768px) {
-  .background{
+  .background {
     background-color: white;
   }
-  .meme-item{
-    width: 80%; 
+
+  .meme-item {
+    width: 80%;
     height: 80%;
   }
 }
 
 @media screen and (max-width: 768px) {
-  .meme-item{
-    top:55%;
-    width: 100%; 
+  .meme-item {
+    top: 55%;
+    width: 100%;
     height: 100%;
 
   }
-  .meme-image img{
+
+  .meme-image img {
     width: 20%;
   }
-  .meme-clicked{
+
+  .meme-clicked {
     width: 40%;
   }
-  .footer{
+
+  .footer {
     width: 100%;
   }
-  .footer-text{
+
+  .footer-text {
     width: 100%;
     height: 4%;
   }
-  #memepng{
+
+  #memepng {
     font-size: x-small;
   }
-  #totalmeme{
+
+  #totalmeme {
     font-size: x-small;
   }
-  #totalmeme2{
+
+  #totalmeme2 {
     font-size: x-small;
   }
-  #madeby{
+
+  #madeby {
     font-size: x-small;
   }
 }
 
 @media screen and (max-width: 500px) {
-  .gaze-1{
+  .gaze-1 {
     width: 10%;
   }
-  .meme-image img{
+
+  .meme-image img {
     width: 20%;
   }
 }

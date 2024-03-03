@@ -50,7 +50,6 @@ const eigthBtn = document.querySelector("#eigthBtn");
 
 const memeModal = document.querySelector("#myModal2");
 
-
 function moveCamera(x, y, z) {
   gsap.to(camera.position, {
     x,
@@ -297,7 +296,6 @@ const loadingManager = new THREE.LoadingManager(
         typeWriter7(seventhfloor, "host", "user", "user2", 158)
       );
       memeModal.style.display = "block"; // 모달 창 표시
-
     });
   },
 
@@ -1096,6 +1094,8 @@ scene.add(grafti03);
 let mixer = null;
 let mixer2 = null;
 
+var meme6_1, meme6_2, meme6_3;
+
 /**
  * GLTF Models
  */
@@ -1182,8 +1182,6 @@ function meme1loadModel(modelUrl, updateMaterialsCallback) {
   });
 }
 
-var meme6_1, meme6_2, meme6_3;
-
 function meme6loadModel(modelUrl, updateMaterialsCallback) {
   gltfLoader.load(modelUrl, (model) => {
     model.scene.scale.set(1, 1, 1);
@@ -1197,9 +1195,9 @@ function meme6loadModel(modelUrl, updateMaterialsCallback) {
         child.receiveShadow = true;
       }
     });
-    meme6_1 = model.scene.children[2];
-    meme6_2 = model.scene.children[3];
-    meme6_3 = model.scene.children[4];
+    meme6_1 = model.scene.children[1];
+    meme6_2 = model.scene.children[2];
+    meme6_3 = model.scene.children[3];
     meme6 = model.scene.children[0];
     scene.add(model.scene);
     updateMaterialsCallback && updateMaterialsCallback(model.scene);
@@ -1597,14 +1595,9 @@ const tick = () => {
   raycaster.setFromCamera(mouse, camera);
   const intersects = raycaster.intersectObjects(scene.children, true);
 
-
-
   close.addEventListener("click", () => {
     memeModal.style.display = "none"; // 모달 창 숨김
   });
-  
-
-
 
   if (mixer) {
     mixer.update(deltaTime * 1.5);
