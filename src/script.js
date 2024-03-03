@@ -48,7 +48,8 @@ const sixthBtn = document.querySelector("#sixthBtn");
 const seventhBtn = document.querySelector("#seventhBtn");
 const eigthBtn = document.querySelector("#eigthBtn");
 
-const memeModal = document.querySelector(".meme-modal");
+const memeModal = document.querySelector("#myModal2");
+
 
 function moveCamera(x, y, z) {
   gsap.to(camera.position, {
@@ -210,6 +211,7 @@ rayDirection.normalize();
  */
 const startContainer = document.querySelector(".start-container");
 const startBtn = document.querySelector(".start-btn");
+const info_apple = document.querySelector(".info-apple");
 let isStarted = false;
 const loadingOverlayElement = document.querySelector(".loading-overlay");
 const loadingBarElement = document.querySelector(".loading-bar");
@@ -228,6 +230,10 @@ const loadingManager = new THREE.LoadingManager(
       // Wait a little
       window.setTimeout(() => {
         gsap.to(startContainer, {
+          display: "none",
+          duration: 0.5,
+        });
+        gsap.to(info_apple, {
           display: "none",
           duration: 0.5,
         });
@@ -274,7 +280,7 @@ const loadingManager = new THREE.LoadingManager(
     fifthBtn.addEventListener("click", () => {
       turnOnTypeWriter(
         10,
-        typeWriter5(fifthfloor, "host", "user", "user2", 160)
+        typeWriter5(fifthfloor, "host", "user", "user2", 165)
       );
     });
 
@@ -288,8 +294,10 @@ const loadingManager = new THREE.LoadingManager(
     seventhBtn.addEventListener("click", () => {
       turnOnTypeWriter(
         12,
-        typeWriter7(seventhfloor, "host", "user", "user2", 110)
+        typeWriter7(seventhfloor, "host", "user", "user2", 158)
       );
+      memeModal.style.display = "block"; // 모달 창 표시
+
     });
   },
 
@@ -821,7 +829,7 @@ function typeWriter7(conversation, hostId, userId, userId2, speed, index = 0) {
         // User 텍스트가 없는 경우 약간의 지연 후에 다음 대화로 넘어감
         setTimeout(
           handleNext,
-          conversation[index].sec - hostText.length * speed + 130 //100은 약간의 지연을 위한 값
+          conversation[index].sec - hostText.length * speed + 140 //100은 약간의 지연을 위한 값
         );
       }
     }
@@ -1580,6 +1588,9 @@ function movingCamera() {
  */
 const clock = new THREE.Clock();
 let oldElapsedTime = 0;
+let meme1MaterialOriginalColor = null; // meme1 오브젝트의 원래 색상을 저장할 변수
+
+const close = document.querySelector(".close");
 
 const tick = () => {
   const elapsedTime = clock.getElapsedTime();
@@ -1587,18 +1598,16 @@ const tick = () => {
   oldElapsedTime = elapsedTime;
 
   raycaster.setFromCamera(mouse, camera);
-  // Test intersect with a model
-  if (touchableModel) {
-    const modelIntersects = raycaster.intersectObject(touchableModel);
-    console.log(modelIntersects);
-    if (modelIntersects.length) {
-      //cursor is pointer
-      document.body.style.cursor = "pointer";
-    } else {
-      //cursor is default
-      document.body.style.cursor = "default";
-    }
-  }
+  const intersects = raycaster.intersectObjects(scene.children, true);
+
+
+
+  close.addEventListener("click", () => {
+    memeModal.style.display = "none"; // 모달 창 숨김
+  });
+  
+
+
 
   if (mixer) {
     mixer.update(deltaTime * 1.5);

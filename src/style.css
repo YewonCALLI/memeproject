@@ -100,6 +100,55 @@ body {
   z-index: 1;
 }
 
+/* 모달창 기본 스타일 */
+#myModal2 {
+  display: none; /* 기본적으로는 숨김 */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 50%;
+  top: 30px;
+  width : 50%;
+  transform: translate(-50%, 0);
+  overflow: auto; /* Enable scroll if needed */
+}
+
+/* 모달 컨텐츠 */
+.modal-content {
+  position: relative;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.5);
+  border : 1px solid rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  text-align: center;
+  width: 80%; /* Could be more or less, depending on screen size */
+}
+
+.worldbutton{
+  margin-top: 10px;
+  padding: 5px 10px;
+  background-color: #52e396;
+  color: #000;
+}
+
+/* 닫기 버튼 */
+.close {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+
 #button3{
   width:150px;
   height: 50px;
@@ -898,5 +947,8 @@ label{
   .menu-tab:active {
     opacity: 0.5;
     transition: all 0.5s ease-in-out;
+  }
+  #myModal2 {
+    width: 100%;
   }
 }
