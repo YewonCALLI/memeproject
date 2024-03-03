@@ -616,7 +616,7 @@ button {
 }
 
 .floorBox {
-  /* display: none; */
+  display: none;
   opacity: 0;
   width: fit-content;
   height: fit-content;
