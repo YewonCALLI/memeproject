@@ -368,7 +368,7 @@ function typeWriter0(conversation, hostId, userId, userId2, speed, index = 0) {
         // User 텍스트가 없는 경우 conversation[index].sec에서 타이핑된 시간을 뺀 만큼의 지연 후에 다음 대화로 넘어감
         setTimeout(
           handleNext,
-          conversation[index].sec - hostText.length * speed + 100 //100은 약간의 지연을 위한 값
+          conversation[index].sec - hostText.length * speed + 120 //100은 약간의 지연을 위한 값
         );
       }
     }
