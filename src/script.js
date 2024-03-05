@@ -246,7 +246,7 @@ const loadingManager = new THREE.LoadingManager(
       !scriptIsEnd && modal.classList.add("on");
     }, 1500);
 
-    typeWriter0(conversation, "host", "user", "user2", 100);
+    typeWriter0(conversation, "host", "user", "user2", 90);
 
     firstBtn.addEventListener("click", () => {
       turnOnTypeWriter(
