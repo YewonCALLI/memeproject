@@ -1349,13 +1349,7 @@ meme5loadModel("/models/meme/meme5.glb");
 meme6loadModel("/models/meme/meme6.glb");
 touchableLoadModel("/models/meme/meme_plane.glb", updateTVMaterials4);
 meme8loadModel("/models/meme/meme8.glb");
-// loadModel("/models/meme/meme_stone.glb");
-// loadModel2("/models/meme/meme_priest.glb");
 
-//when device is mobile, load low poly models
-if (!isMobile) {
-  loadModel("/models/meme/meme_house_wall2.glb", updateTVMaterials3);
-}
 // loadModel("/models/meme/meme_david_bottom.glb");
 // !isMobile && loadModel("/models/meme/meme_hermes.glb");
 
